@@ -354,7 +354,7 @@ const Navbar = () => {
 
           <div className="h-6 w-px bg-slate-300 "></div>
 
-          {/* {user && (
+          {user && (
             <div className="relative group py-2">
               <button className="flex items-center gap-2 text-slate-700 hover:text-primary transition-colors">
                 <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm uppercase shadow-sm">
@@ -381,7 +381,7 @@ const Navbar = () => {
                 </div>
               </div>
             </div>
-          )} */}
+          )}
 
           <button
             onClick={openModal}
@@ -569,7 +569,7 @@ const Navbar = () => {
             </Link>
 
 
-            {/* {user && (
+            {user && (
               <>
                 <div className="py-3 px-2 border-b border-slate-100 flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-lg uppercase shadow-sm">
@@ -599,7 +599,7 @@ const Navbar = () => {
                   Logout
                 </button>
               </>
-            )} */}
+            )}
 
             {/* CTA Button */}
             <div className="pt-3 pb-2">
