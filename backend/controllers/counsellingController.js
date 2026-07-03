@@ -11,7 +11,7 @@ export const submitCounsellingRequest = async (req, res) => {
 
     // Send confirmation email
     const emailMessage = `
-      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+      <div style="font-family: 'Google Sans'; line-height: 1.6; color: #333;">
         <h2 style="color: #2c3e50;">Session Booked Successfully!</h2>
         <p>Dear <strong>${name}</strong>,</p>
         <p>Thank you for booking a counselling session with us. Your request has been successfully received.</p>

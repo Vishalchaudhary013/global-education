@@ -27,7 +27,11 @@ const Home = () => {
 
   const heroImages = [
     "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2670&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1541339907198-e08759dfc3ef?q=80&w=2670&auto=format&fit=crop",
+    
+    "https://images.unsplash.com/photo-1525921429624-479b6a26d84d?q=80&w=2670&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2670&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2670&auto=format&fit=crop",
+   
     "https://images.unsplash.com/photo-1525921429624-479b6a26d84d?q=80&w=2670&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=2670&auto=format&fit=crop"
   ];

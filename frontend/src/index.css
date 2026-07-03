@@ -1,4 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@font-face {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://fonts.cdnfonts.com/s/14955/ProductSans-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 500;
+  src: url('https://fonts.cdnfonts.com/s/14955/ProductSans-Medium.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url('https://fonts.cdnfonts.com/s/14955/ProductSans-Bold.woff') format('woff');
+}
 
 @import "tailwindcss";
 
@@ -15,7 +34,9 @@
   --color-primary-900: #312e81;
   --color-primary: #4f46e5;
   --color-secondary: #0ea5e9;
-  --font-sans: "Inter", "sans-serif";
+  --font-sans: "Google Sans";
+  --font-serif: "Google Sans";
+  --font-mono: "Google Sans";
 }
 
 /* Base Styles */
