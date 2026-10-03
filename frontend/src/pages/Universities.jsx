@@ -38,7 +38,7 @@ const Universities = () => {
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
       {/* Header */}
-      <div className="bg-slate-900 py-24 px-6 relative overflow-hidden">
+      <div className="bg-[#1F2853] py-24 px-6 relative overflow-hidden">
         <div
           className="absolute inset-0 z-0 opacity-10"
           style={{
@@ -48,7 +48,7 @@ const Universities = () => {
           }}
         ></div>
         <div className="max-w-[1400px] mx-auto relative z-10 text-center">
-          <div className="inline-flex items-center justify-center p-3 bg-indigo-500/20 rounded-2xl mb-6 backdrop-blur-sm border border-indigo-500/30">
+          <div className="inline-flex items-center justify-center p-3 bg-[#FF4E45]/20 rounded-2xl mb-6 backdrop-blur-sm border border-indigo-500/30">
             <HiBuildingOffice2 className="h-10 w-10 text-indigo-400" />
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">
@@ -72,7 +72,7 @@ const Universities = () => {
                   onClick={() => setFilter(dest === "All" ? "" : dest)}
                   className={`px-6 py-3 rounded-2xl font-bold text-sm whitespace-nowrap transition-all duration-300 ${
                     (filter === "" && dest === "All") || filter === dest
-                      ? "bg-slate-900 text-white shadow-lg shadow-slate-200 scale-105"
+                      ? "bg-[#1F2853] text-white shadow-lg shadow-slate-200 scale-105"
                       : "bg-slate-50 text-slate-600 hover:bg-slate-100"
                   }`}
                 >
@@ -97,12 +97,12 @@ const Universities = () => {
         {/* Results Info */}
         <div className="flex items-center justify-between mb-8 px-2">
           <p className="text-slate-500 font-medium">
-            Showing <span className="text-slate-900 font-bold">{filtered.length}</span> {filtered.length === 1 ? 'university' : 'universities'}
+            Showing <span className="text-[#1F2853] font-bold">{filtered.length}</span> {filtered.length === 1 ? 'university' : 'universities'}
           </p>
           {filter && (
             <button 
               onClick={() => setFilter("")}
-              className="text-primary font-bold text-sm hover:underline"
+              className="text-[#FF4E45] font-bold text-sm hover:underline"
             >
               Clear Filter
             </button>
@@ -127,7 +127,7 @@ const Universities = () => {
             <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
               <HiBuildingOffice2 className="h-10 w-10 text-slate-300" />
             </div>
-            <h3 className="text-2xl font-bold text-slate-800 mb-2">No Universities Found</h3>
+            <h3 className="text-2xl font-bold text-[#1F2853] mb-2">No Universities Found</h3>
             <p className="text-slate-500">Try adjusting your search or filters to find what you're looking for.</p>
           </div>
         )}

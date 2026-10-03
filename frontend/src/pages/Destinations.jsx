@@ -17,7 +17,7 @@ const Destinations = () => {
   return (
     <div className="min-h-screen bg-slate-50  pb-24">
       {/* Header */}
-      <div className="bg-slate-900 py-16 text-center px-6">
+      <div className="bg-[#1F2853] py-16 text-center px-6">
         <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6">Explore Study Destinations</h1>
         <p className="text-xl text-slate-300 max-w-2xl mx-auto">
           Choose from the world's top study destinations and unlock a global career.
@@ -31,14 +31,14 @@ const Destinations = () => {
             <div key={dest.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group">
               <div className="h-64 overflow-hidden relative">
                 <img src={dest.img} alt={dest.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
+                <div className="absolute inset-0 bg-[#1F2853]/40"></div>
                 <h2 className="absolute bottom-6 left-6 text-3xl font-bold text-white flex items-center gap-2">
-                  <HiMapPin className="h-6 w-6 text-primary" /> {dest.name}
+                  <HiMapPin className="h-6 w-6 text-[#FF4E45]" /> {dest.name}
                 </h2>
               </div>
               <div className="p-6">
                 <p className="text-slate-600 mb-6 line-clamp-2">{dest.desc}</p>
-                <Link to={`/destinations/${dest.id}`} className="inline-flex items-center justify-center w-full gap-2 bg-slate-50 group-hover:bg-primary group-hover:text-white text-slate-700 font-bold py-3 px-6 rounded-xl transition-colors duration-300">
+                <Link to={`/destinations/${dest.id}`} className="inline-flex items-center justify-center w-full gap-2 bg-slate-50 group-hover:bg-[#FF4E45] group-hover:text-white text-[#1F2853] font-bold py-3 px-6 rounded-xl transition-colors duration-300">
                   Explore {dest.name} <HiArrowRight className="h-5 w-5" />
                 </Link>
               </div>

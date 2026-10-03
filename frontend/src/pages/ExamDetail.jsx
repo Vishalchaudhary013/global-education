@@ -9,13 +9,13 @@ const ExamDetail = () => {
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
       {/* Header */}
-      <div className="bg-gradient-to-br from-slate-900 to-indigo-900 pt-24 pb-16 px-6">
+      <div className="bg-[#1F2853] pt-24 pb-16 px-6">
         <div className="max-w-4xl mx-auto">
           <Link to="/exams" className="inline-flex items-center gap-2 text-indigo-300 hover:text-white font-medium mb-8 transition-colors">
             <HiArrowLeft className="h-4 w-4" /> Back to Exams
           </Link>
           <div className="flex items-center gap-4 mb-6">
-            <div className="h-16 w-16 bg-white text-indigo-600 rounded-2xl flex items-center justify-center font-black text-2xl shadow-xl">
+            <div className="h-16 w-16 bg-white text-[#FF4E45] rounded-2xl flex items-center justify-center font-black text-2xl shadow-xl">
               {examName.slice(0,3)}
             </div>
             <h1 className="text-4xl md:text-5xl font-extrabold text-white">{examName} Overview</h1>
@@ -31,37 +31,37 @@ const ExamDetail = () => {
         {/* Main Content */}
         <div className="md:col-span-2 space-y-10">
           <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-            <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-              <HiInformationCircle className="h-6 w-6 text-primary" /> Exam Format
+            <h2 className="text-2xl font-bold text-[#1F2853] mb-6 flex items-center gap-2">
+              <HiInformationCircle className="h-6 w-6 text-[#FF4E45]" /> Exam Format
             </h2>
             <div className="space-y-4">
               <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl">
-                <h3 className="font-bold text-slate-800 text-lg mb-2">Reading (60 mins)</h3>
+                <h3 className="font-bold text-[#1F2853] text-lg mb-2">Reading (60 mins)</h3>
                 <p className="text-slate-600">3 long reading passages with tasks including multiple choice, matching information, and sentence completion.</p>
               </div>
               <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl">
-                <h3 className="font-bold text-slate-800 text-lg mb-2">Writing (60 mins)</h3>
+                <h3 className="font-bold text-[#1F2853] text-lg mb-2">Writing (60 mins)</h3>
                 <p className="text-slate-600">Task 1: Describe visual information. Task 2: Essay on a given topic.</p>
               </div>
               <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl">
-                <h3 className="font-bold text-slate-800 text-lg mb-2">Listening (30 mins)</h3>
+                <h3 className="font-bold text-[#1F2853] text-lg mb-2">Listening (30 mins)</h3>
                 <p className="text-slate-600">4 sections consisting of conversations and monologues with various accents.</p>
               </div>
               <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl">
-                <h3 className="font-bold text-slate-800 text-lg mb-2">Speaking (11-14 mins)</h3>
+                <h3 className="font-bold text-[#1F2853] text-lg mb-2">Speaking (11-14 mins)</h3>
                 <p className="text-slate-600">Face-to-face interview consisting of short questions, speaking on a topic, and a discussion.</p>
               </div>
             </div>
           </section>
 
           <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-            <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-              <HiBeaker className="h-6 w-6 text-indigo-500" /> Preparation Tips
+            <h2 className="text-2xl font-bold text-[#1F2853] mb-6 flex items-center gap-2">
+              <HiBeaker className="h-6 w-6 text-[#FF4E45]" /> Preparation Tips
             </h2>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3"><HiCheckCircle className="h-6 w-6 text-emerald-500 shrink-0" /><span className="text-slate-700"><strong>Understand the test format:</strong> Familiarize yourself with the types of questions in each section.</span></li>
-              <li className="flex items-start gap-3"><HiCheckCircle className="h-6 w-6 text-emerald-500 shrink-0" /><span className="text-slate-700"><strong>Practice time management:</strong> The test is strictly timed. Take full-length timed practice tests.</span></li>
-              <li className="flex items-start gap-3"><HiCheckCircle className="h-6 w-6 text-emerald-500 shrink-0" /><span className="text-slate-700"><strong>Immerse yourself in English:</strong> Read English newspapers, listen to podcasts, and watch movies without subtitles.</span></li>
+              <li className="flex items-start gap-3"><HiCheckCircle className="h-6 w-6 text-emerald-500 shrink-0" /><span className="text-[#1F2853]"><strong>Understand the test format:</strong> Familiarize yourself with the types of questions in each section.</span></li>
+              <li className="flex items-start gap-3"><HiCheckCircle className="h-6 w-6 text-emerald-500 shrink-0" /><span className="text-[#1F2853]"><strong>Practice time management:</strong> The test is strictly timed. Take full-length timed practice tests.</span></li>
+              <li className="flex items-start gap-3"><HiCheckCircle className="h-6 w-6 text-emerald-500 shrink-0" /><span className="text-[#1F2853]"><strong>Immerse yourself in English:</strong> Read English newspapers, listen to podcasts, and watch movies without subtitles.</span></li>
             </ul>
           </section>
         </div>
@@ -72,11 +72,11 @@ const ExamDetail = () => {
             <h3 className="font-bold text-emerald-800 text-xl mb-4">Score Requirements</h3>
             <div className="bg-white rounded-xl p-4 shadow-sm mb-4">
               <span className="block text-sm text-slate-500 font-medium mb-1">Undergraduate (UG)</span>
-              <span className="block text-2xl font-black text-slate-800">6.0 - 6.5</span>
+              <span className="block text-2xl font-black text-[#1F2853]">6.0 - 6.5</span>
             </div>
             <div className="bg-white rounded-xl p-4 shadow-sm">
               <span className="block text-sm text-slate-500 font-medium mb-1">Postgraduate (PG)</span>
-              <span className="block text-2xl font-black text-slate-800">6.5 - 7.0</span>
+              <span className="block text-2xl font-black text-[#1F2853]">6.5 - 7.0</span>
             </div>
             <p className="text-sm text-emerald-700 mt-4 flex items-start gap-1">
               <HiExclamationCircle className="h-4 w-4 shrink-0 mt-0.5" /> Note: Requirements vary significantly by university and program.
@@ -84,9 +84,9 @@ const ExamDetail = () => {
           </div>
 
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-            <h3 className="font-bold text-slate-800 text-lg mb-4">Need help preparing?</h3>
+            <h3 className="font-bold text-[#1F2853] text-lg mb-4">Need help preparing?</h3>
             <p className="text-slate-600 text-sm mb-6">Our expert counsellors can guide you to the best preparation resources and coaching centers.</p>
-            <button className="w-full bg-slate-900 hover:bg-primary text-white font-bold py-3 rounded-xl transition-colors">
+            <button className="w-full bg-[#1F2853] hover:bg-[#FF4E45] text-white font-bold py-3 rounded-xl transition-colors">
               Get Free Guidance
             </button>
           </div>

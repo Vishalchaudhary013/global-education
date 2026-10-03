@@ -66,10 +66,10 @@ const DestinationDetail = () => {
   if (!destination) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center flex-col">
-        <h2 className="text-3xl font-bold text-slate-800 mb-4">
+        <h2 className="text-3xl font-bold text-[#1F2853] mb-4">
           Destination Not Found
         </h2>
-        <Link to="/courses" className="text-primary hover:underline font-bold">
+        <Link to="/courses" className="text-[#FF4E45] hover:underline font-bold">
           Return to Courses
         </Link>
       </div>
@@ -83,14 +83,14 @@ const DestinationDetail = () => {
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
       {/* 1. Hero Section */}
-      <div className="relative pt-15 pb-24 bg-slate-900 border-b-8 border-primary">
+      <div className="relative pt-15 pb-24 bg-[#1F2853] border-b-8 border-primary">
         <div className="absolute inset-0 z-0">
           <img
             src={destination.heroImage}
             alt={destination.name}
             className="w-full h-full object-cover opacity-30 mix-blend-overlay"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-[#1F2853]/40"></div>
         </div>
         <div className="max-w-[1400px] mx-auto px-6 relative z-10">
           <span className="inline-block py-1 px-3 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-sm font-bold mb-4 tracking-wide uppercase">
@@ -112,12 +112,12 @@ const DestinationDetail = () => {
           {popularCourses.length > 0 && (
             <section>
               <div className="flex justify-between items-end mb-8 border-b border-slate-200 pb-4">
-                <h2 className="text-3xl font-bold text-slate-800 border-l-4 border-primary pl-4">
+                <h2 className="text-3xl font-bold text-[#1F2853] border-l-4 border-primary pl-4">
                   Popular Courses
                 </h2>
                 <Link
                   to="/courses"
-                  className="text-primary font-bold hover:underline flex items-center gap-1"
+                  className="text-[#FF4E45] font-bold hover:underline flex items-center gap-1"
                 >
                   View All <HiChevronRight className="h-4 w-4" />
                 </Link>
@@ -133,7 +133,7 @@ const DestinationDetail = () => {
           {/* 3. Top Universities Section */}
           <section>
             <div className="flex justify-between items-end mb-8 border-b border-slate-200 pb-4">
-              <h2 className="text-3xl font-bold text-slate-800 border-l-4 border-primary pl-4">
+              <h2 className="text-3xl font-bold text-[#1F2853] border-l-4 border-primary pl-4">
                 Top Universities in {destination?.name}
               </h2>
             </div>
@@ -150,7 +150,7 @@ const DestinationDetail = () => {
 
           {/* 4. Scholarships Section */}
           <section>
-            <h2 className="text-3xl font-bold text-slate-800 mb-8 border-l-4 border-primary pl-4">
+            <h2 className="text-3xl font-bold text-[#1F2853] mb-8 border-l-4 border-primary pl-4">
               Scholarships & Grants
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -159,13 +159,13 @@ const DestinationDetail = () => {
                     key={index}
                     className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow"
                   >
-                    <div className="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center text-amber-500 mb-4">
+                    <div className="w-12 h-12 bg-amber-50 rounded-full flex items-center justify-center text-[#FF4E45] mb-4">
                       <HiAcademicCap className="h-6 w-6" />
                     </div>
-                    <h4 className="text-lg font-bold text-slate-800 mb-2">
+                    <h4 className="text-lg font-bold text-[#1F2853] mb-2">
                       {schol.name}
                     </h4>
-                    <p className="text-primary font-bold text-sm mb-3">
+                    <p className="text-[#FF4E45] font-bold text-sm mb-3">
                       {schol.amount}
                     </p>
                     <p className="text-slate-600 text-sm leading-relaxed">
@@ -178,7 +178,7 @@ const DestinationDetail = () => {
 
           {/* 5. Costs Section */}
           <section>
-            <h2 className="text-3xl font-bold text-slate-800 mb-8 border-l-4 border-primary pl-4">
+            <h2 className="text-3xl font-bold text-[#1F2853] mb-8 border-l-4 border-primary pl-4">
               Cost of Studying & Living
             </h2>
             <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row gap-8 items-center bg-emerald-50/30">
@@ -192,7 +192,7 @@ const DestinationDetail = () => {
                       <HiAcademicCap className="h-5 w-5 text-slate-400" />{" "}
                       Tuition Fees (Undergraduate):
                     </span>
-                    <span className="text-slate-900 font-bold text-lg">
+                    <span className="text-[#1F2853] font-bold text-lg">
                       {destination.costs.ug}
                     </span>
                   </li>
@@ -201,7 +201,7 @@ const DestinationDetail = () => {
                       <HiAcademicCap className="h-5 w-5 text-slate-400" />{" "}
                       Tuition Fees (Postgraduate):
                     </span>
-                    <span className="text-slate-900 font-bold text-lg">
+                    <span className="text-[#1F2853] font-bold text-lg">
                       {destination.costs.pg}
                     </span>
                   </li>
@@ -223,7 +223,7 @@ const DestinationDetail = () => {
         {/* Sidebar Column */}
         <div className="space-y-8">
           {/* 6. Job Prospects Sidebar */}
-          <div className="bg-slate-900 rounded-3xl p-8 shadow-lg text-white">
+          <div className="bg-[#1F2853] rounded-3xl p-8 shadow-lg text-white">
             <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
               <HiBriefcase className="text-cyan-400 h-7 w-7" /> Post-Study Careers
             </h3>
@@ -250,13 +250,13 @@ const DestinationDetail = () => {
 
           {/* 7. Visa Process Sidebar */}
           <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
-            <h3 className="text-2xl font-bold text-slate-800 mb-6 border-b border-slate-100 pb-4">
+            <h3 className="text-2xl font-bold text-[#1F2853] mb-6 border-b border-slate-100 pb-4">
               Student Visa Guide
             </h3>
             <p className="text-slate-600 text-sm leading-relaxed mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100">
               {destination?.visa?.processSummary || "Visa information currently being updated."}
             </p>
-            <ul className="space-y-4 text-sm font-medium text-slate-700">
+            <ul className="space-y-4 text-sm font-medium text-[#1F2853]">
               {destination?.visa?.points?.map((point, index) => (
                 <li key={index} className="flex gap-3 items-start">
                   <HiCheckCircle className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5" />
@@ -267,7 +267,7 @@ const DestinationDetail = () => {
           </div>
 
           {/* Sticky CTA */}
-          <div className="sticky top-24 bg-gradient-to-br from-primary to-indigo-600 rounded-3xl p-8 text-center text-white shadow-xl shadow-indigo-500/20">
+          <div className="sticky top-24 bg-[#FF4E45] rounded-3xl p-8 text-center text-white shadow-xl shadow-indigo-500/20">
             <h3 className="text-2xl font-bold mb-3">Ready to Apply?</h3>
             <p className="text-indigo-100 text-sm mb-6 leading-relaxed">
               Get free end-to-end counselling for admission in{" "}
@@ -275,7 +275,7 @@ const DestinationDetail = () => {
             </p>
             <button
               onClick={openModal}
-              className="w-full bg-white text-primary hover:bg-slate-50 py-4 rounded-xl font-bold text-lg transition-colors shadow-md"
+              className="w-full bg-white text-[#FF4E45] hover:bg-slate-50 py-4 rounded-xl font-bold text-lg transition-colors shadow-md"
             >
               Book Free Session
             </button>

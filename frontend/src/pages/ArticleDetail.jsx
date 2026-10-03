@@ -50,7 +50,7 @@ const ArticleDetail = () => {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
           <HiBookOpen className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-slate-700 mb-2">
+          <h2 className="text-2xl font-bold text-[#1F2853] mb-2">
             Article Not Found
           </h2>
           <p className="text-slate-500 mb-6">
@@ -58,7 +58,7 @@ const ArticleDetail = () => {
           </p>
           <Link
             to="/articles"
-            className="bg-primary text-white font-semibold px-6 py-3 rounded-xl hover:bg-indigo-700 transition-colors"
+            className="bg-[#FF4E45] text-white font-semibold px-6 py-3 rounded-xl hover:bg-[#FF4E45] transition-colors"
           >
             Browse All Articles
           </Link>
@@ -85,9 +85,9 @@ const ArticleDetail = () => {
           alt={article.title}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent" />
+        <div className="absolute inset-0 bg-[#1F2853]/40" />
         <div className="absolute bottom-0 left-0 right-0 max-w-4xl mx-auto px-6 pb-8">
-          <span className="inline-block bg-primary text-white text-xs font-bold px-3 py-1 rounded-full mb-3">
+          <span className="inline-block bg-[#FF4E45] text-white text-xs font-bold px-3 py-1 rounded-full mb-3">
             {article.category}
           </span>
           <h1 className="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
@@ -101,7 +101,7 @@ const ArticleDetail = () => {
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-sm text-slate-500 hover:text-primary mb-8 transition-colors"
+          className="flex items-center gap-2 text-sm text-slate-500 hover:text-[#FF4E45] mb-8 transition-colors"
         >
           <HiArrowLeft className="h-4 w-4" /> Back to Articles
         </button>
@@ -112,7 +112,7 @@ const ArticleDetail = () => {
             {/* Meta */}
             <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500 mb-6 pb-6 border-b border-slate-200">
               <span className="flex items-center gap-1.5">
-                <HiCalendarDays className="h-4 w-4 text-primary" />
+                <HiCalendarDays className="h-4 w-4 text-[#FF4E45]" />
                 {new Date(article.date).toLocaleDateString("en-GB", {
                   day: "numeric",
                   month: "long",
@@ -120,11 +120,11 @@ const ArticleDetail = () => {
                 })}
               </span>
               <span className="flex items-center gap-1.5">
-                <HiClock className="h-4 w-4 text-primary" />
+                <HiClock className="h-4 w-4 text-[#FF4E45]" />
                 {article.readTime}
               </span>
               <span className="flex items-center gap-1.5">
-                <HiUser className="h-4 w-4 text-primary" />
+                <HiUser className="h-4 w-4 text-[#FF4E45]" />
                 {article.author}
               </span>
             </div>
@@ -138,8 +138,8 @@ const ArticleDetail = () => {
             <div className="space-y-8">
               {article.content.map((section, i) => (
                 <div key={i}>
-                  <h2 className="text-xl font-bold text-slate-800 mb-3 flex items-center gap-2">
-                    <span className="w-7 h-7 rounded-lg bg-indigo-100 text-primary text-xs font-extrabold flex items-center justify-center shrink-0">
+                  <h2 className="text-xl font-bold text-[#1F2853] mb-3 flex items-center gap-2">
+                    <span className="w-7 h-7 rounded-lg bg-indigo-100 text-[#FF4E45] text-xs font-extrabold flex items-center justify-center shrink-0">
                       {i + 1}
                     </span>
                     {section.heading}
@@ -158,7 +158,7 @@ const ArticleDetail = () => {
                 {article.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-indigo-100 hover:text-primary cursor-pointer transition-colors"
+                    className="bg-slate-100 text-slate-600 text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-indigo-100 hover:text-[#FF4E45] cursor-pointer transition-colors"
                   >
                     {tag}
                   </span>
@@ -176,10 +176,10 @@ const ArticleDetail = () => {
               </h4>
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center shrink-0">
-                  <HiUser className="h-6 w-6 text-primary" />
+                  <HiUser className="h-6 w-6 text-[#FF4E45]" />
                 </div>
                 <div>
-                  <p className="font-bold text-slate-800">{article.author}</p>
+                  <p className="font-bold text-[#1F2853]">{article.author}</p>
                   <p className="text-xs text-slate-500">{article.authorRole}</p>
                 </div>
               </div>
@@ -198,7 +198,7 @@ const ArticleDetail = () => {
                 {["Twitter", "LinkedIn", "Facebook", "WhatsApp"].map((s) => (
                   <button
                     key={s}
-                    className="flex-1 min-w-fit text-xs font-semibold bg-slate-100 hover:bg-primary hover:text-white text-slate-700 px-3 py-2 rounded-lg transition-colors"
+                    className="flex-1 min-w-fit text-xs font-semibold bg-slate-100 hover:bg-[#FF4E45] hover:text-white text-[#1F2853] px-3 py-2 rounded-lg transition-colors"
                   >
                     {s}
                   </button>
@@ -207,14 +207,14 @@ const ArticleDetail = () => {
             </div>
 
             {/* CTA */}
-            <div className="bg-gradient-to-br from-indigo-600 to-primary rounded-2xl p-6 text-white">
+            <div className="bg-[#FF4E45] rounded-2xl p-6 text-white">
               <h4 className="font-bold text-lg mb-2">Need Guidance?</h4>
               <p className="text-indigo-200 text-sm mb-4">
                 Talk to our expert advisors for free personalised counselling.
               </p>
               <Link
                 to="/services"
-                className="block text-center bg-white text-primary font-bold py-2.5 rounded-xl hover:bg-indigo-50 transition-colors text-sm"
+                className="block text-center bg-white text-[#FF4E45] font-bold py-2.5 rounded-xl hover:bg-indigo-50 transition-colors text-sm"
               >
                 Book Free Session
               </Link>
@@ -227,7 +227,7 @@ const ArticleDetail = () => {
               </h4>
               <Link
                 to="/articles"
-                className="flex items-center justify-between text-sm font-semibold text-primary hover:text-indigo-700 transition-colors"
+                className="flex items-center justify-between text-sm font-semibold text-[#FF4E45] hover:text-[#FF4E45] transition-colors"
               >
                 View All Articles <HiChevronRight className="h-4 w-4" />
               </Link>
@@ -238,7 +238,7 @@ const ArticleDetail = () => {
         {/* Related Articles */}
         {related.length > 0 && (
           <div className="mt-16 pt-10 border-t border-slate-200">
-            <h3 className="text-2xl font-extrabold text-slate-800 mb-8">
+            <h3 className="text-2xl font-extrabold text-[#1F2853] mb-8">
               Related Articles
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -254,10 +254,10 @@ const ArticleDetail = () => {
                     className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="p-4">
-                    <span className="text-xs font-bold text-primary block mb-1 uppercase tracking-wide">
+                    <span className="text-xs font-bold text-[#FF4E45] block mb-1 uppercase tracking-wide">
                       {rel.category}
                     </span>
-                    <h4 className="font-bold text-slate-800 text-sm leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+                    <h4 className="font-bold text-[#1F2853] text-sm leading-snug line-clamp-2 group-hover:text-[#FF4E45] transition-colors">
                       {rel.title}
                     </h4>
                     <p className="text-xs text-slate-400 mt-2 flex items-center gap-1">

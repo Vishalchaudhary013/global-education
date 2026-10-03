@@ -39,12 +39,12 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-slate-900">
-      <div className="max-w-md w-full bg-slate-800 rounded-3xl shadow-2xl border border-slate-700 overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-[#1F2853]">
+      <div className="max-w-md w-full bg-[#1F2853] rounded-3xl shadow-2xl border border-slate-700 overflow-hidden">
         <div className="p-8">
           <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-500/10 rounded-2xl mb-4 border border-indigo-500/20">
-              <HiShieldCheck className="w-8 h-8 text-indigo-500" />
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-[#FF4E45]/10 rounded-2xl mb-4 border border-indigo-500/20">
+              <HiShieldCheck className="w-8 h-8 text-[#FF4E45]" />
             </div>
             <h1 className="text-3xl font-bold text-white mb-2">Admin Portal</h1>
             <p className="text-slate-400">Secure access for platform administrators</p>
@@ -70,7 +70,7 @@ const AdminLogin = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="block w-full pl-11 pr-4 py-3.5 bg-slate-900 border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                  className="block w-full pl-11 pr-4 py-3.5 bg-[#1F2853] border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                   placeholder="admin@globaledu.com"
                 />
               </div>
@@ -88,7 +88,7 @@ const AdminLogin = () => {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className="block w-full pl-11 pr-12 py-3.5 bg-slate-900 border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                  className="block w-full pl-11 pr-12 py-3.5 bg-[#1F2853] border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                   placeholder="••••••••"
                 />
                 <button
@@ -104,7 +104,7 @@ const AdminLogin = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-2xl transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full bg-[#FF4E45] hover:bg-[#FF4E45] text-white font-bold py-4 rounded-2xl transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {loading ? "Verifying..." : "Login"}
               {!loading && <HiArrowRight className="h-5 w-5" />}

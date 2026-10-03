@@ -30,7 +30,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-slate-900 text-slate-300">
+    <footer className="bg-[#1F2853] text-slate-300">
       {/* Top CTA Banner */}
       
 
@@ -41,11 +41,11 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-5">
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-[#FF4E45] rounded-xl flex items-center justify-center">
                 <HiAcademicCap className="h-6 w-6 text-white" />
               </div>
               <span className="text-xl font-extrabold text-white tracking-tight">
-                Global<span className="text-primary">Edu</span>
+                Global<span className="text-[#FF4E45]">Edu</span>
               </span>
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed">
@@ -67,7 +67,7 @@ const Footer = () => {
                     key={label}
                     href="#"
                     aria-label={label}
-                    className="h-9 w-9 bg-slate-800 hover:bg-primary rounded-lg flex items-center justify-center transition-colors"
+                    className="h-9 w-9 bg-[#1F2853] hover:bg-[#FF4E45] rounded-lg flex items-center justify-center transition-colors"
                   >
                     <Icon className="h-4 w-4" />
                   </a>
@@ -79,29 +79,29 @@ const Footer = () => {
           {/* Contact */}
           <div>
             <h4 className="text-white font-bold mb-5 flex items-center gap-2">
-              <HiUsers className="h-4 w-4 text-primary" /> Contact Us
+              <HiUsers className="h-4 w-4 text-[#FF4E45]" /> Contact Us
             </h4>
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">
-                <HiMapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                <HiMapPin className="h-4 w-4 text-[#FF4E45] shrink-0 mt-0.5" />
                 <span className="text-slate-400">
                   123 Education Lane, Global City, GC 10001
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <HiPhone className="h-4 w-4 text-primary shrink-0" />
+                <HiPhone className="h-4 w-4 text-[#FF4E45] shrink-0" />
                 <a
                   href="tel:+11234567890"
-                  className="text-slate-400 hover:text-primary transition-colors"
+                  className="text-slate-400 hover:text-[#FF4E45] transition-colors"
                 >
                   +1 (123) 456-7890
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <HiEnvelope className="h-4 w-4 text-primary shrink-0" />
+                <HiEnvelope className="h-4 w-4 text-[#FF4E45] shrink-0" />
                 <a
                   href="mailto:info@globaledu.com"
-                  className="text-slate-400 hover:text-primary transition-colors"
+                  className="text-slate-400 hover:text-[#FF4E45] transition-colors"
                 >
                   info@globaledu.com
                 </a>
@@ -112,7 +112,7 @@ const Footer = () => {
           {/* Newsletter */}
           <div>
             <h4 className="text-white font-bold mb-3 flex items-center gap-2">
-              <HiPaperAirplane className="h-4 w-4 text-primary" /> Newsletter
+              <HiPaperAirplane className="h-4 w-4 text-[#FF4E45]" /> Newsletter
             </h4>
             <p className="text-slate-400 text-sm mb-4">
               Get scholarship alerts &amp; study abroad tips in your inbox.
@@ -129,11 +129,11 @@ const Footer = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email address..."
                   required
-                  className="flex-1 min-w-0 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary"
+                  className="flex-1 min-w-0 bg-[#1F2853] border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary"
                 />
                 <button
                   type="submit"
-                  className="bg-primary hover:bg-indigo-500 text-white p-2.5 rounded-xl transition-colors shrink-0"
+                  className="bg-[#FF4E45] hover:bg-[#FF4E45] text-white p-2.5 rounded-xl transition-colors shrink-0"
                 >
                   <HiPaperAirplane className="h-4 w-4" />
                 </button>
@@ -166,9 +166,9 @@ const Footer = () => {
                 <li key={to}>
                   <Link
                     to={to}
-                    className="flex items-center gap-1.5 text-slate-400 hover:text-primary transition-colors group"
+                    className="flex items-center gap-1.5 text-slate-400 hover:text-[#FF4E45] transition-colors group"
                   >
-                    <HiChevronRight className="h-3 w-3 text-slate-600 group-hover:text-primary shrink-0" />{" "}
+                    <HiChevronRight className="h-3 w-3 text-slate-600 group-hover:text-[#FF4E45] shrink-0" />{" "}
                     {label}
                   </Link>
                 </li>
@@ -195,9 +195,9 @@ const Footer = () => {
                 <li key={label}>
                   <Link
                     to="/services"
-                    className="flex items-center gap-1.5 text-slate-400 hover:text-primary transition-colors group"
+                    className="flex items-center gap-1.5 text-slate-400 hover:text-[#FF4E45] transition-colors group"
                   >
-                    <HiChevronRight className="h-3 w-3 text-slate-600 group-hover:text-primary shrink-0" />{" "}
+                    <HiChevronRight className="h-3 w-3 text-slate-600 group-hover:text-[#FF4E45] shrink-0" />{" "}
                     {label}
                   </Link>
                 </li>
@@ -223,9 +223,9 @@ const Footer = () => {
                 <li key={label}>
                   <Link
                     to={to}
-                    className="flex items-center gap-1.5 text-slate-400 hover:text-primary transition-colors group"
+                    className="flex items-center gap-1.5 text-slate-400 hover:text-[#FF4E45] transition-colors group"
                   >
-                    <HiChevronRight className="h-3 w-3 text-slate-600 group-hover:text-primary shrink-0" />{" "}
+                    <HiChevronRight className="h-3 w-3 text-slate-600 group-hover:text-[#FF4E45] shrink-0" />{" "}
                     {label}
                   </Link>
                 </li>
@@ -252,9 +252,9 @@ const Footer = () => {
                 <li key={label}>
                   <Link
                     to="/exams"
-                    className="flex items-center gap-1.5 text-slate-400 hover:text-primary transition-colors group"
+                    className="flex items-center gap-1.5 text-slate-400 hover:text-[#FF4E45] transition-colors group"
                   >
-                    <HiChevronRight className="h-3 w-3 text-slate-600 group-hover:text-primary shrink-0" />{" "}
+                    <HiChevronRight className="h-3 w-3 text-slate-600 group-hover:text-[#FF4E45] shrink-0" />{" "}
                     {label}
                   </Link>
                 </li>
@@ -281,9 +281,9 @@ const Footer = () => {
                 <li key={label}>
                   <Link
                     to={to}
-                    className="flex items-center gap-1.5 text-slate-400 hover:text-primary transition-colors group"
+                    className="flex items-center gap-1.5 text-slate-400 hover:text-[#FF4E45] transition-colors group"
                   >
-                    <HiChevronRight className="h-3 w-3 text-slate-600 group-hover:text-primary shrink-0" />{" "}
+                    <HiChevronRight className="h-3 w-3 text-slate-600 group-hover:text-[#FF4E45] shrink-0" />{" "}
                     {label}
                   </Link>
                 </li>
@@ -303,16 +303,16 @@ const Footer = () => {
           <div className="flex items-center gap-5">
             <Link
               to="/privacy"
-              className="hover:text-primary transition-colors"
+              className="hover:text-[#FF4E45] transition-colors"
             >
               Privacy Policy
             </Link>
-            <Link to="/terms" className="hover:text-primary transition-colors">
+            <Link to="/terms" className="hover:text-[#FF4E45] transition-colors">
               Terms of Service
             </Link>
             <Link
               to="/sitemap"
-              className="hover:text-primary transition-colors"
+              className="hover:text-[#FF4E45] transition-colors"
             >
               Sitemap
             </Link>

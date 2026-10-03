@@ -96,7 +96,7 @@ const Courses = () => {
   return (
     <div className="min-h-screen bg-slate-50  pb-24">
       {/* Header */}
-      <div className="bg-slate-900 py-16 text-center px-6 mb-12">
+      <div className="bg-[#1F2853] py-16 text-center px-6 mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6">
           Find Your Dream Course
         </h1>
@@ -109,14 +109,14 @@ const Courses = () => {
       <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Sidebar Filters */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 h-fit lg:sticky lg:top-24">
-          <div className="flex items-center gap-2 mb-6 text-slate-800 border-b border-slate-100 pb-4">
+          <div className="flex items-center gap-2 mb-6 text-[#1F2853] border-b border-slate-100 pb-4">
             <HiFunnel className="h-5 w-5" />
             <h2 className="text-xl font-bold">Filters</h2>
           </div>
 
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label className="block text-sm font-semibold text-[#1F2853] mb-2">
                 Search Course Name
               </label>
               <div className="relative">
@@ -133,7 +133,7 @@ const Courses = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label className="block text-sm font-semibold text-[#1F2853] mb-2">
                 Course Type
               </label>
               <div className="space-y-3">
@@ -148,9 +148,9 @@ const Courses = () => {
                       value={type}
                       checked={filters.type === type}
                       onChange={handleFilterChange}
-                      className="w-4 h-4 text-primary focus:ring-primary border-slate-300"
+                      className="w-4 h-4 text-[#FF4E45] focus:ring-primary border-slate-300"
                     />
-                    <span className="text-sm font-medium text-slate-600 group-hover:text-slate-900">
+                    <span className="text-sm font-medium text-slate-600 group-hover:text-[#1F2853]">
                       {type === "UG"
                         ? "Undergraduate"
                         : type === "PG"
@@ -166,9 +166,9 @@ const Courses = () => {
                     value=""
                     checked={filters.type === ""}
                     onChange={handleFilterChange}
-                    className="w-4 h-4 text-primary focus:ring-primary border-slate-300"
+                    className="w-4 h-4 text-[#FF4E45] focus:ring-primary border-slate-300"
                   />
-                  <span className="text-sm font-medium text-slate-600 group-hover:text-slate-900">
+                  <span className="text-sm font-medium text-slate-600 group-hover:text-[#1F2853]">
                     Any
                   </span>
                 </label>
@@ -176,7 +176,7 @@ const Courses = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label className="block text-sm font-semibold text-[#1F2853] mb-2">
                 Destination
               </label>
               <div className="relative">
@@ -213,7 +213,7 @@ const Courses = () => {
         {/* Results */}
         <div className="lg:col-span-3 space-y-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-slate-800">
+            <h2 className="text-2xl font-bold text-[#1F2853]">
               {courses.length} {courses.length === 1 ? "Course" : "Courses"} Found
             </h2>
           </div>
@@ -233,7 +233,7 @@ const Courses = () => {
               <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
                 <HiMagnifyingGlass className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-2">
+              <h3 className="text-xl font-bold text-[#1F2853] mb-2">
                 No courses found
               </h3>
               <p className="text-slate-500">
@@ -241,7 +241,7 @@ const Courses = () => {
               </p>
               <button
                 onClick={clearFilters}
-                className="mt-6 text-primary font-bold hover:underline"
+                className="mt-6 text-[#FF4E45] font-bold hover:underline"
               >
                 Clear all filters
               </button>

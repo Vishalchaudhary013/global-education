@@ -31,13 +31,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="glass sticky top-0 z-50 w-full shadow-sm">
+    <nav className="bg-white sticky top-0 z-50 w-full shadow-sm border-b border-slate-100">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2" onClick={closeAll}>
-          <HiAcademicCap className="h-8 w-8 text-primary" />
-          <span className="text-xl font-bold text-slate-800 tracking-tight">
-            Global<span className="text-primary">Edu</span>
+          <HiAcademicCap className="h-8 w-8 text-[#1F2853]" />
+          <span className="text-xl font-bold text-[#1F2853] tracking-tight">
+            Global<span className="">Edu</span>
           </span>
         </Link>
 
@@ -45,7 +45,7 @@ const Navbar = () => {
         <div className="flex items-center gap-2 md:hidden">
           <button
             onClick={openModal}
-            className="text-xs bg-gradient-to-r from-primary-600 to-indigo-500 text-white px-3 py-2 rounded-full font-semibold shadow-sm"
+            className="text-xs bg-[#FF4E45] hover:bg-[#E03A30] text-white px-3 py-2 rounded-full font-semibold shadow-sm transition-colors"
           >
             Counselling
           </button>
@@ -68,7 +68,7 @@ const Navbar = () => {
           <div className="relative group py-2">
             <Link
               to="/destinations"
-              className="flex items-center gap-1 hover:text-primary transition-colors"
+              className="flex items-center gap-1 hover:text-[#FF4E45] transition-colors"
             >
               Destinations <HiChevronDown className="h-4 w-4" />
             </Link>
@@ -76,61 +76,61 @@ const Navbar = () => {
               <div className="py-2">
                 <Link
                   to="/destinations/australia"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   Australia
                 </Link>
                 <Link
                   to="/destinations/uk"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   United Kingdom
                 </Link>
                 <Link
                   to="/destinations/canada"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   Canada
                 </Link>
                 <Link
                   to="/destinations/usa"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   United States
                 </Link>
                 <Link
                   to="/destinations/germany"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   Germany
                 </Link>
                 <Link
                   to="/destinations/dubai"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   Dubai
                 </Link>
                 <Link
                   to="/destinations/india"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   India
                 </Link>
                 <Link
                   to="/destinations/newzealand"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   New Zealand
                 </Link>
                 <Link
                   to="/destinations/singapore"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   Singapore
                 </Link>
                 <Link
                   to="/destinations"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors border-t border-slate-100 mt-1 font-semibold"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors border-t border-slate-100 mt-1 font-semibold"
                 >
                   View All Destinations
                 </Link>
@@ -142,7 +142,7 @@ const Navbar = () => {
           <div className="relative group py-2">
             <Link
               to="/courses"
-              className="flex items-center gap-1 hover:text-primary transition-colors"
+              className="flex items-center gap-1 hover:text-[#FF4E45] transition-colors"
             >
               Courses <HiChevronDown className="h-4 w-4" />
             </Link>
@@ -153,19 +153,19 @@ const Navbar = () => {
                 </p>
                 <Link
                   to="/courses?level=ug"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   Undergraduate
                 </Link>
                 <Link
                   to="/courses?level=pg"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   Postgraduate
                 </Link>
                 <Link
                   to="/courses?level=phd"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   PhD / Doctorate
                 </Link>
@@ -174,55 +174,55 @@ const Navbar = () => {
                 </p>
                 <Link
                   to="/destinations/india"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   India
                 </Link>
                 <Link
                   to="/destinations/uk"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   United Kingdom
                 </Link>
                 <Link
                   to="/destinations/australia"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   Australia
                 </Link>
                 <Link
                   to="/destinations/canada"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   Canada
                 </Link>
                 <Link
                   to="/destinations/usa"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   USA
                 </Link>
                 <Link
                   to="/destinations/germany"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   Germany
                 </Link>
                 <Link
                   to="/destinations/newzealand"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   New Zealand
                 </Link>
                 <Link
                   to="/destinations/singapore"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   Singapore
                 </Link>
                 <Link
                   to="/courses"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors border-t border-slate-100 mt-1 font-semibold"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors border-t border-slate-100 mt-1 font-semibold"
                 >
                   Browse All Courses
                 </Link>
@@ -232,26 +232,26 @@ const Navbar = () => {
 
           <Link
             to="/universities"
-            className="hover:text-primary transition-colors hover:-translate-y-0.5 transform inline-block py-2"
+            className="hover:text-[#FF4E45] transition-colors hover:-translate-y-0.5 transform inline-block py-2"
           >
             Universities
           </Link>
 
           <Link
             to="/scholarships"
-            className="hover:text-primary transition-colors hover:-translate-y-0.5 transform inline-block py-2"
+            className="hover:text-[#FF4E45] transition-colors hover:-translate-y-0.5 transform inline-block py-2"
           >
             Scholarships
           </Link>
           {/* <Link
             to="/events"
-            className="hover:text-primary transition-colors hover:-translate-y-0.5 transform inline-block py-2"
+            className="hover:text-[#FF4E45] transition-colors hover:-translate-y-0.5 transform inline-block py-2"
           >
             Events
           </Link> */}
           {/* <Link
             to="/articles"
-            className="hover:text-primary transition-colors hover:-translate-y-0.5 transform inline-block py-2"
+            className="hover:text-[#FF4E45] transition-colors hover:-translate-y-0.5 transform inline-block py-2"
           >
             Articles
           </Link> */}
@@ -260,7 +260,7 @@ const Navbar = () => {
           <div className="relative group py-2">
             <Link
               to="/exams"
-              className="flex items-center gap-1 hover:text-primary transition-colors"
+              className="flex items-center gap-1 hover:text-[#FF4E45] transition-colors"
             >
               Exams <HiChevronDown className="h-4 w-4" />
             </Link>
@@ -268,31 +268,31 @@ const Navbar = () => {
               <div className="py-2">
                 <Link
                   to="/exams?type=ielts"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   IELTS
                 </Link>
                 <Link
                   to="/exams?type=toefl"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   TOEFL
                 </Link>
                 <Link
                   to="/exams?type=gre"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   GRE
                 </Link>
                 <Link
                   to="/exams?type=gmat"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors"
                 >
                   GMAT
                 </Link>
                 <Link
                   to="/exams"
-                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors border-t border-slate-100 mt-1 font-semibold"
+                  className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors border-t border-slate-100 mt-1 font-semibold"
                 >
                   View All Exams
                 </Link>
@@ -302,7 +302,7 @@ const Navbar = () => {
 
           <Link
             to="/services"
-            className="hover:text-primary transition-colors hover:-translate-y-0.5 transform inline-block py-2"
+            className="hover:text-[#FF4E45] transition-colors hover:-translate-y-0.5 transform inline-block py-2"
           >
             Services
           </Link>
@@ -356,8 +356,8 @@ const Navbar = () => {
 
           {user && (
             <div className="relative group py-2">
-              <button className="flex items-center gap-2 text-slate-700 hover:text-primary transition-colors">
-                <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm uppercase shadow-sm">
+              <button className="flex items-center gap-2 text-[#1F2853] hover:text-[#FF4E45] transition-colors">
+                <div className="h-8 w-8 rounded-full bg-indigo-100 text-[#FF4E45] flex items-center justify-center font-bold text-sm uppercase shadow-sm">
                   {user.email ? user.email.charAt(0) : "U"}
                 </div>
                 <HiChevronDown className="h-4 w-4" />
@@ -367,7 +367,7 @@ const Navbar = () => {
                   {(user.role === "admin" || user.role === "superadmin") && (
                     <Link
                       to="/admin"
-                      className="block px-4 py-2 hover:bg-indigo-50 hover:text-primary transition-colors font-medium"
+                      className="block px-4 py-2 hover:bg-indigo-50 hover:text-[#FF4E45] transition-colors font-medium"
                     >
                       Admin Dashboard
                     </Link>
@@ -385,7 +385,7 @@ const Navbar = () => {
 
           <button
             onClick={openModal}
-            className="bg-gradient-to-r from-primary-600 to-indigo-500 text-white px-5 py-2.5 rounded-full font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:-translate-y-0.5 transition-all"
+            className="bg-[#FF4E45] hover:bg-[#E03A30] text-white px-5 py-2.5 rounded-full font-semibold shadow-lg shadow-[#FF4E45]/30 hover:-translate-y-0.5 transition-all"
           >
             Book Free Counselling
           </button>
@@ -395,12 +395,12 @@ const Navbar = () => {
       {/* Mobile Menu Drawer */}
       {mobileOpen && (
         <div className="md:hidden bg-white border-t border-slate-100 shadow-lg max-h-[80vh] overflow-y-auto">
-          <div className="px-4 py-3 space-y-1 text-sm font-medium text-slate-700">
+          <div className="px-4 py-3 space-y-1 text-sm font-medium text-[#1F2853]">
             {/* Destinations Accordion */}
             <div>
               <button
                 onClick={() => toggleSection("destinations")}
-                className="w-full flex items-center justify-between py-3 border-b border-slate-100 hover:text-primary transition-colors"
+                className="w-full flex items-center justify-between py-3 border-b border-slate-100 hover:text-[#FF4E45] transition-colors"
               >
                 <span>Destinations</span>
                 <HiChevronDown
@@ -424,7 +424,7 @@ const Navbar = () => {
                       key={slug}
                       to={`/destinations/${slug}`}
                       onClick={closeAll}
-                      className="block py-2 hover:text-primary transition-colors"
+                      className="block py-2 hover:text-[#FF4E45] transition-colors"
                     >
                       {label}
                     </Link>
@@ -432,7 +432,7 @@ const Navbar = () => {
                   <Link
                     to="/destinations"
                     onClick={closeAll}
-                    className="block py-2 font-semibold text-primary transition-colors"
+                    className="block py-2 font-semibold text-[#FF4E45] transition-colors"
                   >
                     View All Destinations →
                   </Link>
@@ -444,7 +444,7 @@ const Navbar = () => {
             <div>
               <button
                 onClick={() => toggleSection("courses")}
-                className="w-full flex items-center justify-between py-3 border-b border-slate-100 hover:text-primary transition-colors"
+                className="w-full flex items-center justify-between py-3 border-b border-slate-100 hover:text-[#FF4E45] transition-colors"
               >
                 <span>Courses</span>
                 <HiChevronDown
@@ -456,28 +456,28 @@ const Navbar = () => {
                   <Link
                     to="/courses?level=ug"
                     onClick={closeAll}
-                    className="block py-2 hover:text-primary"
+                    className="block py-2 hover:text-[#FF4E45]"
                   >
                     Undergraduate
                   </Link>
                   <Link
                     to="/courses?level=pg"
                     onClick={closeAll}
-                    className="block py-2 hover:text-primary"
+                    className="block py-2 hover:text-[#FF4E45]"
                   >
                     Postgraduate
                   </Link>
                   <Link
                     to="/courses?level=phd"
                     onClick={closeAll}
-                    className="block py-2 hover:text-primary"
+                    className="block py-2 hover:text-[#FF4E45]"
                   >
                     PhD / Doctorate
                   </Link>
                   <Link
                     to="/courses"
                     onClick={closeAll}
-                    className="block py-2 font-semibold text-primary"
+                    className="block py-2 font-semibold text-[#FF4E45]"
                   >
                     Browse All Courses →
                   </Link>
@@ -489,21 +489,21 @@ const Navbar = () => {
             <Link
               to="/scholarships"
               onClick={closeAll}
-              className="block py-3 border-b border-slate-100 hover:text-primary transition-colors"
+              className="block py-3 border-b border-slate-100 hover:text-[#FF4E45] transition-colors"
             >
               Scholarships
             </Link>
             <Link
               to="/events"
               onClick={closeAll}
-              className="block py-3 border-b border-slate-100 hover:text-primary transition-colors"
+              className="block py-3 border-b border-slate-100 hover:text-[#FF4E45] transition-colors"
             >
               Events
             </Link>
             <Link
               to="/articles"
               onClick={closeAll}
-              className="block py-3 border-b border-slate-100 hover:text-primary transition-colors"
+              className="block py-3 border-b border-slate-100 hover:text-[#FF4E45] transition-colors"
             >
               Articles
             </Link>
@@ -512,7 +512,7 @@ const Navbar = () => {
             <div>
               <button
                 onClick={() => toggleSection("exams")}
-                className="w-full flex items-center justify-between py-3 border-b border-slate-100 hover:text-primary transition-colors"
+                className="w-full flex items-center justify-between py-3 border-b border-slate-100 hover:text-[#FF4E45] transition-colors"
               >
                 <span>Exams</span>
                 <HiChevronDown
@@ -524,35 +524,35 @@ const Navbar = () => {
                   <Link
                     to="/exams?type=ielts"
                     onClick={closeAll}
-                    className="block py-2 hover:text-primary"
+                    className="block py-2 hover:text-[#FF4E45]"
                   >
                     IELTS
                   </Link>
                   <Link
                     to="/exams?type=toefl"
                     onClick={closeAll}
-                    className="block py-2 hover:text-primary"
+                    className="block py-2 hover:text-[#FF4E45]"
                   >
                     TOEFL
                   </Link>
                   <Link
                     to="/exams?type=gre"
                     onClick={closeAll}
-                    className="block py-2 hover:text-primary"
+                    className="block py-2 hover:text-[#FF4E45]"
                   >
                     GRE
                   </Link>
                   <Link
                     to="/exams?type=gmat"
                     onClick={closeAll}
-                    className="block py-2 hover:text-primary"
+                    className="block py-2 hover:text-[#FF4E45]"
                   >
                     GMAT
                   </Link>
                   <Link
                     to="/exams"
                     onClick={closeAll}
-                    className="block py-2 font-semibold text-primary"
+                    className="block py-2 font-semibold text-[#FF4E45]"
                   >
                     View All Exams →
                   </Link>
@@ -563,7 +563,7 @@ const Navbar = () => {
             <Link
               to="/universities"
               onClick={closeAll}
-              className="block py-3 border-b border-slate-100 hover:text-primary transition-colors"
+              className="block py-3 border-b border-slate-100 hover:text-[#FF4E45] transition-colors"
             >
               Universities
             </Link>
@@ -572,11 +572,11 @@ const Navbar = () => {
             {user && (
               <>
                 <div className="py-3 px-2 border-b border-slate-100 flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-lg uppercase shadow-sm">
+                  <div className="h-10 w-10 rounded-full bg-indigo-100 text-[#FF4E45] flex items-center justify-center font-bold text-lg uppercase shadow-sm">
                     {user.email ? user.email.charAt(0) : "U"}
                   </div>
                   <div>
-                    <p className="font-bold text-slate-800">{user.email || user.name}</p>
+                    <p className="font-bold text-[#1F2853]">{user.email || user.name}</p>
                     <p className="text-xs text-slate-500 capitalize">{user.role}</p>
                   </div>
                 </div>
@@ -584,7 +584,7 @@ const Navbar = () => {
                   <Link
                     to="/admin"
                     onClick={closeAll}
-                    className="block py-3 border-b border-slate-100 hover:text-primary transition-colors font-semibold"
+                    className="block py-3 border-b border-slate-100 hover:text-[#FF4E45] transition-colors font-semibold"
                   >
                     Admin Dashboard
                   </Link>
@@ -608,7 +608,7 @@ const Navbar = () => {
                   openModal();
                   closeAll();
                 }}
-                className="w-full bg-gradient-to-r from-primary-600 to-indigo-500 text-white py-3 rounded-full font-semibold shadow-md"
+                className="w-full bg-[#FF4E45] hover:bg-[#E03A30] text-white py-3 rounded-full font-semibold shadow-md transition-colors"
               >
                 Book Free Counselling
               </button>

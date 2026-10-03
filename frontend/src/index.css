@@ -46,11 +46,11 @@ body {
 
 /* Custom Utilities */
 @utility glass {
-  @apply bg-white/70 backdrop-blur-md border border-white/20;
+  @apply bg-black/5 backdrop-blur-md border border-white/20;
 }
 
 @utility glass-dark {
-  @apply bg-slate-900/80 backdrop-blur-md border border-slate-700/50;
+  @apply  backdrop-blur-md border border-slate-700/50;
 }
 
 /* Custom Scrollbar */

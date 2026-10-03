@@ -7,10 +7,10 @@ const CourseCard = ({ course }) => {
     <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all group duration-300">
       <div className="flex justify-between items-start mb-4">
         <div>
-          <span className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 text-xs font-semibold rounded-full mb-3">
+          <span className="inline-block px-3 py-1 bg-indigo-50 text-[#FF4E45] text-xs font-semibold rounded-full mb-3">
             {course.type}
           </span>
-          <h3 className="text-xl font-bold text-slate-800 mb-2 leading-tight group-hover:text-primary transition-colors">
+          <h3 className="text-xl font-bold text-[#1F2853] mb-2 leading-tight group-hover:text-[#FF4E45] transition-colors">
             {course.name}
           </h3>
           <p className="text-slate-500 font-medium flex items-center gap-2">
@@ -38,7 +38,7 @@ const CourseCard = ({ course }) => {
         </div>
       </div>
       
-      <Link to={`/courses/${course._id}`} className="flex items-center justify-center w-full gap-2 bg-slate-50 hover:bg-primary hover:text-white text-slate-700 font-medium py-3 rounded-xl transition-colors duration-300">
+      <Link to={`/courses/${course._id}`} className="flex items-center justify-center w-full gap-2 bg-slate-50 hover:bg-[#FF4E45] hover:text-white text-[#1F2853] font-medium py-3 rounded-xl transition-colors duration-300">
         View Details
         <HiArrowRight className="h-4 w-4" />
       </Link>

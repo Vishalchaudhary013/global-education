@@ -552,7 +552,7 @@ const AdminDashboard = () => {
                 {/* Header Card */}
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center shadow-sm">
                   <div>
-                    <h2 className="text-2xl font-bold text-slate-800">
+                    <h2 className="text-2xl font-bold text-[#1F2853]">
                       {user?.role === "superadmin" ? "Super Admin Control" : "Admin Dashboard"}
                     </h2>
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
@@ -564,7 +564,7 @@ const AdminDashboard = () => {
                       {user?.name?.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-800 leading-tight">{user?.name}</p>
+                      <p className="text-sm font-bold text-[#1F2853] leading-tight">{user?.name}</p>
                       <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{user?.role}</p>
                     </div>
                   </div>
@@ -575,7 +575,7 @@ const AdminDashboard = () => {
                     <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">
                       Universities
                     </p>
-                    <p className="text-3xl font-bold text-slate-800">
+                    <p className="text-3xl font-bold text-[#1F2853]">
                       {stats.totalUniversities}
                     </p>
                   </div>
@@ -583,7 +583,7 @@ const AdminDashboard = () => {
                     <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">
                       Courses
                     </p>
-                    <p className="text-3xl font-bold text-slate-800">
+                    <p className="text-3xl font-bold text-[#1F2853]">
                       {stats.totalCourses}
                     </p>
                   </div>
@@ -591,7 +591,7 @@ const AdminDashboard = () => {
                     <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">
                       Scholarships
                     </p>
-                    <p className="text-3xl font-bold text-slate-800">
+                    <p className="text-3xl font-bold text-[#1F2853]">
                       {stats.totalScholarships}
                     </p>
                   </div>
@@ -599,7 +599,7 @@ const AdminDashboard = () => {
                     <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">
                       Upcoming Events
                     </p>
-                    <p className="text-3xl font-bold text-slate-800">
+                    <p className="text-3xl font-bold text-[#1F2853]">
                       {stats.upcomingEvents}
                     </p>
                   </div>
@@ -620,15 +620,15 @@ const AdminDashboard = () => {
 
                       <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
                         <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Total Admins</p>
-                        <p className="text-3xl font-bold text-slate-800">{allUsers.filter(u => u.role === 'admin').length}</p>
+                        <p className="text-3xl font-bold text-[#1F2853]">{allUsers.filter(u => u.role === 'admin').length}</p>
                       </div>
                       <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
                         <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Super Admins</p>
-                        <p className="text-3xl font-bold text-slate-800">{allUsers.filter(u => u.role === 'superadmin').length}</p>
+                        <p className="text-3xl font-bold text-[#1F2853]">{allUsers.filter(u => u.role === 'superadmin').length}</p>
                       </div>
                       <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
                         <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Total Accounts</p>
-                        <p className="text-3xl font-bold text-slate-800">{allUsers.length}</p>
+                        <p className="text-3xl font-bold text-[#1F2853]">{allUsers.length}</p>
                       </div>
                     </div>
                   </>
@@ -663,7 +663,7 @@ const AdminDashboard = () => {
                     className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xl"
                   >
                     {/* Form Header */}
-                    <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-slate-900">
+                    <div className="px-6 py-4 border-b border-gray-200 bg-[#FF4E45]">
                       <h3 className="text-lg font-bold text-white flex items-center gap-2">
                         <HiAcademicCap className="w-5 h-5 text-blue-600" />
                         {editingUniversityId ? "Update University" : "Add New University"}
@@ -954,7 +954,7 @@ const AdminDashboard = () => {
                     className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xl"
                   >
                     {/* Header */}
-                    <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-slate-900">
+                    <div className="px-6 py-4 border-b border-gray-200 bg-[#FF4E45]">
                       <h3 className="text-lg font-bold text-white flex items-center gap-2">
                         <HiBookOpen className="w-5 h-5 text-blue-600" />
                         {editingCourseId ? "Update Course" : "Add New Course"}
@@ -1133,7 +1133,7 @@ const AdminDashboard = () => {
                     className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xl"
                   >
                     {/* Header */}
-                    <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-amber-50 to-slate-900">
+                    <div className="px-6 py-4 border-b border-gray-200 bg-[#FF4E45]">
                       <h3 className="text-lg font-bold text-white flex items-center gap-2">
                         <HiAcademicCap className="w-5 h-5 text-amber-400" />
                         {editingScholarshipId ? "Update Scholarship" : "Add New Scholarship"}
@@ -1420,7 +1420,7 @@ const AdminDashboard = () => {
                     className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-xl"
                   >
                     {/* Header */}
-                    <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-sky-50 to-slate-900">
+                    <div className="px-6 py-4 border-b border-gray-200 bg-[#FF4E45]">
                       <h3 className="text-lg font-bold text-white flex items-center gap-2">
                         <HiCalendarDays className="w-5 h-5 text-cyan-400" />
                         {editingEventId ? "Update Event" : "Add New Event"}
@@ -1724,12 +1724,12 @@ const AdminDashboard = () => {
               <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
                 <div className="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center">
                   <div>
-                    <h3 className="text-xl font-bold text-slate-800">{activeTab === 'admins' ? 'Administrators' : 'General Users'}</h3>
+                    <h3 className="text-xl font-bold text-[#1F2853]">{activeTab === 'admins' ? 'Administrators' : 'General Users'}</h3>
                     <p className="text-sm text-slate-500 mt-1">Manage {activeTab === 'admins' ? 'admin privileges and system access' : 'registered students and general users'}.</p>
                   </div>
                   <button
                     onClick={loadAllData}
-                    className="mt-4 sm:mt-0 bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors shadow-sm"
+                    className="mt-4 sm:mt-0 bg-[#1F2853] hover:bg-[#1F2853] text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors shadow-sm"
                   >
                     Refresh
                   </button>
@@ -1750,7 +1750,7 @@ const AdminDashboard = () => {
                         .filter(item => activeTab === 'admins' ? item.role === 'admin' : (item.role === 'student' || !item.role))
                         .map((item) => (
                           <tr key={item._id} className="hover:bg-gray-50 transition-colors">
-                            <td className="p-4 font-bold text-slate-800">{item.name}</td>
+                            <td className="p-4 font-bold text-[#1F2853]">{item.name}</td>
                             <td className="p-4 text-slate-500">{item.email}</td>
                             <td className="p-4 text-slate-500">{item.phone || "Not Provided"}</td>
                             <td className="p-4">

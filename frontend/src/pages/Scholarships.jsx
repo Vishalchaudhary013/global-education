@@ -37,7 +37,7 @@ const Scholarships = () => {
   return (
     <div className="min-h-screen bg-slate-50  pb-24">
       {/* Header */}
-      <div className="bg-indigo-600 py-20 px-6 relative overflow-hidden">
+      <div className="bg-[#FF4E45] py-20 px-6 relative overflow-hidden">
         <div
           className="absolute inset-0 z-0 opacity-10"
           style={{
@@ -69,7 +69,7 @@ const Scholarships = () => {
                   onClick={() => setFilter(dest === "All" ? "" : dest)}
                   className={`px-5 py-2.5 rounded-full font-bold text-sm whitespace-nowrap transition-colors ${
                     (filter === "" && dest === "All") || filter === dest
-                      ? "bg-slate-900 text-white"
+                      ? "bg-[#1F2853] text-white"
                       : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                   }`}
                 >

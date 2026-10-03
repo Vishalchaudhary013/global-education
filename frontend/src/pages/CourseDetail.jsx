@@ -47,7 +47,7 @@ const CourseDetail = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-slate-800 mb-4">
+          <h2 className="text-3xl font-bold text-[#1F2853] mb-4">
             Course Not Found
           </h2>
           <p className="text-slate-600 mb-8">
@@ -55,7 +55,7 @@ const CourseDetail = () => {
           </p>
           <Link
             to="/courses"
-            className="bg-primary hover:bg-indigo-600 text-white px-6 py-3 rounded-xl font-bold transition-colors"
+            className="bg-[#FF4E45] hover:bg-[#FF4E45] text-white px-6 py-3 rounded-xl font-bold transition-colors"
           >
             Browse All Courses
           </Link>
@@ -67,9 +67,9 @@ const CourseDetail = () => {
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
       {/* Hero Banner */}
-      <div className="bg-slate-900 pt-15 pb-20 px-6 relative overflow-hidden">
+      <div className="bg-[#1F2853] pt-15 pb-20 px-6 relative overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-20">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/40 blur-3xl rounded-full"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#FF4E45]/40 blur-3xl rounded-full"></div>
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-cyan-400/30 blur-3xl rounded-full"></div>
         </div>
 
@@ -83,7 +83,7 @@ const CourseDetail = () => {
 
           <div className="flex flex-col md:flex-row gap-8 items-start justify-between">
             <div>
-              <span className="inline-block px-4 py-1.5 bg-primary/20 text-indigo-300 font-bold rounded-full text-sm mb-4 border border-primary/30">
+              <span className="inline-block px-4 py-1.5 bg-[#FF4E45]/20 text-indigo-300 font-bold rounded-full text-sm mb-4 border border-primary/30">
                 {course.type === "UG"
                   ? "Undergraduate Program"
                   : course.type === "PG"
@@ -108,7 +108,7 @@ const CourseDetail = () => {
 
             <button
               onClick={openModal}
-              className="w-full md:w-auto bg-gradient-to-r from-primary to-indigo-500 hover:from-indigo-500 hover:to-primary text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
+              className="w-full md:w-auto bg-[#FF4E45] hover:from-indigo-500 hover:to-primary text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
             >
               Book Free Counselling
             </button>
@@ -121,8 +121,8 @@ const CourseDetail = () => {
         <div className="lg:col-span-2 space-y-8">
           {/* Overview */}
           <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-            <h2 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <HiBookOpen className="h-6 w-6 text-primary" /> Course Overview
+            <h2 className="text-2xl font-bold text-[#1F2853] mb-4 flex items-center gap-2">
+              <HiBookOpen className="h-6 w-6 text-[#FF4E45]" /> Course Overview
             </h2>
             <p className="text-slate-600 leading-relaxed mb-6">
               The {course.name} program at {course.university.name} is designed
@@ -131,7 +131,7 @@ const CourseDetail = () => {
               project-based learning and research, the curriculum is updated
               regularly in collaboration with industry partners.
             </p>
-            <h3 className="text-lg font-bold text-slate-800 mb-3">
+            <h3 className="text-lg font-bold text-[#1F2853] mb-3">
               Key Highlights:
             </h3>
             <ul className="space-y-3">
@@ -152,8 +152,8 @@ const CourseDetail = () => {
 
           {/* University Info */}
           <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-            <h2 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <HiAcademicCap className="h-6 w-6 text-primary" /> About{" "}
+            <h2 className="text-2xl font-bold text-[#1F2853] mb-4 flex items-center gap-2">
+              <HiAcademicCap className="h-6 w-6 text-[#FF4E45]" /> About{" "}
               {course.university.name}
             </h2>
             <div className="flex items-center gap-6 mb-4">
@@ -173,7 +173,7 @@ const CourseDetail = () => {
             </div>
             <Link
               to="/destinations"
-              className="text-primary font-bold hover:underline flex items-center gap-1 text-sm mt-4"
+              className="text-[#FF4E45] font-bold hover:underline flex items-center gap-1 text-sm mt-4"
             >
               Explore more about studying in {course.destination}{" "}
               <HiChevronRight className="h-4 w-4" />
@@ -184,18 +184,18 @@ const CourseDetail = () => {
         {/* Sidebar Info */}
         <div className="space-y-6">
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-            <h3 className="text-lg font-bold text-slate-800 mb-6 border-b border-slate-100 pb-4">
+            <h3 className="text-lg font-bold text-[#1F2853] mb-6 border-b border-slate-100 pb-4">
               Key Information
             </h3>
 
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-full bg-indigo-50 text-[#FF4E45] flex items-center justify-center shrink-0">
                   <HiClock className="h-5 w-5" />
                 </div>
                 <div>
                   <p className="text-sm text-slate-500 font-medium">Duration</p>
-                  <p className="text-slate-800 font-bold">{course.duration}</p>
+                  <p className="text-[#1F2853] font-bold">{course.duration}</p>
                 </div>
               </div>
 
@@ -207,21 +207,21 @@ const CourseDetail = () => {
                   <p className="text-sm text-slate-500 font-medium">
                     Estimated Tuition
                   </p>
-                  <p className="text-slate-800 font-bold">
+                  <p className="text-[#1F2853] font-bold">
                     {course.university.tuition || "Variable"}
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-full bg-amber-50 text-[#FF4E45] flex items-center justify-center shrink-0">
                   <HiCalendarDays className="h-5 w-5" />
                 </div>
                 <div>
                   <p className="text-sm text-slate-500 font-medium">
                     Intake Months
                   </p>
-                  <p className="text-slate-800 font-bold">
+                  <p className="text-[#1F2853] font-bold">
                     {course.university.intakes || "September, January"}
                   </p>
                 </div>
@@ -229,8 +229,8 @@ const CourseDetail = () => {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-slate-900 to-indigo-900 rounded-2xl p-6 shadow-xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/30 rounded-full blur-[40px]"></div>
+          <div className="bg-[#1F2853] rounded-2xl p-6 shadow-xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#FF4E45]/30 rounded-full blur-[40px]"></div>
             <div className="relative z-10 text-center text-white">
               <h3 className="text-xl font-bold mb-2">
                 Check Scholarship Eligibility
@@ -240,7 +240,7 @@ const CourseDetail = () => {
               </p>
               <Link
                 to="/scholarships"
-                className="block w-full bg-white text-slate-900 hover:bg-slate-100 py-3 rounded-xl font-bold transition-colors"
+                className="block w-full bg-white text-[#1F2853] hover:bg-slate-100 py-3 rounded-xl font-bold transition-colors"
               >
                 View Scholarships
               </Link>

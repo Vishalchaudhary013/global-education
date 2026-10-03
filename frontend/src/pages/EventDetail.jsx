@@ -33,17 +33,17 @@ const WhatsappIcon = () => (
 
 const modeBadge = {
   online: { label: 'Online', class: 'bg-sky-50 text-sky-700 border border-sky-200', icon: <HiVideoCamera className="h-4 w-4 inline mr-1.5" /> },
-  offline: { label: 'In-Person', class: 'bg-rose-50 text-rose-700 border border-rose-200', icon: <HiUsers className="h-4 w-4 inline mr-1.5" /> },
+  offline: { label: 'In-Person', class: 'bg-rose-50 text-[#FF4E45] border border-rose-200', icon: <HiUsers className="h-4 w-4 inline mr-1.5" /> },
   hybrid: { label: 'Hybrid', class: 'bg-violet-50 text-violet-700 border border-violet-200', icon: <HiWifi className="h-4 w-4 inline mr-1.5" /> },
 };
 
 const roleColor = {
-  'Host': 'bg-indigo-100 text-indigo-700',
-  'Gold Sponsor': 'bg-amber-100 text-amber-700',
+  'Host': 'bg-indigo-100 text-[#FF4E45]',
+  'Gold Sponsor': 'bg-amber-100 text-[#FF4E45]',
   'Premier Partner': 'bg-emerald-100 text-emerald-700',
-  'Associate Sponsor': 'bg-rose-100 text-rose-700',
+  'Associate Sponsor': 'bg-rose-100 text-[#FF4E45]',
   'Partner': 'bg-cyan-100 text-cyan-700',
-  'Participant': 'bg-slate-100 text-slate-700',
+  'Participant': 'bg-slate-100 text-[#1F2853]',
 };
 
 const EventDetail = () => {
@@ -81,8 +81,8 @@ const EventDetail = () => {
   if (!event) {
     return (
       <div className="min-h-screen flex items-center justify-center flex-col bg-slate-50">
-        <h2 className="text-3xl font-bold text-slate-800 mb-4">Event Not Found</h2>
-        <Link to="/events" className="text-primary font-bold hover:underline">← Back to Events</Link>
+        <h2 className="text-3xl font-bold text-[#1F2853] mb-4">Event Not Found</h2>
+        <Link to="/events" className="text-[#FF4E45] font-bold hover:underline">← Back to Events</Link>
       </div>
     );
   }
@@ -101,9 +101,9 @@ const EventDetail = () => {
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
       {/* Hero Header */}
-      <div className="bg-slate-900 pt-24 pb-16 px-6 relative overflow-hidden">
+      <div className="bg-[#1F2853] pt-24 pb-16 px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500 rounded-full blur-[120px]"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#FF4E45] rounded-full blur-[120px]"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-rose-500 rounded-full blur-[100px]"></div>
         </div>
         <div className="max-w-5xl mx-auto relative z-10">
@@ -116,7 +116,7 @@ const EventDetail = () => {
               {badge.icon}{badge.label}
             </span>
             {isGlobal && (
-              <span className="inline-flex items-center text-sm font-bold px-3 py-1.5 rounded-full bg-amber-100 text-amber-700">
+              <span className="inline-flex items-center text-sm font-bold px-3 py-1.5 rounded-full bg-amber-100 text-[#FF4E45]">
                 <HiOutlineGlobeAlt className="h-4 w-4 mr-1.5" /> Global Event
               </span>
             )}
@@ -148,7 +148,7 @@ const EventDetail = () => {
               <LinkedinIcon />
             </a>
             <a href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareText}`} target="_blank" rel="noreferrer"
-              className="w-9 h-9 bg-slate-800 text-white rounded-lg flex items-center justify-center hover:bg-black transition-colors shadow-sm" title="Share on Twitter/X">
+              className="w-9 h-9 bg-[#1F2853] text-white rounded-lg flex items-center justify-center hover:bg-black transition-colors shadow-sm" title="Share on Twitter/X">
               <TwitterIcon />
             </a>
             <a href={`https://api.whatsapp.com/send?text=${shareText}%20${shareUrl}`} target="_blank" rel="noreferrer"
@@ -166,14 +166,14 @@ const EventDetail = () => {
           {/* Event Highlights */}
           {event.highlights?.length > 0 && (
             <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-              <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+              <h2 className="text-2xl font-bold text-[#1F2853] mb-6 flex items-center gap-2">
                 <HiStar className="h-6 w-6 text-amber-400 fill-amber-400" /> Event Highlights
               </h2>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {event.highlights.map((h, i) => (
                   <li key={i} className="flex items-start gap-3 bg-indigo-50 rounded-xl p-4">
-                    <HiCheckCircle className="h-5 w-5 text-indigo-500 shrink-0 mt-0.5" />
-                    <span className="text-slate-700 font-medium text-sm">{h}</span>
+                    <HiCheckCircle className="h-5 w-5 text-[#FF4E45] shrink-0 mt-0.5" />
+                    <span className="text-[#1F2853] font-medium text-sm">{h}</span>
                   </li>
                 ))}
               </ul>
@@ -183,15 +183,15 @@ const EventDetail = () => {
           {/* Participating Universities */}
           {event.universities?.length > 0 && (
             <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
-              <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                <HiUsers className="h-6 w-6 text-primary" /> Participating Universities
+              <h2 className="text-2xl font-bold text-[#1F2853] mb-6 flex items-center gap-2">
+                <HiUsers className="h-6 w-6 text-[#FF4E45]" /> Participating Universities
               </h2>
               {isGlobal && event.countries?.length > 0 && (
                 <div className="mb-6 p-4 bg-slate-50 rounded-xl border border-slate-100">
                   <p className="text-sm font-semibold text-slate-600 mb-2">Countries represented:</p>
                   <div className="flex flex-wrap gap-2">
                     {event.countries.map((c, i) => (
-                      <span key={i} className="px-3 py-1 bg-white border border-slate-200 rounded-full text-sm font-medium text-slate-700 shadow-sm">{c}</span>
+                      <span key={i} className="px-3 py-1 bg-white border border-slate-200 rounded-full text-sm font-medium text-[#1F2853] shadow-sm">{c}</span>
                     ))}
                   </div>
                 </div>
@@ -200,11 +200,11 @@ const EventDetail = () => {
                 {event.universities.map((uni, i) => (
                   <div key={i} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-indigo-200 transition-colors">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-sm shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-[#FF4E45] font-bold text-sm shrink-0">
                         {uni.name.charAt(0)}
                       </div>
                       <div>
-                        <p className="font-semibold text-slate-800 text-sm leading-tight">{uni.name}</p>
+                        <p className="font-semibold text-[#1F2853] text-sm leading-tight">{uni.name}</p>
                         <p className="text-slate-500 text-xs">{uni.country}</p>
                       </div>
                     </div>
@@ -222,34 +222,34 @@ const EventDetail = () => {
         <div className="space-y-6">
           {/* Event Info */}
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-5">
-            <h3 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-3">Event Details</h3>
+            <h3 className="text-lg font-bold text-[#1F2853] border-b border-slate-100 pb-3">Event Details</h3>
 
             <div className="flex gap-4 items-start">
-              <div className="w-11 h-11 bg-indigo-50 text-indigo-500 rounded-xl flex items-center justify-center shrink-0">
+              <div className="w-11 h-11 bg-indigo-50 text-[#FF4E45] rounded-xl flex items-center justify-center shrink-0">
                 <HiCalendarDays className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="font-bold text-slate-800 text-sm">Date</h4>
+                <h4 className="font-bold text-[#1F2853] text-sm">Date</h4>
                 <p className="text-slate-600 text-sm">{eventDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
               </div>
             </div>
 
             <div className="flex gap-4 items-start">
-              <div className="w-11 h-11 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center shrink-0">
+              <div className="w-11 h-11 bg-amber-50 text-[#FF4E45] rounded-xl flex items-center justify-center shrink-0">
                 <HiClock className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="font-bold text-slate-800 text-sm">Time</h4>
+                <h4 className="font-bold text-[#1F2853] text-sm">Time</h4>
                 <p className="text-slate-600 text-sm">{event.time}</p>
               </div>
             </div>
 
             <div className="flex gap-4 items-start">
-              <div className="w-11 h-11 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center shrink-0">
+              <div className="w-11 h-11 bg-rose-50 text-[#FF4E45] rounded-xl flex items-center justify-center shrink-0">
                 <HiMapPin className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="font-bold text-slate-800 text-sm">{event.mode === 'online' ? 'Platform' : 'Venue'}</h4>
+                <h4 className="font-bold text-[#1F2853] text-sm">{event.mode === 'online' ? 'Platform' : 'Venue'}</h4>
                 <p className="text-slate-600 text-sm">{event.venue}</p>
                 {event.mode !== 'online' && <p className="text-slate-500 text-xs mt-0.5">{event.location}</p>}
               </div>
@@ -260,7 +260,7 @@ const EventDetail = () => {
                 <HiAcademicCap className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="font-bold text-slate-800 text-sm">Mode</h4>
+                <h4 className="font-bold text-[#1F2853] text-sm">Mode</h4>
                 <span className={`inline-flex items-center text-xs font-bold px-2.5 py-1 rounded-full mt-1 ${badge.class}`}>
                   {badge.icon}{badge.label}
                 </span>
@@ -269,7 +269,7 @@ const EventDetail = () => {
           </div>
 
           {/* Registration Form */}
-          <div className="bg-slate-900 rounded-2xl p-6 text-white shadow-xl">
+          <div className="bg-[#1F2853] rounded-2xl p-6 text-white shadow-xl">
             <h3 className="text-xl font-bold mb-1">Register for this Event</h3>
             <p className="text-slate-400 text-sm mb-5">Free registration. Limited seats available.</p>
 
@@ -286,7 +286,7 @@ const EventDetail = () => {
                   placeholder="Full Name *"
                   value={form.name}
                   onChange={e => setForm({ ...form, name: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 focus:border-primary outline-none text-white placeholder-slate-500 text-sm transition-colors"
+                  className="w-full px-4 py-3 rounded-xl bg-[#1F2853] border border-slate-700 focus:border-primary outline-none text-white placeholder-slate-500 text-sm transition-colors"
                   required
                 />
                 <input
@@ -294,7 +294,7 @@ const EventDetail = () => {
                   placeholder="Email Address *"
                   value={form.email}
                   onChange={e => setForm({ ...form, email: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 focus:border-primary outline-none text-white placeholder-slate-500 text-sm"
+                  className="w-full px-4 py-3 rounded-xl bg-[#1F2853] border border-slate-700 focus:border-primary outline-none text-white placeholder-slate-500 text-sm"
                   required
                 />
                 <input
@@ -302,7 +302,7 @@ const EventDetail = () => {
                   placeholder="Phone Number *"
                   value={form.phone}
                   onChange={e => setForm({ ...form, phone: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 focus:border-primary outline-none text-white placeholder-slate-500 text-sm"
+                  className="w-full px-4 py-3 rounded-xl bg-[#1F2853] border border-slate-700 focus:border-primary outline-none text-white placeholder-slate-500 text-sm"
                   required
                 />
                 <input
@@ -310,13 +310,13 @@ const EventDetail = () => {
                   placeholder="City / Location *"
                   value={form.city}
                   onChange={e => setForm({ ...form, city: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 focus:border-primary outline-none text-white placeholder-slate-500 text-sm"
+                  className="w-full px-4 py-3 rounded-xl bg-[#1F2853] border border-slate-700 focus:border-primary outline-none text-white placeholder-slate-500 text-sm"
                   required
                 />
                 <select
                   value={form.level}
                   onChange={e => setForm({ ...form, level: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 focus:border-primary outline-none text-sm appearance-none cursor-pointer text-white"
+                  className="w-full px-4 py-3 rounded-xl bg-[#1F2853] border border-slate-700 focus:border-primary outline-none text-sm appearance-none cursor-pointer text-white"
                 >
                   <option value="" disabled>Study Level</option>
                   <option value="UG">Undergraduate</option>
@@ -326,7 +326,7 @@ const EventDetail = () => {
                 </select>
                 <button
                   type="submit"
-                  className="w-full bg-primary hover:bg-indigo-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg hover:shadow-indigo-500/50 mt-2"
+                  className="w-full bg-[#FF4E45] hover:bg-[#FF4E45] text-white font-bold py-3.5 rounded-xl transition-all shadow-lg hover:shadow-indigo-500/50 mt-2"
                 >
                   Confirm Registration →
                 </button>
@@ -335,10 +335,10 @@ const EventDetail = () => {
           </div>
 
           {/* Free Counselling CTA */}
-          <div className="bg-gradient-to-br from-rose-500 to-indigo-600 rounded-2xl p-6 text-center text-white shadow-xl">
+          <div className="bg-[#FF4E45] rounded-2xl p-6 text-center text-white shadow-xl">
             <p className="text-sm text-white/80 mb-1">Need personalized guidance?</p>
             <h4 className="text-lg font-bold mb-3">Book a Free Counselling Session</h4>
-            <button onClick={openModal} className="w-full bg-white text-primary hover:bg-slate-50 font-bold py-3 rounded-xl transition-colors">
+            <button onClick={openModal} className="w-full bg-white text-[#FF4E45] hover:bg-slate-50 font-bold py-3 rounded-xl transition-colors">
               Book Free Session
             </button>
           </div>

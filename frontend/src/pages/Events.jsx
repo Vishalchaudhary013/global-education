@@ -32,9 +32,9 @@ const Events = () => {
   return (
     <div className="min-h-screen bg-slate-50  pb-24">
       {/* Header */}
-      <div className="bg-slate-900 py-16 text-center px-6 mb-12 relative overflow-hidden">
+      <div className="bg-[#1F2853] py-16 text-center px-6 mb-12 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-rose-500/20 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
-        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-indigo-500/20 rounded-full blur-[100px] translate-x-1/3 translate-y-1/2 pointer-events-none"></div>
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[#FF4E45]/20 rounded-full blur-[100px] translate-x-1/3 translate-y-1/2 pointer-events-none"></div>
         <HiCalendarDays className="h-16 w-16 text-rose-400 mx-auto mb-6 relative z-10" />
         <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6 relative z-10">Upcoming Events</h1>
         <p className="text-xl text-slate-300 max-w-2xl mx-auto relative z-10">
@@ -60,7 +60,7 @@ const Events = () => {
               <button
                 key={mode}
                 onClick={() => setFilter({ ...filter, mode })}
-                className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors border ${filter.mode === mode ? 'bg-primary text-white border-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary'}`}
+                className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors border ${filter.mode === mode ? 'bg-[#FF4E45] text-white border-primary' : 'bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-[#FF4E45]'}`}
               >
                 {mode === '' ? 'All Events' : mode === 'online' ? '🌐 Online' : mode === 'offline' ? '📍 In-Person' : '🔀 Hybrid'}
               </button>
@@ -70,7 +70,7 @@ const Events = () => {
 
         {/* Count */}
         <p className="text-slate-500 text-sm font-medium mb-6">
-          <HiFunnel className="h-4 w-4 inline mr-1" /> Showing <strong className="text-slate-800">{filtered.length}</strong> upcoming events
+          <HiFunnel className="h-4 w-4 inline mr-1" /> Showing <strong className="text-[#1F2853]">{filtered.length}</strong> upcoming events
         </p>
 
         {/* Cards */}
@@ -90,11 +90,11 @@ const Events = () => {
               <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
                 <HiCalendarDays className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold text-slate-800 mb-2">No Events Found</h3>
+              <h3 className="text-xl font-bold text-[#1F2853] mb-2">No Events Found</h3>
               <p className="text-slate-500">We couldn't find any events matching your criteria.</p>
               <button 
                 onClick={() => setFilter({ mode: '', search: '' })}
-                className="mt-6 text-primary font-bold hover:underline"
+                className="mt-6 text-[#FF4E45] font-bold hover:underline"
               >
                 Clear all filters
               </button>

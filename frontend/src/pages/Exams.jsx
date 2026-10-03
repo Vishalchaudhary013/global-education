@@ -14,8 +14,8 @@ const Exams = () => {
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
       {/* Header */}
-      <div className="bg-slate-900 py-16 text-center px-6 mb-12 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+      <div className="bg-[#1F2853] py-16 text-center px-6 mb-12 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#FF4E45]/20 rounded-full blur-[100px] translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
         <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6 relative z-10">Language Proficiency Exams</h1>
         <p className="text-xl text-slate-300 max-w-2xl mx-auto relative z-10">
           Prepare for your study abroad journey. Learn about required English language tests, their formats, and how to score high.
@@ -29,11 +29,11 @@ const Exams = () => {
               {exam.name.slice(0, 3).toUpperCase()}
             </div>
             
-            <h2 className="text-2xl font-bold text-slate-800 mb-3">{exam.name}</h2>
+            <h2 className="text-2xl font-bold text-[#1F2853] mb-3">{exam.name}</h2>
             <p className="text-slate-600 mb-6 flex-grow">{exam.desc}</p>
             
             <div className="mb-8 p-4 bg-slate-50 rounded-xl border border-slate-100">
-              <h3 className="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2"><HiOutlineGlobeAlt className="h-4 w-4 text-primary" /> Widely Accepted In</h3>
+              <h3 className="text-sm font-bold text-[#1F2853] mb-3 flex items-center gap-2"><HiOutlineGlobeAlt className="h-4 w-4 text-[#FF4E45]" /> Widely Accepted In</h3>
               <ul className="flex flex-wrap gap-2">
                 {exam.countries.map(country => (
                   <li key={country} className="text-xs font-semibold bg-white border border-slate-200 px-2.5 py-1 rounded-md text-slate-600 flex items-center gap-1">
@@ -43,7 +43,7 @@ const Exams = () => {
               </ul>
             </div>
             
-            <Link to={`/exams/${exam.id}`} className="mt-auto flex items-center justify-between w-full group-hover:bg-primary group-hover:text-white bg-slate-100 text-slate-700 font-bold py-3 px-6 rounded-xl transition-colors duration-300">
+            <Link to={`/exams/${exam.id}`} className="mt-auto flex items-center justify-between w-full group-hover:bg-[#FF4E45] group-hover:text-white bg-slate-100 text-[#1F2853] font-bold py-3 px-6 rounded-xl transition-colors duration-300">
               View Guide <HiArrowRight className="h-5 w-5" />
             </Link>
           </div>
