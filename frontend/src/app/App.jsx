@@ -21,11 +21,13 @@ import { BookCounsellingModal } from "@/features/counselling";
 function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const isAuthRoute = location.pathname === "/login" || location.pathname === "/signup";
+  const hideChrome = isAdminRoute || isAuthRoute;
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <ScrollToTop />
-      {!isAdminRoute && <Navbar />}
+      {!hideChrome && <Navbar />}
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -58,8 +60,8 @@ function App() {
           />
         </Routes>
       </main>
-      {!isAdminRoute && <Footer />}
-      {!isAdminRoute && <BookCounsellingModal />}
+      {!hideChrome && <Footer />}
+      {!hideChrome && <BookCounsellingModal />}
     </div>
   );
 }

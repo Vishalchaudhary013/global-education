@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { HiEnvelope, HiLockClosed, HiArrowRight, HiEye, HiEyeSlash, HiShieldCheck } from "react-icons/hi2";
+import { HiEye, HiEyeSlash } from "react-icons/hi2";
 import { getApiErrorMessage } from "@/shared/utils/apiError";
 import { login as loginRequest } from "../services/authService";
 import { useAuth } from "../hooks/useAuth";
+import AuthLayout from "../components/AuthLayout";
+
+const inputClass =
+  "block w-full px-4 py-3 bg-white border border-slate-300 rounded-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1F2853]/15 focus:border-[#1F2853] transition-all";
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -39,87 +43,76 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-[#1F2853]">
-      <div className="max-w-md w-full bg-[#1F2853] rounded-3xl border border-slate-700 overflow-hidden">
-        <div className="p-8">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-[#FF4E45]/10 rounded-2xl mb-4 border border-indigo-500/20">
-              <HiShieldCheck className="w-8 h-8 text-[#FF4E45]" />
-            </div>
-            <h1 className="text-3xl font-bold text-white mb-2">Admin Portal</h1>
-            <p className="text-slate-400">Secure access for platform administrators</p>
-          </div>
+    <AuthLayout
+      heading="Welcome back to your admin console"
+      subheading="Sign in to manage courses, universities, events and counselling requests across the platform."
+      title="Sign in to your account"
+      footer={
+        <>
+          Don&apos;t have an account?{" "}
+          <Link to="/signup" className="text-[#FF4E45] font-semibold hover:underline">
+            Sign up
+          </Link>
+        </>
+      }
+    >
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-sm flex items-center gap-2">
+          <span className="w-1.5 h-1.5 bg-red-500 rounded-full shrink-0"></span>
+          {error}
+        </div>
+      )}
 
-          {error && (
-            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded-2xl flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
-              {error}
-            </div>
-          )}
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div>
+          <label className="block text-sm font-semibold text-slate-700 mb-2">
+            Admin Email <span className="text-[#FF4E45]">*</span>
+          </label>
+          <input
+            type="email"
+            name="email"
+            required
+            value={formData.email}
+            onChange={handleChange}
+            className={inputClass}
+            placeholder="admin@globaledu.com"
+          />
+        </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-2">Admin Email</label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 group-focus-within:text-indigo-400 transition-colors">
-                  <HiEnvelope className="h-5 w-5" />
-                </div>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="block w-full pl-11 pr-4 py-3.5 bg-[#1F2853] border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
-                  placeholder="admin@globaledu.com"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-slate-300 mb-2">Password</label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 group-focus-within:text-indigo-400 transition-colors">
-                  <HiLockClosed className="h-5 w-5" />
-                </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="block w-full pl-11 pr-12 py-3.5 bg-[#1F2853] border border-slate-700 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
-                  placeholder="••••••••"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-500 hover:text-slate-300"
-                >
-                  {showPassword ? <HiEyeSlash className="h-5 w-5" /> : <HiEye className="h-5 w-5" />}
-                </button>
-              </div>
-            </div>
-
+        <div>
+          <label className="block text-sm font-semibold text-slate-700 mb-2">
+            Password <span className="text-[#FF4E45]">*</span>
+          </label>
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              required
+              value={formData.password}
+              onChange={handleChange}
+              className={`${inputClass} pr-12`}
+              placeholder="Enter your password"
+            />
             <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-[#FF4E45] hover:bg-[#FF4E45] text-white font-bold py-4 rounded-2xl transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600"
+              aria-label={showPassword ? "Hide password" : "Show password"}
             >
-              {loading ? "Verifying..." : "Login"}
-              {!loading && <HiArrowRight className="h-5 w-5" />}
+              {showPassword ? <HiEyeSlash className="h-5 w-5" /> : <HiEye className="h-5 w-5" />}
             </button>
-          </form>
-
-          <div className="mt-8 text-center">
-            <p className="text-slate-400">Don't have an account? <Link to="/signup" className="text-indigo-400 font-bold hover:text-indigo-300 transition-colors">
-              Signup
-            </Link>
-            </p>
           </div>
         </div>
-      </div>
-    </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full bg-[#FF4E45] hover:bg-[#E03A30] text-white font-semibold py-3.5 rounded-sm transition-all duration-300 active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed"
+        >
+          {loading ? "Verifying..." : "Login"}
+        </button>
+      </form>
+    </AuthLayout>
   );
 };
 

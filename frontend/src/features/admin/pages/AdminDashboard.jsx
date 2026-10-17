@@ -19,7 +19,14 @@ import {
   HiKey,
   HiPlus,
   HiXMark,
+  HiChevronDown,
+  HiChevronRight,
+  HiChartPie,
+  HiBriefcase,
+  HiRectangleGroup,
+  HiArrowUturnLeft,
 } from "react-icons/hi2";
+import AdminsPanel from "../components/AdminsPanel";
 import { getApiErrorMessage, isUnauthorized } from "@/shared/utils/apiError";
 import { useAuth } from "@/features/auth";
 import { updateCounsellingRequestStatus } from "@/features/counselling/services/counsellingService";
@@ -186,10 +193,20 @@ const Pagination = ({ total, page, setPage }) => {
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const { user, token, logout } = useAuth();
+  const { user, token, logout, isImpersonating, stopImpersonation } = useAuth();
 
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [selectedTab, setActiveTab] = useState("dashboard");
   const [success, setSuccess] = useState("");
+  const [openGroups, setOpenGroups] = useState({ stakeholders: true });
+
+  /**
+   * Stakeholder tabs disappear the moment the session stops being a superadmin
+   * (e.g. after opening an admin's dashboard), so fall back to the overview.
+   */
+  const activeTab =
+    user?.role !== "superadmin" && ["admins", "users"].includes(selectedTab)
+      ? "dashboard"
+      : selectedTab;
 
   const {
     universities,
@@ -224,38 +241,83 @@ const AdminDashboard = () => {
   const [scholarshipPage, setScholarshipPage] = useState(1);
   const [eventPage, setEventPage] = useState(1);
 
-  const navItems = [
+  /**
+   * The sidebar is grouped: a `children` entry collapses, everything else is a
+   * direct tab. Stakeholder management only exists for a superadmin.
+   */
+  const navGroups = [
     {
       id: "dashboard",
-      label: "Dashboard",
+      label: "Overview",
+      icon: <HiChartPie className="w-5 h-5" />,
+    },
+    ...(user?.role === "superadmin"
+      ? [
+        {
+          id: "stakeholders",
+          label: "Stakeholders",
+          icon: <HiUsers className="w-5 h-5" />,
+          children: [
+            { id: "admins", label: "Admins", icon: <HiShieldCheck className="w-4 h-4" /> },
+            { id: "users", label: "Users", icon: <HiUsers className="w-4 h-4" /> },
+          ],
+        },
+      ]
+      : []),
+    {
+      id: "career",
+      label: "Career Drive",
+      icon: <HiBriefcase className="w-5 h-5" />,
+      children: [
+        {
+          id: "counselling",
+          label: "Counselling Requests",
+          icon: <HiUsers className="w-4 h-4" />,
+        },
+      ],
+    },
+    {
+      id: "content",
+      label: "Content",
+      icon: <HiRectangleGroup className="w-5 h-5" />,
+      children: [
+        { id: "events", label: "Events", icon: <HiCalendarDays className="w-4 h-4" /> },
+        {
+          id: "scholarships",
+          label: "Scholarships",
+          icon: <HiAcademicCap className="w-4 h-4" />,
+        },
+      ],
+    },
+    {
+      id: "program",
+      label: "Program",
       icon: <HiSquares2X2 className="w-5 h-5" />,
+      children: [
+        { id: "courses", label: "Courses", icon: <HiBookOpen className="w-4 h-4" /> },
+      ],
     },
     {
-      id: "universities",
-      label: "Universities",
-      icon: <HiBuildingOffice2 className="w-5 h-5" />,
-    },
-    { id: "courses", label: "Courses", icon: <HiBookOpen className="w-5 h-5" /> },
-    {
-      id: "scholarships",
-      label: "Scholarships",
+      id: "university",
+      label: "University",
       icon: <HiAcademicCap className="w-5 h-5" />,
-    },
-    { id: "events", label: "Events", icon: <HiCalendarDays className="w-5 h-5" /> },
-    {
-      id: "counselling",
-      label: "Counselling Requests",
-      icon: <HiUsers className="w-5 h-5" />,
+      children: [
+        {
+          id: "universities",
+          label: "Universities",
+          icon: <HiBuildingOffice2 className="w-4 h-4" />,
+        },
+      ],
     },
   ];
-  if (user?.role === "superadmin") {
-    navItems.push({
-      id: "admins",
-      label: "Admins",
-      icon: <HiShieldCheck className="w-5 h-5" />,
-    });
 
-  }
+  const toggleGroup = (groupId) =>
+    setOpenGroups((prev) => ({ ...prev, [groupId]: !prev[groupId] }));
+
+  const admins = useMemo(
+    () => allUsers.filter((item) => item.role === "admin"),
+    [allUsers],
+  );
 
 
   useEffect(() => {
@@ -278,6 +340,34 @@ const AdminDashboard = () => {
     }),
     [universities, courses, scholarships, events, requests],
   );
+
+  /**
+   * A superadmin opens on the account picture; an admin opens on the catalogue
+   * they actually maintain.
+   */
+  const statCards = useMemo(() => {
+    if (user?.role === "superadmin") {
+      return [
+        {
+          label: "Total Users",
+          value: allUsers.filter((item) => item.role === "student" || !item.role).length,
+        },
+        { label: "Total Admins", value: allUsers.filter((item) => item.role === "admin").length },
+        {
+          label: "Super Admins",
+          value: allUsers.filter((item) => item.role === "superadmin").length,
+        },
+        { label: "Total Accounts", value: allUsers.length },
+      ];
+    }
+    return [
+      { label: "Universities", value: stats.totalUniversities },
+      { label: "Courses", value: stats.totalCourses },
+      { label: "Scholarships", value: stats.totalScholarships },
+      { label: "Upcoming Events", value: stats.upcomingEvents },
+      { label: "Pending Requests", value: stats.pendingRequests },
+    ];
+  }, [user?.role, allUsers, stats]);
 
   const handleUnauthorized = () => {
     logout();
@@ -457,44 +547,116 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="h-screen bg-gray-50 text-gray-900 flex overflow-hidden">
-      <aside className="w-64 shrink-0 bg-white border-r border-gray-200 h-screen overflow-y-auto sticky top-0 flex flex-col">
-        <div className="px-6 py-6 border-b border-gray-200">
-          <div className="flex items-center gap-2 mb-1">
+    <div className="h-screen bg-[#F4F6FD] text-gray-900 flex flex-col overflow-hidden">
+      <header className="h-[72px] shrink-0 bg-white border-b border-slate-200 flex items-center justify-between px-6">
+        <span className="text-2xl font-bold tracking-tight text-[#1F2853]">
+          edeco<sup className="text-xs font-semibold align-super">®</sup>
+        </span>
+        <div className="w-10 h-10 rounded-full bg-[#1F2853] text-white flex items-center justify-center font-bold">
+          {user?.name?.charAt(0).toUpperCase()}
+        </div>
+      </header>
 
-            <h2 className="text-lg font-bold text-gray-900">Admin Panel</h2>
+      <div className="flex flex-1 overflow-hidden">
+        <aside className="w-64 shrink-0 bg-white border-r border-slate-200 overflow-y-auto flex flex-col">
+          <div className="px-6 py-5">
+            <h2 className="text-lg font-bold text-[#1F2853]">
+              {user?.role === "superadmin" ? "Admin Control" : "Admin Panel"}
+            </h2>
           </div>
 
-        </div>
+          <nav className="px-3 pb-3 space-y-1">
+            {navGroups.map((group) => {
+              if (!group.children) {
+                return (
+                  <button
+                    key={group.id}
+                    onClick={() => setActiveTab(group.id)}
+                    className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-semibold flex items-center gap-3 transition-colors ${activeTab === group.id
+                      ? "bg-[#EEF2FF] text-[#1F2853]"
+                      : "text-slate-600 hover:bg-slate-50"
+                      }`}
+                  >
+                    {group.icon}
+                    <span>{group.label}</span>
+                  </button>
+                );
+              }
 
-        <nav className="p-3 grid grid-cols-2 md:grid-cols-1 gap-2">
-          {navItems.map((item) => (
+              const isOpen = !!openGroups[group.id];
+              const hasActiveChild = group.children.some(
+                (child) => child.id === activeTab,
+              );
+
+              return (
+                <div key={group.id}>
+                  <button
+                    onClick={() => toggleGroup(group.id)}
+                    className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-semibold flex items-center gap-3 transition-colors ${hasActiveChild && !isOpen
+                      ? "bg-[#EEF2FF] text-[#1F2853]"
+                      : "text-slate-600 hover:bg-slate-50"
+                      }`}
+                  >
+                    {group.icon}
+                    <span className="flex-1">{group.label}</span>
+                    {isOpen ? (
+                      <HiChevronDown className="w-4 h-4 text-slate-400" />
+                    ) : (
+                      <HiChevronRight className="w-4 h-4 text-slate-400" />
+                    )}
+                  </button>
+
+                  {isOpen && (
+                    <div className="mt-1 space-y-1">
+                      {group.children.map((child) => (
+                        <button
+                          key={child.id}
+                          onClick={() => setActiveTab(child.id)}
+                          className={`w-full pl-10 pr-3 py-2 rounded-lg text-left text-sm font-medium flex items-center gap-2.5 transition-colors ${activeTab === child.id
+                            ? "bg-[#EEF2FF] text-[#1F2853] font-semibold"
+                            : "text-slate-600 hover:bg-slate-50"
+                            }`}
+                        >
+                          {child.icon}
+                          <span>{child.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
+
+          <div className="p-4 mt-auto">
             <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`px-3 py-3 rounded-xl text-left text-sm font-semibold flex items-center gap-2 transition-colors ${activeTab === item.id
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 hover:bg-gray-200 text-gray-700"
-                }`}
+              onClick={handleUnauthorized}
+              className="w-full px-4 py-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-sm font-semibold text-slate-600 flex items-center justify-center gap-2 transition-colors"
             >
-              {item.icon}
-              <span>{item.label}</span>
+              <HiArrowRightOnRectangle className="w-4 h-4" />
+              Logout
             </button>
-          ))}
-        </nav>
+          </div>
+        </aside>
 
-        <div className="p-4 border-t border-gray-200 mt-auto">
-          <button
-            onClick={handleUnauthorized}
-            className="w-full px-4 py-2.5 rounded-lg border border-gray-300 hover:bg-gray-100 text-sm font-semibold flex items-center justify-center gap-2"
-          >
-            <HiArrowRightOnRectangle className="w-4 h-4" />
-            Logout
-          </button>
-        </div>
-      </aside>
-
-      <main className="flex-1 h-screen overflow-y-auto p-6 md:p-8">
+        <main className="flex-1 overflow-y-auto p-6 md:p-8">
+          {isImpersonating && (
+            <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-lg">
+              <span className="text-sm font-semibold">
+                You are viewing {user?.name}&apos;s dashboard as Super Admin.
+              </span>
+              <button
+                onClick={() => {
+                  stopImpersonation();
+                  setActiveTab("admins");
+                }}
+                className="self-start sm:self-auto flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold transition-colors"
+              >
+                <HiArrowUturnLeft className="w-4 h-4" />
+                Back to Super Admin
+              </button>
+            </div>
+          )}
 
 
         {error && (
@@ -516,91 +678,47 @@ const AdminDashboard = () => {
           <>
             {activeTab === "dashboard" && (
               <div className="space-y-6">
-                {/* Header Card */}
-                <div className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                  <div>
-                    <h2 className="text-2xl font-bold text-[#1F2853]">
-                      {user?.role === "superadmin" ? "Super Admin Control" : "Admin Dashboard"}
-                    </h2>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
-                      Platform Overview
-                    </p>
-                  </div>
-                  <div className="mt-4 sm:mt-0 flex items-center gap-3 bg-slate-50 border border-slate-200 py-2.5 px-4 rounded-xl">
-                    <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-lg">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <h2 className="text-2xl font-bold text-[#1F2853]">
+                    {user?.role === "superadmin" ? "Super Admin Control" : "Admin Dashboard"}
+                  </h2>
+                  <div className="flex items-center gap-3 bg-[#EEF2FF] py-2.5 px-4 rounded-full">
+                    <div className="w-9 h-9 rounded-full bg-[#FF4E45] text-white flex items-center justify-center font-bold">
                       {user?.name?.charAt(0).toUpperCase()}
                     </div>
                     <div>
                       <p className="text-sm font-bold text-[#1F2853] leading-tight">{user?.name}</p>
-                      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{user?.role}</p>
+                      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                        {user?.role === "superadmin" ? "Super Admin" : user?.role}
+                      </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                  <div className="bg-white rounded-2xl p-5 border border-gray-200">
-                    <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">
-                      Universities
-                    </p>
-                    <p className="text-3xl font-bold text-[#1F2853]">
-                      {stats.totalUniversities}
-                    </p>
-                  </div>
-                  <div className="bg-white rounded-2xl p-5 border border-gray-200">
-                    <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">
-                      Courses
-                    </p>
-                    <p className="text-3xl font-bold text-[#1F2853]">
-                      {stats.totalCourses}
-                    </p>
-                  </div>
-                  <div className="bg-white rounded-2xl p-5 border border-gray-200">
-                    <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">
-                      Scholarships
-                    </p>
-                    <p className="text-3xl font-bold text-[#1F2853]">
-                      {stats.totalScholarships}
-                    </p>
-                  </div>
-                  <div className="bg-white rounded-2xl p-5 border border-gray-200">
-                    <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">
-                      Upcoming Events
-                    </p>
-                    <p className="text-3xl font-bold text-[#1F2853]">
-                      {stats.upcomingEvents}
-                    </p>
-                  </div>
-                  <div className="bg-white rounded-2xl p-5 border border-gray-200">
-                    <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">
-                      Pending Requests
-                    </p>
-                    <p className="text-3xl font-bold text-blue-600">
-                      {stats.pendingRequests}
-                    </p>
-                  </div>
-                </div>
-
-                {user?.role === "superadmin" && (
-                  <>
-                    <h2 className="text-xl font-bold text-gray-800">Admin users</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-
-                      <div className="bg-white border border-gray-200 rounded-2xl p-6">
-                        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Total Admins</p>
-                        <p className="text-3xl font-bold text-[#1F2853]">{allUsers.filter(u => u.role === 'admin').length}</p>
-                      </div>
-                      <div className="bg-white border border-gray-200 rounded-2xl p-6">
-                        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Super Admins</p>
-                        <p className="text-3xl font-bold text-[#1F2853]">{allUsers.filter(u => u.role === 'superadmin').length}</p>
-                      </div>
-                      <div className="bg-white border border-gray-200 rounded-2xl p-6">
-                        <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Total Accounts</p>
-                        <p className="text-3xl font-bold text-[#1F2853]">{allUsers.length}</p>
-                      </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                  {statCards.map((card) => (
+                    <div
+                      key={card.label}
+                      className="bg-white rounded-xl p-5 border border-slate-200"
+                    >
+                      <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">
+                        {card.label}
+                      </p>
+                      <p className="text-3xl font-bold text-[#1F2853]">{card.value}</p>
                     </div>
-                  </>
-                )}
+                  ))}
+                </div>
               </div>
+            )}
+
+            {activeTab === "admins" && user?.role === "superadmin" && (
+              <AdminsPanel
+                admins={admins}
+                currentUserEmail={user?.email}
+                onRefresh={loadAllData}
+                onError={setError}
+                onSuccess={setSuccess}
+              />
             )}
 
             {activeTab === "universities" && (
@@ -1689,16 +1807,16 @@ const AdminDashboard = () => {
               </section>
             )}
 
-            {(activeTab === "users" || activeTab === "admins") && user?.role === "superadmin" && (
-              <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
-                <div className="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center">
+            {activeTab === "users" && user?.role === "superadmin" && (
+              <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+                <div className="p-6 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center">
                   <div>
-                    <h3 className="text-xl font-bold text-[#1F2853]">{activeTab === 'admins' ? 'Administrators' : 'General Users'}</h3>
-                    <p className="text-sm text-slate-500 mt-1">Manage {activeTab === 'admins' ? 'admin privileges and system access' : 'registered students and general users'}.</p>
+                    <h3 className="text-xl font-bold text-[#1F2853]">General Users</h3>
+                    <p className="text-sm text-slate-500 mt-1">Manage registered students and general users.</p>
                   </div>
                   <button
                     onClick={loadAllData}
-                    className="mt-4 sm:mt-0 bg-[#1F2853] hover:bg-[#1F2853] text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors"
+                    className="mt-4 sm:mt-0 px-4 py-2 rounded-lg border border-slate-200 bg-white text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
                   >
                     Refresh
                   </button>
@@ -1706,7 +1824,7 @@ const AdminDashboard = () => {
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm text-left">
-                    <thead className="bg-slate-50 text-slate-500 font-semibold border-b border-gray-200">
+                    <thead className="text-slate-600 font-semibold border-b border-slate-200">
                       <tr>
                         <th className="p-4">Name</th>
                         <th className="p-4">Email</th>
@@ -1714,9 +1832,9 @@ const AdminDashboard = () => {
                         <th className="p-4">Action</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100">
+                    <tbody className="divide-y divide-slate-100">
                       {allUsers
-                        .filter(item => activeTab === 'admins' ? item.role === 'admin' : (item.role === 'student' || !item.role))
+                        .filter(item => item.role === 'student' || !item.role)
                         .map((item) => (
                           <tr key={item._id} className="hover:bg-gray-50 transition-colors">
                             <td className="p-4 font-bold text-[#1F2853]">{item.name}</td>
@@ -1752,9 +1870,10 @@ const AdminDashboard = () => {
                 </div>
               </div>
             )}
-          </>
-        )}
-      </main>
+            </>
+          )}
+        </main>
+      </div>
     </div>
   );
 };

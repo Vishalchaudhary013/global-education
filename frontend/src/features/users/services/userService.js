@@ -17,3 +17,15 @@ export const updateUserRole = async (id, role) => {
   const response = await api.patch(`${RESOURCE}/${id}/role`, { role });
   return response.data;
 };
+
+/** Sets an account's password outright; `notify` emails the new password to them. */
+export const setUserPassword = async (id, password, notify = false) => {
+  const response = await api.patch(`${RESOURCE}/${id}/password`, { password, notify });
+  return response.data;
+};
+
+/** Returns a token for the target admin so a superadmin can open their dashboard. */
+export const impersonateUser = async (id) => {
+  const response = await api.post(`${RESOURCE}/${id}/impersonate`);
+  return response.data;
+};
