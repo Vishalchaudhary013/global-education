@@ -32,7 +32,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white sticky top-0 z-50 w-full ">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2" onClick={closeAll}>
           <HiAcademicCap className="h-8 w-8 text-[#1F2853]" />

@@ -21,9 +21,11 @@ const Home = () => {
       <Hero openModal={openModal} />
       <CourseFinder navigate={navigate} />
       <Destinations />
+      <UpcomingEvents events={events} />
+      
+      
       <Reviews />
       <Articles articles={articles} />
-      <UpcomingEvents events={events} />
     </div>
   );
 };

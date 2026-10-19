@@ -4,7 +4,7 @@ import { HiChevronRight, HiCheckCircle } from "react-icons/hi2";
 const heroImage = "https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
 
 const Hero = ({ openModal }) => (
-  <div className="relative pt-10 pb-10 lg:pt-25 lg:pb-40 overflow-hidden bg-[#1F2853]">
+  <div className="relative flex items-center min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)] py-10 overflow-hidden bg-[#1F2853]">
     <div className="absolute inset-0 z-0">
       <img
         src={heroImage}
@@ -14,7 +14,7 @@ const Hero = ({ openModal }) => (
       <div className="absolute inset-0 bg-white/40 "></div>
     </div>
 
-    <div className="max-w-[1400px] mx-auto px-6 relative z-10">
+    <div className="w-full max-w-[1400px] mx-auto px-6 relative z-10">
       <div className="max-w-3xl">
         <span className="inline-block py-1 px-3 rounded-full bg-[#FF4E45]/10 text-[#FF4E45] border border-[#FF4E45]/30 text-sm font-semibold mb-6 tracking-wide">
           DISCOVER YOUR POTENTIAL

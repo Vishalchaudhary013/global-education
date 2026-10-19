@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { getApiErrorMessage } from "@/shared/utils/apiError";
 import { getCounsellingRequests } from "@/features/counselling/services/counsellingService";
 import { getCourses } from "@/features/courses/services/courseService";
+import { getDestinations } from "@/features/destinations/services/destinationService";
 import { getEvents } from "@/features/events/services/eventService";
 import { getScholarships } from "@/features/scholarships/services/scholarshipService";
 import { getUniversities } from "@/features/universities/services/universityService";
@@ -24,6 +25,7 @@ export function useAdminData() {
   const [courses, setCourses] = useState([]);
   const [scholarships, setScholarships] = useState([]);
   const [events, setEvents] = useState([]);
+  const [destinations, setDestinations] = useState([]);
   const [requests, setRequests] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
 
@@ -41,12 +43,20 @@ export function useAdminData() {
         getCourses({ admin: true }),
         getScholarships({ admin: true }),
         getEvents({ admin: true }),
+        getDestinations({ admin: true }),
         getCounsellingRequests(),
         isSuperadmin ? getUsers() : Promise.resolve([]),
       ]);
 
-      const [uniRes, courseRes, scholarshipRes, eventRes, requestRes, userRes] =
-        results;
+      const [
+        uniRes,
+        courseRes,
+        scholarshipRes,
+        eventRes,
+        destinationRes,
+        requestRes,
+        userRes,
+      ] = results;
 
       const valueOf = (result) =>
         result.status === "fulfilled" ? result.value || [] : [];
@@ -55,6 +65,7 @@ export function useAdminData() {
       setCourses(valueOf(courseRes));
       setScholarships(valueOf(scholarshipRes));
       setEvents(valueOf(eventRes));
+      setDestinations(valueOf(destinationRes));
       setRequests(valueOf(requestRes));
       setAllUsers(valueOf(userRes));
 
@@ -81,6 +92,7 @@ export function useAdminData() {
     courses,
     scholarships,
     events,
+    destinations,
     requests,
     allUsers,
     isLoading,

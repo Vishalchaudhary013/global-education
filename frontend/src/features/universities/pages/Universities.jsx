@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import UniversityCard from "../components/UniversityCard";
 import { HiMagnifyingGlass, HiMapPin, HiBuildingOffice2 } from "react-icons/hi2";
 import { useUniversities } from "../hooks/useUniversities";
 
 const Universities = () => {
   const { universities: universitiesData, loading } = useUniversities();
-  const [filter, setFilter] = useState("");
+  const [searchParams] = useSearchParams();
+  // Destination pages link here with ?destination=<country> to pre-filter.
+  const [filter, setFilter] = useState(searchParams.get("destination") || "");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filtered = universitiesData.filter((u) => {

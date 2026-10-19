@@ -25,8 +25,19 @@ import {
   HiBriefcase,
   HiRectangleGroup,
   HiArrowUturnLeft,
+  HiGlobeAlt,
 } from "react-icons/hi2";
 import AdminsPanel from "../components/AdminsPanel";
+import CourseForm from "../components/CourseForm";
+import DestinationForm from "../components/DestinationForm";
+import {
+  destinationToForm,
+  emptyDestination,
+  formToDestination,
+} from "../utils/destinationFormModel";
+import EventForm from "../components/EventForm";
+import ScholarshipForm from "../components/ScholarshipForm";
+import UniversityForm from "../components/UniversityForm";
 import { getApiErrorMessage, isUnauthorized } from "@/shared/utils/apiError";
 import { useAuth } from "@/features/auth";
 import { updateCounsellingRequestStatus } from "@/features/counselling/services/counsellingService";
@@ -35,6 +46,11 @@ import {
   deleteCourse,
   updateCourse,
 } from "@/features/courses/services/courseService";
+import {
+  createDestination,
+  deleteDestination,
+  updateDestination,
+} from "@/features/destinations/services/destinationService";
 import {
   createEvent,
   deleteEvent,
@@ -213,6 +229,7 @@ const AdminDashboard = () => {
     courses,
     scholarships,
     events,
+    destinations,
     requests,
     allUsers,
     isLoading,
@@ -225,21 +242,26 @@ const AdminDashboard = () => {
   const [editingCourseId, setEditingCourseId] = useState(null);
   const [editingScholarshipId, setEditingScholarshipId] = useState(null);
   const [editingEventId, setEditingEventId] = useState(null);
+  /** Holds the destination slug being edited, since that is its API key. */
+  const [editingDestinationId, setEditingDestinationId] = useState(null);
 
   const [universityForm, setUniversityForm] = useState(emptyUniversity);
   const [courseForm, setCourseForm] = useState(emptyCourse);
   const [scholarshipForm, setScholarshipForm] = useState(emptyScholarship);
   const [eventForm, setEventForm] = useState(emptyEvent);
+  const [destinationForm, setDestinationForm] = useState(emptyDestination);
 
   const [showUniversityForm, setShowUniversityForm] = useState(false);
   const [showCourseForm, setShowCourseForm] = useState(false);
   const [showScholarshipForm, setShowScholarshipForm] = useState(false);
   const [showEventForm, setShowEventForm] = useState(false);
+  const [showDestinationForm, setShowDestinationForm] = useState(false);
 
   const [uniPage, setUniPage] = useState(1);
   const [coursePage, setCoursePage] = useState(1);
   const [scholarshipPage, setScholarshipPage] = useState(1);
   const [eventPage, setEventPage] = useState(1);
+  const [destinationPage, setDestinationPage] = useState(1);
 
   /**
    * The sidebar is grouped: a `children` entry collapses, everything else is a
@@ -309,7 +331,22 @@ const AdminDashboard = () => {
         },
       ],
     },
+    {
+      id: "destinations",
+      label: "Destinations",
+      icon: <HiGlobeAlt className="w-5 h-5" />,
+    },
   ];
+
+  /**
+   * A group holding a single child has nothing to expand, so it is flattened
+   * into a plain tab that opens that child directly.
+   */
+  const navItems = navGroups.map((group) => {
+    if (group.children?.length !== 1) return group;
+    const [onlyChild] = group.children;
+    return { id: onlyChild.id, label: group.label, icon: group.icon };
+  });
 
   const toggleGroup = (groupId) =>
     setOpenGroups((prev) => ({ ...prev, [groupId]: !prev[groupId] }));
@@ -331,6 +368,7 @@ const AdminDashboard = () => {
       totalUniversities: universities.length,
       totalCourses: courses.length,
       totalScholarships: scholarships.length,
+      totalDestinations: destinations.length,
       upcomingEvents: events.filter(
         (event) => new Date(event.date) >= new Date(),
       ).length,
@@ -338,7 +376,7 @@ const AdminDashboard = () => {
         (request) => request.status === "pending",
       ).length,
     }),
-    [universities, courses, scholarships, events, requests],
+    [universities, courses, scholarships, destinations, events, requests],
   );
 
   /**
@@ -364,6 +402,7 @@ const AdminDashboard = () => {
       { label: "Universities", value: stats.totalUniversities },
       { label: "Courses", value: stats.totalCourses },
       { label: "Scholarships", value: stats.totalScholarships },
+      { label: "Destinations", value: stats.totalDestinations },
       { label: "Upcoming Events", value: stats.upcomingEvents },
       { label: "Pending Requests", value: stats.pendingRequests },
     ];
@@ -502,6 +541,39 @@ const AdminDashboard = () => {
     }
   };
 
+  /**
+   * The form covers every guide field the destination page renders, so the whole
+   * document is written in one call. `goToStep` comes from the stepper, which
+   * lets a failed check reveal the step holding the offending field.
+   */
+  const submitDestination = async (event, goToStep) => {
+    event.preventDefault();
+    setError("");
+
+    const payload = formToDestination(destinationForm);
+    if (!payload.name || !payload.id) {
+      goToStep?.(0);
+      setError("Destination needs a name.");
+      return;
+    }
+
+    try {
+      if (editingDestinationId) {
+        await updateDestination(editingDestinationId, payload);
+        setSuccess("Destination updated");
+      } else {
+        await createDestination(payload);
+        setSuccess("Destination created");
+      }
+      setDestinationForm(emptyDestination);
+      setEditingDestinationId(null);
+      setShowDestinationForm(false);
+      await loadAllData();
+    } catch (submitError) {
+      setError(getApiErrorMessage(submitError));
+    }
+  };
+
   const updateRequestStatus = async (requestId, status) => {
     setError("");
     try {
@@ -566,7 +638,7 @@ const AdminDashboard = () => {
           </div>
 
           <nav className="px-3 pb-3 space-y-1">
-            {navGroups.map((group) => {
+            {navItems.map((group) => {
               if (!group.children) {
                 return (
                   <button
@@ -723,196 +795,35 @@ const AdminDashboard = () => {
 
             {activeTab === "universities" && (
               <section className="space-y-6">
-                {/* Section header */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-xl font-bold text-gray-800">Universities</h2>
-                    <p className="text-sm text-gray-500 mt-0.5">{universities.length} Universities listed</p>
+                {/* Section header — hidden while the form owns the screen */}
+                {!showUniversityForm && !editingUniversityId && (
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-800">Universities</h2>
+                      <p className="text-sm text-gray-500 mt-0.5">{universities.length} Universities listed</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => { setShowUniversityForm(v => !v); setEditingUniversityId(null); setUniversityForm(emptyUniversity); }}
+                      className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-95 ${showUniversityForm
+                        ? 'bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200'
+                        : 'bg-blue-600 text-white hover:bg-blue-500'
+                        }`}
+                    >
+                      {showUniversityForm ? <><HiXMark className="w-4 h-4" /> Close</> : <><HiPlus className="w-4 h-4" /> Create University</>}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => { setShowUniversityForm(v => !v); setEditingUniversityId(null); setUniversityForm(emptyUniversity); }}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-95 ${showUniversityForm
-                      ? 'bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200'
-                      : 'bg-blue-600 text-white hover:bg-blue-500'
-                      }`}
-                  >
-                    {showUniversityForm ? <><HiXMark className="w-4 h-4" /> Close</> : <><HiPlus className="w-4 h-4" /> Create University</>}
-                  </button>
-                </div>
+                )}
 
                 {/* ── Professional University Form ── */}
                 {(showUniversityForm || editingUniversityId) && (
-                  <form
+                  <UniversityForm
+                    form={universityForm}
+                    setForm={setUniversityForm}
+                    isEditing={!!editingUniversityId}
                     onSubmit={submitUniversity}
-                    className="bg-white border border-gray-200 rounded-2xl overflow-hidden"
-                  >
-                    {/* Form Header */}
-                    <div className="px-6 py-4 border-b border-gray-200 bg-[#FF4E45]">
-                      <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                        <HiAcademicCap className="w-5 h-5 text-blue-600" />
-                        {editingUniversityId ? "Update University" : "Add New University"}
-                      </h3>
-                      <p className="text-gray-500 text-sm mt-0.5">Fill in the details below to {editingUniversityId ? "update the" : "register a new"} university.</p>
-                    </div>
-
-                    <div className="p-6 space-y-6">
-                      {/* Section 1: Basic Information */}
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-3">Basic Information</p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">University Name <span className="text-red-400">*</span></label>
-                            <input
-                              required
-                              placeholder="e.g. University of Oxford"
-                              value={universityForm.name}
-                              onChange={(e) => setUniversityForm({ ...universityForm, name: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-indigo-500/50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all"
-                            />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Location / City <span className="text-red-400">*</span></label>
-                            <input
-                              required
-                              placeholder="e.g. Oxford, UK"
-                              value={universityForm.location}
-                              onChange={(e) => setUniversityForm({ ...universityForm, location: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-indigo-500/50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all"
-                            />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Destination Country <span className="text-red-400">*</span></label>
-                            <select
-                              required
-                              value={universityForm.destination}
-                              onChange={(e) => setUniversityForm({ ...universityForm, destination: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-indigo-500/50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 outline-none transition-all appearance-none cursor-pointer"
-                            >
-                              <option value="">Select country...</option>
-                              {["Australia", "Canada", "Dubai", "Germany", "India", "New Zealand", "Singapore", "UK", "USA"].map(d => (
-                                <option key={d} value={d}>{d}</option>
-                              ))}
-                            </select>
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Global Ranking</label>
-                            <input
-                              placeholder="e.g. #3 Global"
-                              value={universityForm.ranking}
-                              onChange={(e) => setUniversityForm({ ...universityForm, ranking: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-indigo-500/50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all"
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Divider */}
-                      <div className="border-t border-gray-200" />
-
-                      {/* Section 2: Admission & Fees */}
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-3">Admission & Fees</p>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">IELTS Requirement</label>
-                            <input
-                              placeholder="e.g. 6.5 overall"
-                              value={universityForm.ieltsRequirement}
-                              onChange={(e) => setUniversityForm({ ...universityForm, ieltsRequirement: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-indigo-500/50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all"
-                            />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Study Cost</label>
-                            <input
-                              placeholder="e.g. AUD 48,000/yr"
-                              value={universityForm.studyCost}
-                              onChange={(e) => setUniversityForm({ ...universityForm, studyCost: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-indigo-500/50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all"
-                            />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Living Cost</label>
-                            <input
-                              placeholder="e.g. AUD 21,000/yr"
-                              value={universityForm.livingCost}
-                              onChange={(e) => setUniversityForm({ ...universityForm, livingCost: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-indigo-500/50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all"
-                            />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Tuition</label>
-                            <input
-                              placeholder="e.g. £32,000/year"
-                              value={universityForm.tuition}
-                              onChange={(e) => setUniversityForm({ ...universityForm, tuition: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-indigo-500/50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all"
-                            />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Intake Months</label>
-                            <input
-                              placeholder="e.g. September, January"
-                              value={universityForm.intakes}
-                              onChange={(e) => setUniversityForm({ ...universityForm, intakes: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-indigo-500/50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all"
-                            />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Logo URL</label>
-                            <input
-                              placeholder="https://..."
-                              value={universityForm.logo}
-                              onChange={(e) => setUniversityForm({ ...universityForm, logo: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-indigo-500/50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all"
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Divider */}
-                      <div className="border-t border-gray-200" />
-
-                      {/* Section 3: Overview */}
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-3">Overview</p>
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-xs font-semibold text-gray-500">University Overview / Description</label>
-                          <textarea
-                            placeholder="Brief description of the university, its strengths, and what makes it unique for international students..."
-                            value={universityForm.overview}
-                            onChange={(e) => setUniversityForm({ ...universityForm, overview: e.target.value })}
-                            rows={3}
-                            className="bg-gray-50 border border-gray-300 hover:border-indigo-500/50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all resize-none"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Form Footer */}
-                    <div className="px-6 py-4 border-t border-gray-200 bg-gray-50/80 flex items-center justify-between gap-3">
-
-                      <div className="flex gap-3">
-                        {editingUniversityId && (
-                          <button
-                            type="button"
-                            onClick={() => { setEditingUniversityId(null); setUniversityForm(emptyUniversity); }}
-                            className="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-100 text-sm font-semibold transition-all"
-                          >
-                            Cancel
-                          </button>
-                        )}
-                        <button
-                          type="submit"
-                          className="bg-blue-600 hover:bg-blue-500 active:scale-95 px-6 py-2.5 rounded-xl font-bold text-sm text-white flex items-center gap-2 transition-all"
-                        >
-                          <HiCheck className="w-4 h-4" />
-                          {editingUniversityId ? "Update University" : "Add University"}
-                        </button>
-                      </div>
-                    </div>
-                  </form>
+                    onCancel={() => { setEditingUniversityId(null); setUniversityForm(emptyUniversity); setShowUniversityForm(false); }}
+                  />
                 )}
 
                 {!showUniversityForm && !editingUniversityId && (
@@ -1016,105 +927,35 @@ const AdminDashboard = () => {
 
             {activeTab === "courses" && (
               <section className="space-y-6">
-                {/* Section header */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-xl font-bold text-gray-800">Courses</h2>
-                    <p className="text-sm text-gray-500 mt-0.5">{courses.length} courses listed</p>
+                {/* Section header — hidden while the form owns the screen */}
+                {!showCourseForm && !editingCourseId && (
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-800">Courses</h2>
+                      <p className="text-sm text-gray-500 mt-0.5">{courses.length} courses listed</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => { setShowCourseForm(v => !v); setEditingCourseId(null); setCourseForm(emptyCourse); }}
+                      className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-95 ${showCourseForm
+                        ? 'bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200'
+                        : 'bg-blue-600 text-white hover:bg-blue-500'
+                        }`}
+                    >
+                      {showCourseForm ? <><HiXMark className="w-4 h-4" /> Close</> : <><HiPlus className="w-4 h-4" /> Create Course</>}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => { setShowCourseForm(v => !v); setEditingCourseId(null); setCourseForm(emptyCourse); }}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-95 ${showCourseForm
-                      ? 'bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200'
-                      : 'bg-blue-600 text-white hover:bg-blue-500'
-                      }`}
-                  >
-                    {showCourseForm ? <><HiXMark className="w-4 h-4" /> Close</> : <><HiPlus className="w-4 h-4" /> Create Course</>}
-                  </button>
-                </div>
+                )}
 
                 {(showCourseForm || editingCourseId) && (
-                  <form
+                  <CourseForm
+                    form={courseForm}
+                    setForm={setCourseForm}
+                    universities={universities}
+                    isEditing={!!editingCourseId}
                     onSubmit={submitCourse}
-                    className="bg-white border border-gray-200 rounded-2xl overflow-hidden"
-                  >
-                    {/* Header */}
-                    <div className="px-6 py-4 border-b border-gray-200 bg-[#FF4E45]">
-                      <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                        <HiBookOpen className="w-5 h-5 text-blue-600" />
-                        {editingCourseId ? "Update Course" : "Add New Course"}
-                      </h3>
-                      <p className="text-gray-500 text-sm mt-0.5">Fill in the course details below.</p>
-                    </div>
-
-                    <div className="p-6 space-y-6">
-                      {/* Section 1: Basic Info */}
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-3">Course Details</p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="flex flex-col gap-1.5 md:col-span-2">
-                            <label className="text-xs font-semibold text-gray-500">Course Name <span className="text-red-400">*</span></label>
-                            <input required placeholder="e.g. MSc Computer Science" value={courseForm.name}
-                              onChange={(e) => setCourseForm({ ...courseForm, name: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Course Level <span className="text-red-400">*</span></label>
-                            <select value={courseForm.type} onChange={(e) => setCourseForm({ ...courseForm, type: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 outline-none transition-all">
-                              <option value="UG">Undergraduate (UG)</option>
-                              <option value="PG">Postgraduate (PG)</option>
-                              <option value="Diploma">Diploma</option>
-                              <option value="PhD">PhD / Doctorate</option>
-                            </select>
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Duration <span className="text-red-400">*</span></label>
-                            <input required placeholder="e.g. 2 Years" value={courseForm.duration}
-                              onChange={(e) => setCourseForm({ ...courseForm, duration: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Destination Country <span className="text-red-400">*</span></label>
-                            <select required value={courseForm.destination} onChange={(e) => setCourseForm({ ...courseForm, destination: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 outline-none transition-all">
-                              <option value="">Select country...</option>
-                              {["Australia", "Canada", "Dubai", "Germany", "India", "New Zealand", "Singapore", "UK", "USA"].map(d => (
-                                <option key={d} value={d}>{d}</option>
-                              ))}
-                            </select>
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">University <span className="text-red-400">*</span></label>
-                            <select required value={courseForm.university} onChange={(e) => setCourseForm({ ...courseForm, university: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-blue-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 outline-none transition-all">
-                              <option value="">Select University...</option>
-                              {universities.map((u) => (<option key={u._id} value={u._id}>{u.name}</option>))}
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Footer */}
-                    <div className="px-6 py-4 border-t border-gray-200 bg-gray-50/80 flex items-center justify-between">
-
-                      <div className="flex gap-3">
-                        {editingCourseId && (
-                          <button type="button" onClick={() => { setEditingCourseId(null); setCourseForm(emptyCourse); setShowCourseForm(false); }}
-                            className="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-100 text-sm font-semibold transition-all">
-                            Cancel
-                          </button>
-                        )}
-                        <button type="submit"
-                          className="bg-blue-600 hover:bg-blue-500 active:scale-95 px-6 py-2.5 rounded-xl font-bold text-sm text-white flex items-center gap-2 transition-all">
-                          <HiCheck className="w-4 h-4" />
-                          {editingCourseId ? "Update Course" : "Add Course"}
-                        </button>
-                      </div>
-                    </div>
-                  </form>
+                    onCancel={() => { setEditingCourseId(null); setCourseForm(emptyCourse); setShowCourseForm(false); }}
+                  />
                 )}
 
                 {!showCourseForm && !editingCourseId && (
@@ -1195,183 +1036,35 @@ const AdminDashboard = () => {
 
             {activeTab === "scholarships" && (
               <section className="space-y-5">
-                {/* Section header */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-xl font-bold text-gray-800">Scholarships</h2>
-                    <p className="text-sm text-gray-500 mt-0.5">{scholarships.length} scholarships listed</p>
+                {/* Section header — hidden while the form owns the screen */}
+                {!showScholarshipForm && !editingScholarshipId && (
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-800">Scholarships</h2>
+                      <p className="text-sm text-gray-500 mt-0.5">{scholarships.length} scholarships listed</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => { setShowScholarshipForm(v => !v); setEditingScholarshipId(null); setScholarshipForm(emptyScholarship); }}
+                      className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-95 ${showScholarshipForm
+                        ? 'bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200'
+                        : 'bg-blue-600 text-white hover:bg-blue-500'
+                        }`}
+                    >
+                      {showScholarshipForm ? <><HiXMark className="w-4 h-4" /> Close</> : <><HiPlus className="w-4 h-4" /> Create Scholarship</>}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => { setShowScholarshipForm(v => !v); setEditingScholarshipId(null); setScholarshipForm(emptyScholarship); }}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-95 ${showScholarshipForm
-                      ? 'bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200'
-                      : 'bg-blue-600 text-white hover:bg-blue-500'
-                      }`}
-                  >
-                    {showScholarshipForm ? <><HiXMark className="w-4 h-4" /> Close</> : <><HiPlus className="w-4 h-4" /> Create Scholarship</>}
-                  </button>
-                </div>
+                )}
 
                 {(showScholarshipForm || editingScholarshipId) && (
-                  <form
+                  <ScholarshipForm
+                    form={scholarshipForm}
+                    setForm={setScholarshipForm}
+                    universities={universities}
+                    isEditing={!!editingScholarshipId}
                     onSubmit={submitScholarship}
-                    className="bg-white border border-gray-200 rounded-2xl overflow-hidden"
-                  >
-                    {/* Header */}
-                    <div className="px-6 py-4 border-b border-gray-200 bg-[#FF4E45]">
-                      <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                        <HiAcademicCap className="w-5 h-5 text-amber-400" />
-                        {editingScholarshipId ? "Update Scholarship" : "Add New Scholarship"}
-                      </h3>
-                      <p className="text-gray-500 text-sm mt-0.5">Fill in all scholarship details below.</p>
-                    </div>
-
-                    <div className="p-6 space-y-6">
-                      {/* Section 1: Basic Info */}
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-widest text-amber-400 mb-3">Basic Information</p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="flex flex-col gap-1.5 md:col-span-2">
-                            <label className="text-xs font-semibold text-gray-500">Scholarship Name <span className="text-red-400">*</span></label>
-                            <input required placeholder="e.g. Chevening Scholarship" value={scholarshipForm.name}
-                              onChange={(e) => setScholarshipForm({ ...scholarshipForm, name: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Destination <span className="text-red-400">*</span></label>
-                            <select required value={scholarshipForm.destination} onChange={(e) => setScholarshipForm({ ...scholarshipForm, destination: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 outline-none transition-all">
-                              <option value="">Select country...</option>
-                              {["Australia", "Canada", "Dubai", "Germany", "India", "New Zealand", "Singapore", "UK", "USA"].map(d => (<option key={d} value={d}>{d}</option>))}
-                            </select>
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Amount / Value <span className="text-red-400">*</span></label>
-                            <input required placeholder="e.g. Fully Funded / £10,000" value={scholarshipForm.amount}
-                              onChange={(e) => setScholarshipForm({ ...scholarshipForm, amount: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Provider / Sponsor</label>
-                            <input placeholder="e.g. UK Government (FCDO)" value={scholarshipForm.provider}
-                              onChange={(e) => setScholarshipForm({ ...scholarshipForm, provider: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Linked University</label>
-                            <select value={scholarshipForm.university} onChange={(e) => setScholarshipForm({ ...scholarshipForm, university: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 outline-none transition-all">
-                              <option value="">No Specific University</option>
-                              {universities.map((u) => (<option key={u._id} value={u._id}>{u.name}</option>))}
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="border-t border-gray-200" />
-
-                      {/* Section 2: Criteria & Dates */}
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-widest text-amber-400 mb-3">Criteria & Dates</p>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Study Level</label>
-                            <input placeholder="e.g. Masters / PhD" value={scholarshipForm.level}
-                              onChange={(e) => setScholarshipForm({ ...scholarshipForm, level: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">No. of Awards</label>
-                            <input placeholder="e.g. 1,500+ per year" value={scholarshipForm.noOfAwards}
-                              onChange={(e) => setScholarshipForm({ ...scholarshipForm, noOfAwards: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Application Deadline</label>
-                            <input type="date" value={scholarshipForm.deadline}
-                              onChange={(e) => setScholarshipForm({ ...scholarshipForm, deadline: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5 md:col-span-3">
-                            <label className="text-xs font-semibold text-gray-500">Eligibility Criteria</label>
-                            <input placeholder="e.g. Emerging leaders with 2+ years work experience" value={scholarshipForm.eligibility}
-                              onChange={(e) => setScholarshipForm({ ...scholarshipForm, eligibility: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="border-t border-gray-200" />
-
-                      {/* Section 3: Details */}
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-widest text-amber-400 mb-3">Details & Content</p>
-                        <div className="space-y-4">
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Description</label>
-                            <textarea placeholder="Detailed description of the scholarship..." value={scholarshipForm.description}
-                              onChange={(e) => setScholarshipForm({ ...scholarshipForm, description: e.target.value })} rows={3}
-                              className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all resize-none" />
-                          </div>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="flex flex-col gap-1.5">
-                              <label className="text-xs font-semibold text-gray-500">Benefits <span className="text-gray-400 font-normal">(comma-separated)</span></label>
-                              <textarea placeholder="Full tuition, Monthly stipend, Return airfare..." value={scholarshipForm.benefits}
-                                onChange={(e) => setScholarshipForm({ ...scholarshipForm, benefits: e.target.value })} rows={2}
-                                className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all resize-none" />
-                            </div>
-                            <div className="flex flex-col gap-1.5">
-                              <label className="text-xs font-semibold text-gray-500">Requirements <span className="text-gray-400 font-normal">(comma-separated)</span></label>
-                              <textarea placeholder="Bachelor's degree, 2 years work experience..." value={scholarshipForm.requirements}
-                                onChange={(e) => setScholarshipForm({ ...scholarshipForm, requirements: e.target.value })} rows={2}
-                                className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all resize-none" />
-                            </div>
-                            <div className="flex flex-col gap-1.5">
-                              <label className="text-xs font-semibold text-gray-500">Eligible Fields <span className="text-gray-400 font-normal">(comma-separated)</span></label>
-                              <input placeholder="All Fields, Engineering, Business..." value={scholarshipForm.fields}
-                                onChange={(e) => setScholarshipForm({ ...scholarshipForm, fields: e.target.value })}
-                                className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                            </div>
-                            <div className="flex flex-col gap-1.5">
-                              <label className="text-xs font-semibold text-gray-500">Tags <span className="text-gray-400 font-normal">(comma-separated)</span></label>
-                              <input placeholder="Fully Funded, Leadership, Government..." value={scholarshipForm.tags}
-                                onChange={(e) => setScholarshipForm({ ...scholarshipForm, tags: e.target.value })}
-                                className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                            </div>
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">How To Apply</label>
-                            <textarea placeholder="Describe the application process..." value={scholarshipForm.howToApply}
-                              onChange={(e) => setScholarshipForm({ ...scholarshipForm, howToApply: e.target.value })} rows={2}
-                              className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all resize-none" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Official Link</label>
-                            <input placeholder="https://www.chevening.org" value={scholarshipForm.officialLink}
-                              onChange={(e) => setScholarshipForm({ ...scholarshipForm, officialLink: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-amber-500/50 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Footer */}
-                    <div className="px-6 py-4 border-t border-gray-200 bg-gray-50/80 flex items-center justify-between">
-
-                      <div className="flex gap-3">
-                        {editingScholarshipId && (
-                          <button type="button" onClick={() => { setEditingScholarshipId(null); setScholarshipForm(emptyScholarship); setShowScholarshipForm(false); }}
-                            className="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-100 text-sm font-semibold transition-all">Cancel</button>
-                        )}
-                        <button type="submit"
-                          className="bg-amber-600 hover:bg-amber-500 active:scale-95 px-6 py-2.5 rounded-xl font-bold text-sm text-white flex items-center gap-2 transition-all">
-                          <HiCheck className="w-4 h-4" />
-                          {editingScholarshipId ? "Update Scholarship" : "Add Scholarship"}
-                        </button>
-                      </div>
-                    </div>
-                  </form>
+                    onCancel={() => { setEditingScholarshipId(null); setScholarshipForm(emptyScholarship); setShowScholarshipForm(false); }}
+                  />
                 )}
 
                 {!showScholarshipForm && !editingScholarshipId && (
@@ -1483,157 +1176,35 @@ const AdminDashboard = () => {
 
             {activeTab === "events" && (
               <section className="space-y-6">
-                {/* Section header */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-xl font-bold text-gray-800">Events</h2>
-                    <p className="text-sm text-gray-500 mt-0.5">{events.length} events listed</p>
+                {/* Section header — hidden while the form owns the screen */}
+                {!showEventForm && !editingEventId && (
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-800">Events</h2>
+                      <p className="text-sm text-gray-500 mt-0.5">{events.length} events listed</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => { setShowEventForm(v => !v); setEditingEventId(null); setEventForm(emptyEvent); }}
+                      className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-95 ${showEventForm
+                        ? 'bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200'
+                        : 'bg-blue-600 text-white hover:bg-blue-500'
+                        }`}
+                    >
+                      {showEventForm ? <><HiXMark className="w-4 h-4" /> Close</> : <><HiPlus className="w-4 h-4" /> Create Event</>}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => { setShowEventForm(v => !v); setEditingEventId(null); setEventForm(emptyEvent); }}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-95 ${showEventForm
-                      ? 'bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200'
-                      : 'bg-blue-600 text-white hover:bg-blue-500'
-                      }`}
-                  >
-                    {showEventForm ? <><HiXMark className="w-4 h-4" /> Close</> : <><HiPlus className="w-4 h-4" /> Create Event</>}
-                  </button>
-                </div>
+                )}
 
                 {(showEventForm || editingEventId) && (
-                  <form
+                  <EventForm
+                    form={eventForm}
+                    setForm={setEventForm}
+                    universities={universities}
+                    isEditing={!!editingEventId}
                     onSubmit={submitEvent}
-                    className="bg-white border border-gray-200 rounded-2xl overflow-hidden"
-                  >
-                    {/* Header */}
-                    <div className="px-6 py-4 border-b border-gray-200 bg-[#FF4E45]">
-                      <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                        <HiCalendarDays className="w-5 h-5 text-cyan-400" />
-                        {editingEventId ? "Update Event" : "Add New Event"}
-                      </h3>
-                      <p className="text-gray-500 text-sm mt-0.5">Fill in the event details below.</p>
-                    </div>
-
-                    <div className="p-6 space-y-6">
-                      {/* Section 1: Basic Info */}
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-3">Event Details</p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="flex flex-col gap-1.5 md:col-span-2">
-                            <label className="text-xs font-semibold text-gray-500">Event Name <span className="text-red-400">*</span></label>
-                            <input required placeholder="e.g. Global University Fair 2026" value={eventForm.name}
-                              onChange={(e) => setEventForm({ ...eventForm, name: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Event Mode</label>
-                            <select value={eventForm.mode} onChange={(e) => setEventForm({ ...eventForm, mode: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 outline-none transition-all">
-                              <option value="online">Online</option>
-                              <option value="offline">Offline (In-Person)</option>
-                              <option value="hybrid">Hybrid</option>
-                            </select>
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Event Type</label>
-                            <input placeholder="e.g. webinar, education_fair, assessment" value={eventForm.type}
-                              onChange={(e) => setEventForm({ ...eventForm, type: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Date & Time <span className="text-red-400">*</span></label>
-                            <input type="datetime-local" required value={eventForm.date}
-                              onChange={(e) => setEventForm({ ...eventForm, date: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Display Time</label>
-                            <input placeholder="e.g. 10:00 AM - 5:00 PM (IST)" value={eventForm.time}
-                              onChange={(e) => setEventForm({ ...eventForm, time: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">City / Location</label>
-                            <input placeholder="e.g. New Delhi, India" value={eventForm.location}
-                              onChange={(e) => setEventForm({ ...eventForm, location: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Venue Name</label>
-                            <input placeholder="e.g. Taj Palace Hotel" value={eventForm.venue}
-                              onChange={(e) => setEventForm({ ...eventForm, venue: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Logo URL</label>
-                            <input placeholder="https://..." value={eventForm.logo}
-                              onChange={(e) => setEventForm({ ...eventForm, logo: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all" />
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Host University</label>
-                            <select value={eventForm.university} onChange={(e) => setEventForm({ ...eventForm, university: e.target.value })}
-                              className="bg-gray-50 border border-gray-300 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-4 py-2.5 text-sm text-gray-900 outline-none transition-all">
-                              <option value="">No Specific University</option>
-                              {universities.map((u) => (<option key={u._id} value={u._id}>{u.name}</option>))}
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="border-t border-gray-200" />
-
-                      {/* Section 2: Content */}
-                      <div>
-                        <p className="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-3">Content & Details</p>
-                        <div className="space-y-4">
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Description</label>
-                            <textarea placeholder="Detailed description of the event..." value={eventForm.description}
-                              onChange={(e) => setEventForm({ ...eventForm, description: e.target.value })} rows={3}
-                              className="bg-gray-50 border border-gray-300 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all resize-none" />
-                          </div>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="flex flex-col gap-1.5">
-                              <label className="text-xs font-semibold text-gray-500">Countries <span className="text-gray-400 font-normal">(comma-separated)</span></label>
-                              <textarea placeholder="United Kingdom, USA, Canada..." value={eventForm.countries}
-                                onChange={(e) => setEventForm({ ...eventForm, countries: e.target.value })} rows={2}
-                                className="bg-gray-50 border border-gray-300 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all resize-none" />
-                            </div>
-                            <div className="flex flex-col gap-1.5">
-                              <label className="text-xs font-semibold text-gray-500">Highlights <span className="text-gray-400 font-normal">(comma-separated)</span></label>
-                              <textarea placeholder="Meet 50+ universities, Free IELTS counselling..." value={eventForm.highlights}
-                                onChange={(e) => setEventForm({ ...eventForm, highlights: e.target.value })} rows={2}
-                                className="bg-gray-50 border border-gray-300 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all resize-none" />
-                            </div>
-                          </div>
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-xs font-semibold text-gray-500">Participating Universities <span className="text-gray-400 font-normal">(one per line: Name | Country | Role)</span></label>
-                            <textarea placeholder="University of Oxford | UK | Participant&#10;Harvard University | USA | Participant" value={eventForm.universities}
-                              onChange={(e) => setEventForm({ ...eventForm, universities: e.target.value })} rows={4}
-                              className="bg-gray-50 border border-gray-300 hover:border-cyan-500/50 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all resize-none font-mono" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Footer */}
-                    <div className="px-6 py-4 border-t border-gray-200 bg-gray-50/80 flex items-center justify-between">
-
-                      <div className="flex gap-3">
-                        {editingEventId && (
-                          <button type="button" onClick={() => { setEditingEventId(null); setEventForm(emptyEvent); }}
-                            className="px-5 py-2.5 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-100 text-sm font-semibold transition-all">Cancel</button>
-                        )}
-                        <button type="submit"
-                          className="bg-cyan-600 hover:bg-cyan-500 active:scale-95 px-6 py-2.5 rounded-xl font-bold text-sm text-white flex items-center gap-2 transition-all">
-                          <HiCheck className="w-4 h-4" />
-                          {editingEventId ? "Update Event" : "Add Event"}
-                        </button>
-                      </div>
-                    </div>
-                  </form>
+                    onCancel={() => { setEditingEventId(null); setEventForm(emptyEvent); setShowEventForm(false); }}
+                  />
                 )}
 
                 {!showEventForm && !editingEventId && (
@@ -1736,6 +1307,121 @@ const AdminDashboard = () => {
                       </table>
                     </div>
                     <Pagination total={events.length} page={eventPage} setPage={setEventPage} />
+                  </>
+                )}
+              </section>
+            )}
+
+            {activeTab === "destinations" && (
+              <section className="space-y-6">
+                {/* Section header — hidden while the form owns the screen */}
+                {!showDestinationForm && !editingDestinationId && (
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-800">Destinations</h2>
+                      <p className="text-sm text-gray-500 mt-0.5">{destinations.length} destinations listed</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => { setShowDestinationForm(v => !v); setEditingDestinationId(null); setDestinationForm(emptyDestination); }}
+                      className={`flex items-center gap-2 px-4 py-2.5 rounded-sm text-sm font-semibold transition-colors ${showDestinationForm
+                        ? 'bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200'
+                        : 'bg-[#1F2853] text-white hover:bg-[#2b366b]'
+                        }`}
+                    >
+                      {showDestinationForm ? <><HiXMark className="w-4 h-4" /> Close</> : <><HiPlus className="w-4 h-4" /> Create Destination</>}
+                    </button>
+                  </div>
+                )}
+
+                {(showDestinationForm || editingDestinationId) && (
+                  <DestinationForm
+                    form={destinationForm}
+                    setForm={setDestinationForm}
+                    isEditing={!!editingDestinationId}
+                    onSubmit={submitDestination}
+                    onCancel={() => { setEditingDestinationId(null); setDestinationForm(emptyDestination); setShowDestinationForm(false); }}
+                  />
+                )}
+
+                {!showDestinationForm && !editingDestinationId && (
+                  <>
+                    <div className="overflow-auto border border-gray-200 rounded-sm">
+                      <table className="w-full text-sm">
+                        <thead className="bg-gray-50 border-b border-gray-200">
+                          <tr className="text-left">
+                            <th className="p-3">Name</th>
+                            <th className="p-3">Slug</th>
+                            <th className="p-3">Tagline</th>
+                            <th className="p-3">Universities</th>
+                            <th className="p-3">UG Cost</th>
+                            <th className="p-3">PG Cost</th>
+                            <th className="p-3">Living</th>
+                            <th className="p-3">Description</th>
+                            <th className="p-3">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {destinations.slice((destinationPage - 1) * PAGE_SIZE, destinationPage * PAGE_SIZE).map((destination) => (
+                            <tr key={destination._id || destination.id} className="border-t border-gray-200">
+                              <td className="p-3">{destination.name}</td>
+                              <td className="p-3">{destination.id}</td>
+                              <td className="p-3">{destination.guide?.tagline || "N/A"}</td>
+                              <td className="p-3">{destination.guide?.universitiesCount ?? "N/A"}</td>
+                              <td className="p-3">{destination.costs?.ug || "N/A"}</td>
+                              <td className="p-3">{destination.costs?.pg || "N/A"}</td>
+                              <td className="p-3">{destination.costs?.living || "N/A"}</td>
+                              <td className="p-3 max-w-xs truncate" title={destination.description || "N/A"}>
+                                {destination.description || "N/A"}
+                              </td>
+                              <td className="p-3 flex gap-2">
+                                <div className="relative group flex items-center justify-center">
+                                  <button
+                                    onClick={() => {
+                                      setEditingDestinationId(destination.id);
+                                      setDestinationForm(destinationToForm(destination));
+                                      setShowDestinationForm(true);
+                                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    }}
+                                    className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                                  >
+                                    <HiPencilSquare className="w-4 h-4" />
+                                  </button>
+                                  <span className="absolute bottom-full mb-1 hidden group-hover:block bg-gray-800 text-white text-[11px] font-medium px-2 py-1 rounded whitespace-nowrap z-50 pointer-events-none">
+                                    Edit
+                                  </span>
+                                </div>
+                                <div className="relative group flex items-center justify-center">
+                                  <button
+                                    onClick={() =>
+                                      handleDelete(
+                                        deleteDestination,
+                                        destination.id,
+                                        "Destination",
+                                      )
+                                    }
+                                    className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                                  >
+                                    <HiTrash className="w-4 h-4" />
+                                  </button>
+                                  <span className="absolute bottom-full mb-1 hidden group-hover:block bg-gray-800 text-white text-[11px] font-medium px-2 py-1 rounded whitespace-nowrap z-50 pointer-events-none">
+                                    Delete
+                                  </span>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                          {destinations.length === 0 && (
+                            <tr className="border-t border-gray-200">
+                              <td className="p-3 text-gray-500" colSpan={9}>
+                                No destinations found.
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                    <Pagination total={destinations.length} page={destinationPage} setPage={setDestinationPage} />
                   </>
                 )}
               </section>

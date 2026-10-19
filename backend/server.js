@@ -13,6 +13,7 @@ import counsellingRoutes from "./routes/counsellingRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import articleRoutes from "./routes/articleRoutes.js";
 import destinationRoutes from "./routes/destinationRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 dotenv.config();
 
@@ -24,6 +25,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Uploaded images are served straight from disk at the URL the upload returns.
+app.use("/uploads", express.static("uploads"));
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/courses", courseRoutes);
@@ -34,6 +38,7 @@ app.use("/api/counselling", counsellingRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/articles", articleRoutes);
 app.use("/api/destinations", destinationRoutes);
+app.use("/api/uploads", uploadRoutes);
 
 
 

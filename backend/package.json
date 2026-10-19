@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed:destinations": "node scripts/seedDummyDestinations.js",
+    "seed:destination-guides": "node scripts/seedDestinationGuides.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +21,7 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.3.0",
+    "multer": "^2.4.0",
     "nodemailer": "^8.0.7"
   },
   "devDependencies": {
