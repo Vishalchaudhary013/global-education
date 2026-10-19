@@ -2,9 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
+
+    <!--
+      The title and meta tags below are defaults. Per-route values are written
+      in two places that agree with each other: the Vercel edge middleware
+      rewrites them into this HTML before it is served (so crawlers that do not
+      run JavaScript see the real values), and `shared/seo/useSeo` updates them
+      in the browser as you navigate. Both read from `src/shared/seo`.
+    -->
+    <title>GlobalEdu — Study Abroad Universities, Courses &amp; Scholarships</title>
+    <meta
+      name="description"
+      content="Plan your study abroad journey with GlobalEdu: compare top universities, courses, scholarships and destinations, and get guidance at every step."
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#1F2853" />
+
+    <!-- The webfonts in src/index.css are served from this origin. -->
+    <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin />
   </head>
   <body>
     <div id="root"></div>

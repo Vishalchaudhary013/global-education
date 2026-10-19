@@ -12,12 +12,26 @@ import {
   HiArrowRight,
 } from "react-icons/hi2";
 import { useCounselling } from "@/features/counselling";
+import {
+  courseMetadata,
+  notFoundMetadata,
+  seoConfig,
+  useSeo,
+} from "@/shared/seo";
 import { useCourse } from "../hooks/useCourse";
 
 const CourseDetail = () => {
   const { id } = useParams();
   const { openModal } = useCounselling();
   const { course, loading } = useCourse(id);
+
+  useSeo(
+    loading
+      ? null
+      : course
+        ? courseMetadata(course, seoConfig)
+        : notFoundMetadata(seoConfig, "Course"),
+  );
 
   if (loading) {
     return (

@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import EventCard from '../components/EventCard';
 import { HiCalendarDays, HiMagnifyingGlass, HiFunnel, HiOutlineGlobeAlt } from "react-icons/hi2";
 import { useEvents } from '../hooks/useEvents';
+import { seoConfig, staticPageMetadata, useSeo } from "@/shared/seo";
 
 const Events = () => {
+  useSeo(staticPageMetadata("/events", seoConfig));
+
   const [filter, setFilter] = useState({ mode: '', search: '' });
   const { events: eventsData, loading } = useEvents();
 

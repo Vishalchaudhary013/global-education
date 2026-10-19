@@ -1,0 +1,17 @@
+{
+  "name": "GlobalEdu — Study Abroad",
+  "short_name": "GlobalEdu",
+  "description": "Compare universities, courses, scholarships and study destinations.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#1F2853",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    }
+  ]
+}

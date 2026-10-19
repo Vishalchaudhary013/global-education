@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useCounselling } from "@/features/counselling";
+import { seoConfig, staticPageMetadata, useSeo } from "@/shared/seo";
 import { useHomeData } from "../hooks/useHomeData";
 
 import Hero from "../components/Hero";
@@ -11,6 +12,8 @@ import Articles from "../components/Articles";
 import UpcomingEvents from "../components/UpcomingEvents";
 
 const Home = () => {
+  useSeo(staticPageMetadata("/", seoConfig));
+
   const navigate = useNavigate();
   const { openModal } = useCounselling();
   

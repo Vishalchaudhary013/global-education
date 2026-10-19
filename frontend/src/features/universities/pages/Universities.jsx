@@ -3,8 +3,11 @@ import { useSearchParams } from "react-router-dom";
 import UniversityCard from "../components/UniversityCard";
 import { HiMagnifyingGlass, HiMapPin, HiBuildingOffice2 } from "react-icons/hi2";
 import { useUniversities } from "../hooks/useUniversities";
+import { seoConfig, staticPageMetadata, useSeo } from "@/shared/seo";
 
 const Universities = () => {
+  useSeo(staticPageMetadata("/universities", seoConfig));
+
   const { universities: universitiesData, loading } = useUniversities();
   const [searchParams] = useSearchParams();
   // Destination pages link here with ?destination=<country> to pre-filter.

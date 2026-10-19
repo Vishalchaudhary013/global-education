@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import { 
   HiMapPin, 
   HiTrophy, 
@@ -12,13 +12,38 @@ import {
   HiSparkles
 } from "react-icons/hi2";
 import { useCounselling } from "@/features/counselling";
+import {
+  notFoundMetadata,
+  seoConfig,
+  universityDuplicateMetadata,
+  universityMetadata,
+  useSeo,
+} from "@/shared/seo";
 import { useUniversity } from "../hooks/useUniversity";
 
 const UniversityDetail = () => {
   const { id } = useParams();
+  const { pathname } = useLocation();
   const { openModal } = useCounselling();
 
   const { university, loading } = useUniversity(id);
+
+  /**
+   * This page also answers at `/destinations/university/:id`. There it keeps
+   * working but canonicalises to the `/universities/:id` URL, so the two do not
+   * compete as duplicates.
+   */
+  const isDuplicateUrl = pathname.startsWith("/destinations/university/");
+
+  useSeo(
+    loading
+      ? null
+      : university
+        ? isDuplicateUrl
+          ? universityDuplicateMetadata(university, seoConfig)
+          : universityMetadata(university, seoConfig)
+        : notFoundMetadata(seoConfig, "University"),
+  );
 
   if (loading) {
     return (

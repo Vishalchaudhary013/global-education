@@ -1,7 +1,8 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import ScrollToTop from "@/shared/components/ScrollToTop";
+import NotFound from "@/shared/components/NotFound";
 import Navbar from "@/shared/components/layout/Navbar";
 import Footer from "@/shared/components/layout/Footer";
 
@@ -15,8 +16,15 @@ import { Events, EventDetail } from "@/features/events";
 import { Services } from "@/features/services";
 import { Articles, ArticleDetail } from "@/features/articles";
 import { AdminLogin, AdminSignup, ProtectedRoute } from "@/features/auth";
-import { AdminDashboard } from "@/features/admin";
 import { BookCounsellingModal } from "@/features/counselling";
+
+/**
+ * The admin area and its forms are a large part of the bundle and no public
+ * visitor ever opens them, so it loads on demand instead of on first paint.
+ */
+const AdminDashboard = lazy(
+  () => import("@/features/admin/pages/AdminDashboard"),
+);
 
 function App() {
   const location = useLocation();
@@ -54,10 +62,21 @@ function App() {
             path="/admin"
             element={
               <ProtectedRoute roles={["admin", "superadmin"]}>
-                <AdminDashboard />
+                <Suspense
+                  fallback={
+                    <div className="min-h-screen bg-[#F4F6FD] flex items-center justify-center text-slate-500">
+                      Loading admin…
+                    </div>
+                  }
+                >
+                  <AdminDashboard />
+                </Suspense>
               </ProtectedRoute>
             }
           />
+
+          {/* Anything else is a genuine 404, not an empty layout. */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       {!hideChrome && <Footer />}

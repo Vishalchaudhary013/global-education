@@ -1,5 +1,35 @@
 {
   "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "https://global-education-93mo.onrender.com/sitemap.xml"
+    },
+    {
+      "source": "/sitemap-:part(\\d+).xml",
+      "destination": "https://global-education-93mo.onrender.com/sitemap-:part.xml"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/favicon.svg",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    }
   ]
 }

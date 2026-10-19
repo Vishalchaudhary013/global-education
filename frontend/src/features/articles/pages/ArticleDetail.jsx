@@ -10,6 +10,12 @@ import {
   HiShare,
   HiBookOpen,
 } from "react-icons/hi2";
+import {
+  articleMetadata,
+  notFoundMetadata,
+  seoConfig,
+  useSeo,
+} from "@/shared/seo";
 import { useArticle } from "../hooks/useArticle";
 
 const ArticleDetail = () => {
@@ -17,6 +23,14 @@ const ArticleDetail = () => {
   const navigate = useNavigate();
 
   const { article, articles: allArticles, loading } = useArticle(id);
+
+  useSeo(
+    loading
+      ? null
+      : article
+        ? articleMetadata(article, seoConfig)
+        : notFoundMetadata(seoConfig, "Article"),
+  );
 
   if (loading) {
     return (

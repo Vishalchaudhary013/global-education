@@ -3,8 +3,11 @@ import { HiMagnifyingGlass, HiMapPin, HiFunnel } from "react-icons/hi2";
 import { useLocation } from "react-router-dom";
 import CourseCard from "../components/CourseCard";
 import { useCourses } from "../hooks/useCourses";
+import { seoConfig, staticPageMetadata, useSeo } from "@/shared/seo";
 
 const Courses = () => {
+  useSeo(staticPageMetadata("/courses", seoConfig));
+
   const { courses: allCoursesData, loading } = useCourses();
   const [courses, setCourses] = useState([]);
   const location = useLocation();

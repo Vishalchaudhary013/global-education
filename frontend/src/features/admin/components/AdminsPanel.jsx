@@ -11,6 +11,7 @@ import { getApiErrorMessage } from "@/shared/utils/apiError";
 import { useAuth } from "@/features/auth";
 import {
   deleteUser,
+  getUserPassword,
   impersonateUser,
   setUserPassword,
 } from "@/features/users/services/userService";
@@ -55,26 +56,72 @@ const IconButton = ({ label, onClick, disabled, active, tone = "slate", children
   );
 };
 
-/** A masked password cell. Reveal only works for a value set in this session. */
-const PasswordCell = ({ revealed, value }) => {
+/**
+ * One admin's password, masked until the eye is clicked.
+ *
+ * The value is fetched on that click rather than with the dashboard, so loading
+ * the page never pulls every password down at once. `cached` holds anything
+ * already fetched or just set, which is why re-opening a row costs nothing.
+ */
+const PasswordCell = ({ adminId, cached, onLoaded }) => {
   const [shown, setShown] = useState(false);
+  /** idle | loading | missing | error — only consulted while `cached` is empty. */
+  const [status, setStatus] = useState("idle");
+  const [note, setNote] = useState("");
+
+  const toggle = async () => {
+    if (shown) {
+      setShown(false);
+      return;
+    }
+
+    setShown(true);
+    if (cached) return;
+
+    setStatus("loading");
+    try {
+      const result = await getUserPassword(adminId);
+      if (result?.recorded && result.password) {
+        onLoaded(adminId, result.password);
+        setStatus("idle");
+        return;
+      }
+      setStatus("missing");
+      setNote(
+        result?.reason ||
+          "Not recorded yet — set a new password to store it.",
+      );
+    } catch (error) {
+      setStatus("error");
+      setNote(getApiErrorMessage(error));
+    }
+  };
+
   return (
     <div className="flex items-center gap-2">
-      {shown && revealed ? (
-        <span className="font-mono text-slate-700">{value}</span>
+      {shown && cached ? (
+        <span className="font-mono text-slate-700">{cached}</span>
       ) : (
         <span className="tracking-[0.2em] text-slate-400 select-none">••••••••</span>
       )}
+
       <button
         type="button"
-        onClick={() => setShown((v) => !v)}
+        onClick={toggle}
         aria-label={shown ? "Hide password" : "Show password"}
         className="text-slate-400 hover:text-slate-600 transition-colors"
       >
         {shown ? <HiEyeSlash className="w-4 h-4" /> : <HiEye className="w-4 h-4" />}
       </button>
-      {shown && !revealed && (
-        <span className="text-[11px] text-slate-400">Stored hashed</span>
+
+      {shown && !cached && (
+        <span
+          className={`text-[11px] ${
+            status === "error" ? "text-red-500" : "text-slate-400"
+          }`}
+        >
+          {status === "loading" ? "Loading…" : note}
+        </span>
       )}
     </div>
   );
@@ -119,8 +166,14 @@ const AdminsPanel = ({ admins, currentUserEmail, onRefresh, onError, onSuccess }
   const [formError, setFormError] = useState("");
   const [saving, setSaving] = useState(false);
   const [busyRowId, setBusyRowId] = useState(null);
-  /** Passwords this superadmin set just now, so the eye toggle has something to show. */
-  const [revealable, setRevealable] = useState({});
+  /**
+   * Passwords already fetched or set in this view, keyed by admin id. Only a
+   * cache — the server is the source of truth, so a reload still reveals them.
+   */
+  const [passwordCache, setPasswordCache] = useState({});
+
+  const cachePassword = (adminId, password) =>
+    setPasswordCache((prev) => ({ ...prev, [adminId]: password }));
 
   const closeForm = () => {
     setOpenRowId(null);
@@ -167,7 +220,7 @@ const AdminsPanel = ({ admins, currentUserEmail, onRefresh, onError, onSuccess }
     setSaving(true);
     try {
       const result = await setUserPassword(admin._id, form.password, form.notify);
-      setRevealable((prev) => ({ ...prev, [admin._id]: form.password }));
+      cachePassword(admin._id, form.password);
       onSuccess(
         form.notify && !result?.emailSent
           ? "Password updated, but the notification email could not be sent."
@@ -197,8 +250,8 @@ const AdminsPanel = ({ admins, currentUserEmail, onRefresh, onError, onSuccess }
   };
 
   return (
-    <section className="space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <section className="-m-6 md:-m-8 bg-white min-h-[calc(100vh-72px)] flex flex-col">
+      <div className="px-6 py-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 className="text-xl font-bold text-[#1F2853]">Admins</h2>
           <p className="text-sm text-slate-500 mt-0.5">
@@ -214,7 +267,7 @@ const AdminsPanel = ({ admins, currentUserEmail, onRefresh, onError, onSuccess }
         </button>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-xl overflow-x-auto">
+      <div className="flex-1 overflow-x-auto">
         <table className="w-full text-sm text-left">
           <thead className="border-b border-slate-200">
             <tr className="text-slate-600">
@@ -239,8 +292,9 @@ const AdminsPanel = ({ admins, currentUserEmail, onRefresh, onError, onSuccess }
                   <td className="px-5 py-4 text-slate-600">{admin.organization || "—"}</td>
                   <td className="px-5 py-4">
                     <PasswordCell
-                      revealed={!!revealable[admin._id]}
-                      value={revealable[admin._id]}
+                      adminId={admin._id}
+                      cached={passwordCache[admin._id]}
+                      onLoaded={cachePassword}
                     />
                   </td>
                   <td className="px-5 py-4">

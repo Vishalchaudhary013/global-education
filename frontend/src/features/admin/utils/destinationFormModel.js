@@ -1,3 +1,5 @@
+import { arrayToCsv, csvToArray } from "./formTransforms";
+
 const linesToArray = (value) =>
   (value || "")
     .split("\n")
@@ -5,14 +7,6 @@ const linesToArray = (value) =>
     .filter(Boolean);
 
 const arrayToLines = (value) => (Array.isArray(value) ? value.join("\n") : "");
-
-const csvToArray = (value) =>
-  (value || "")
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
-
-const arrayToCsv = (value) => (Array.isArray(value) ? value.join(", ") : "");
 
 /** Drops rows the admin added but never filled in. */
 const cleanRows = (rows, keys) =>

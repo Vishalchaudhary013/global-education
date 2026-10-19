@@ -1,8 +1,11 @@
 import React from 'react';
 import { HiPaperAirplane, HiCalendarDays, HiBookOpen, HiAcademicCap, HiBuildingOffice2, HiDocumentText } from "react-icons/hi2";
 import { useCounselling } from '@/features/counselling';
+import { seoConfig, staticPageMetadata, useSeo } from "@/shared/seo";
 
 const Services = () => {
+  useSeo(staticPageMetadata("/services", seoConfig));
+
   const { openModal } = useCounselling();
   const services = [
     { icon: <HiCalendarDays className="h-8 w-8" />, title: 'Free Counselling', desc: 'Expert guidance to help you choose the right course and university based on your profile.' },

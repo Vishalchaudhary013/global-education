@@ -14,12 +14,26 @@ import {
   HiCalendarDays,
 } from "react-icons/hi2";
 import { useCounselling } from "@/features/counselling";
+import {
+  notFoundMetadata,
+  scholarshipMetadata,
+  seoConfig,
+  useSeo,
+} from "@/shared/seo";
 import { useScholarship } from "../hooks/useScholarship";
 
 const ScholarshipDetail = () => {
   const { id } = useParams();
   const { openModal } = useCounselling();
   const { scholarship, loading } = useScholarship(id);
+
+  useSeo(
+    loading
+      ? null
+      : scholarship
+        ? scholarshipMetadata(scholarship, seoConfig)
+        : notFoundMetadata(seoConfig, "Scholarship"),
+  );
 
   if (loading) {
     return (

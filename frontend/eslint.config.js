@@ -26,4 +26,15 @@ export default defineConfig([
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },
   },
+  {
+    // Build config and the Vercel edge middleware run on a server, where
+    // `process` exists and there are no components to hot-reload.
+    files: ['vite.config.js', 'middleware.js'],
+    languageOptions: {
+      globals: { ...globals.node },
+    },
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])

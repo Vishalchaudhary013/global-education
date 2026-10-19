@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import User from '../models/User.js';
+import { encryptPassword } from '../utils/passwordVault.js';
 
 export const register = async (req, res) => {
   try {
@@ -17,7 +18,17 @@ export const register = async (req, res) => {
       role = "superadmin";
     }
 
-    user = new User({ name, email, password: hashedPassword, role, phone: phone || "", region: region || "" });
+    user = new User({
+      name,
+      email,
+      password: hashedPassword,
+      role,
+      phone: phone || "",
+      region: region || "",
+      // So the Admins table can show this password without the Super Admin
+      // having to reset it first. Encrypted; see `utils/passwordVault.js`.
+      passwordVault: role === "admin" ? encryptPassword(password) || "" : "",
+    });
     await user.save();
 
     const payload = {

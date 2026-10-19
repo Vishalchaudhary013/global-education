@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { HiMapPin, HiArrowRight } from "react-icons/hi2";
+import { seoConfig, staticPageMetadata, useSeo } from "@/shared/seo";
 
 const destinations = [
   { id: 'australia', name: 'Australia', img: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=2730&auto=format&fit=crop', desc: 'World-class education, post-study work opportunities, and an unmatched lifestyle.' },
@@ -13,6 +14,8 @@ const destinations = [
 ];
 
 const Destinations = () => {
+  useSeo(staticPageMetadata("/destinations", seoConfig));
+
 
   return (
     <div className="min-h-screen bg-slate-50  pb-24">

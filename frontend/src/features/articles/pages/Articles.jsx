@@ -10,6 +10,7 @@ import {
   HiTag,
 } from "react-icons/hi2";
 import { useArticles } from '../hooks/useArticles';
+import { seoConfig, staticPageMetadata, useSeo } from "@/shared/seo";
 
 const categories = [
   "All",
@@ -80,6 +81,8 @@ const ArticleCard = ({ article }) => (
 );
 
 const Articles = () => {
+  useSeo(staticPageMetadata("/articles", seoConfig));
+
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const { articles: articlesData, loading } = useArticles();

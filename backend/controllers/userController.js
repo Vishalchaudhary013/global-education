@@ -2,6 +2,11 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import sendEmail from '../utils/sendEmail.js';
+import {
+  decryptPassword,
+  encryptPassword,
+  isVaultConfigured,
+} from '../utils/passwordVault.js';
 
 const PASSWORD_RULE = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
@@ -74,7 +79,7 @@ export const setUserPassword = async (req, res) => {
       });
     }
 
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).select('+passwordVault');
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -85,6 +90,11 @@ export const setUserPassword = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
+    // Login only ever checks the hash above; this copy is what the dashboard
+    // reads back, and it is unreadable without PASSWORD_VAULT_KEY. Only admin
+    // accounts are recorded — the Admins table is the one place it is shown.
+    user.passwordVault =
+      user.role === 'admin' ? encryptPassword(password) || '' : '';
     await user.save();
 
     let emailSent = false;
@@ -108,6 +118,50 @@ export const setUserPassword = async (req, res) => {
     }
 
     res.json({ message: 'Password updated', emailSent });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+/**
+ * Reads an account's password back for the Admins table.
+ *
+ * `recorded: false` means there is nothing readable to show: either the
+ * password predates the vault, or it was stored under a different
+ * PASSWORD_VAULT_KEY. Setting a new password through the dashboard records it.
+ */
+export const getUserPassword = async (req, res) => {
+  try {
+    if (!isVaultConfigured()) {
+      return res.json({
+        password: null,
+        recorded: false,
+        reason: 'PASSWORD_VAULT_KEY is not set on the server.',
+      });
+    }
+
+    const user = await User.findById(req.params.id).select('+passwordVault');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const password = decryptPassword(user.passwordVault);
+
+    // Reading someone's password is worth a trail, even a minimal one.
+    console.warn(
+      `[password-vault] ${req.user?.email || req.user?.id} read the password for ${user.email}`,
+    );
+
+    if (!password) {
+      return res.json({
+        password: null,
+        recorded: false,
+        reason: 'This password was set before it could be recorded.',
+      });
+    }
+
+    res.json({ password, recorded: true });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });

@@ -5,11 +5,15 @@ import { getApiErrorMessage } from "@/shared/utils/apiError";
 import { register } from "../services/authService";
 import { useAuth } from "../hooks/useAuth";
 import AuthLayout from "../components/AuthLayout";
+import { noindexPageMetadata, seoConfig, useSeo } from "@/shared/seo";
 
 const inputClass =
   "block w-full px-4 py-3 bg-white border border-slate-300 rounded-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1F2853]/15 focus:border-[#1F2853] transition-all";
 
 const AdminSignup = () => {
+  // The admin area is crawlable but never indexed.
+  useSeo(noindexPageMetadata("Admin Signup", "/signup", seoConfig));
+
   const [formData, setFormData] = useState({ name: "", email: "", password: "", phone: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");

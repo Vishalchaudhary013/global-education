@@ -16,6 +16,12 @@ import {
 } from "react-icons/hi2";
 import { useEvent } from '../hooks/useEvent';
 import { useCounselling } from '@/features/counselling';
+import {
+  eventMetadata,
+  notFoundMetadata,
+  seoConfig,
+  useSeo,
+} from '@/shared/seo';
 
 // Social share icons as SVG components
 const FacebookIcon = () => (
@@ -51,6 +57,14 @@ const EventDetail = () => {
   const { openModal } = useCounselling();
 
   const { event, loading } = useEvent(id);
+
+  useSeo(
+    loading
+      ? null
+      : event
+        ? eventMetadata(event, seoConfig)
+        : notFoundMetadata(seoConfig, "Event"),
+  );
   const [form, setForm] = useState({ name: '', email: '', phone: '', city: '', level: '' });
   const [submitted, setSubmitted] = useState(false);
 

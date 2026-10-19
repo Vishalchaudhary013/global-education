@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import ScholarshipCard from "../components/ScholarshipCard";
 import { HiMagnifyingGlass, HiMapPin, HiAcademicCap } from "react-icons/hi2";
 import { useScholarships } from "../hooks/useScholarships";
+import { seoConfig, staticPageMetadata, useSeo } from "@/shared/seo";
 
 const Scholarships = () => {
+  useSeo(staticPageMetadata("/scholarships", seoConfig));
+
   const { scholarships: scholarshipsData } = useScholarships();
   const [filter, setFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");

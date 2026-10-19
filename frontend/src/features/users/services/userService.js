@@ -24,6 +24,16 @@ export const setUserPassword = async (id, password, notify = false) => {
   return response.data;
 };
 
+/**
+ * Reads an admin's password back for the Admins table. Returns
+ * `{ password, recorded, reason }` — `recorded: false` means the server has
+ * nothing readable, and `reason` says why.
+ */
+export const getUserPassword = async (id) => {
+  const response = await api.get(`${RESOURCE}/${id}/password`);
+  return response.data;
+};
+
 /** Returns a token for the target admin so a superadmin can open their dashboard. */
 export const impersonateUser = async (id) => {
   const response = await api.post(`${RESOURCE}/${id}/impersonate`);

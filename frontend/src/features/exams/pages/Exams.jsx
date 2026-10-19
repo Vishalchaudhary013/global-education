@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { HiBookOpen, HiCheckCircle, HiOutlineGlobeAlt, HiArrowRight } from "react-icons/hi2";
+import { seoConfig, staticPageMetadata, useSeo } from "@/shared/seo";
 
 const exams = [
   { id: 'ielts', name: 'IELTS', desc: 'International English Language Testing System.', countries: ['UK', 'Australia', 'Canada', 'NZ'], style: 'from-blue-500 to-cyan-400' },
@@ -11,6 +12,8 @@ const exams = [
 ];
 
 const Exams = () => {
+  useSeo(staticPageMetadata("/exams", seoConfig));
+
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
       {/* Header */}

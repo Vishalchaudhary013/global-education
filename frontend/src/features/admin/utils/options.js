@@ -1,3 +1,4 @@
+
 /** Countries the catalogue is filtered by across the public site. */
 export const DESTINATION_OPTIONS = [
   "Australia",

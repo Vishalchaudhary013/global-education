@@ -1,10 +1,31 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { HiCheckCircle, HiExclamationCircle, HiInformationCircle, HiBeaker, HiArrowLeft } from "react-icons/hi2";
+import { EXAMS, examMetadata, seoConfig, useSeo } from "@/shared/seo";
+import NotFound from "@/shared/components/NotFound";
 
 const ExamDetail = () => {
   const { id } = useParams();
-  const examName = id ? id.toUpperCase() : 'EXAM';
+  const exam = EXAMS.find((entry) => entry.id === String(id || "").toLowerCase());
+  const examName = exam ? exam.name : id ? id.toUpperCase() : 'EXAM';
+
+  useSeo(exam ? examMetadata(exam.id, seoConfig) : null);
+
+  /**
+   * The page used to render for any id, which left an unbounded set of URLs all
+   * answering 200 with the id echoed back as a heading. Only the exams the site
+   * actually covers have a page.
+   */
+  if (!exam) {
+    return (
+      <NotFound
+        label="Exam"
+        message="We don't have a guide for that exam."
+        backTo="/exams"
+        backLabel="Browse all exams"
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 pb-24">

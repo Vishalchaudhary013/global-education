@@ -30,6 +30,12 @@ import {
   HiMapPin,
 } from "react-icons/hi2";
 import { useCounselling } from "@/features/counselling";
+import {
+  destinationMetadata,
+  notFoundMetadata,
+  seoConfig,
+  useSeo,
+} from "@/shared/seo";
 import { useDestinationDetail } from "../hooks/useDestinationDetail";
 import SectionBlock from "../components/SectionBlock";
 import RequirementTabs from "../components/RequirementTabs";
@@ -88,6 +94,14 @@ const DestinationDetail = () => {
 
   const { destination, guide, courses, universities, articles, loading } =
     useDestinationDetail(destId);
+
+  useSeo(
+    loading
+      ? null
+      : destination
+        ? destinationMetadata({ ...destination, guide }, seoConfig)
+        : notFoundMetadata(seoConfig, "Destination"),
+  );
 
   if (loading) {
     return (
