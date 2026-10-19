@@ -7,9 +7,9 @@ const AdminTopbar = () => (
         not just the glyphs. */}
     <Link
       to="/"
-      className="flex h-full items-center text-2xl font-bold tracking-tight text-[#1F2853] hover:opacity-80 transition-opacity"
+      className="flex h-full items-center text-lg font-bold tracking-tight text-[#1F2853] "
     >
-      GlobalEdu<sup className="text-xs font-semibold align-super">®</sup>
+      GlobalEdu<sup className="text-md font-semibold align-super">®</sup>
     </Link>
   </header>
 );
