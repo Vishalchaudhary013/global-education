@@ -9,7 +9,7 @@ const AdminTopbar = () => (
       to="/"
       className="flex h-full items-center text-2xl font-bold tracking-tight text-[#1F2853] hover:opacity-80 transition-opacity"
     >
-      edeco<sup className="text-xs font-semibold align-super">®</sup>
+      GlobalEdu<sup className="text-xs font-semibold align-super">®</sup>
     </Link>
   </header>
 );
