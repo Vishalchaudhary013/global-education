@@ -18,6 +18,7 @@ import {
   HiOutlineNewspaper,
   HiOutlineCalendarDays,
   HiArrowRight,
+  HiCheck,
 } from "react-icons/hi2";
 import { useCounselling } from "@/features/counselling";
 import { useAuth } from "@/features/auth";
@@ -133,12 +134,80 @@ const MEGA_MENUS = {
   },
 };
 
+// Region picker options; `flag` is the flagcdn code where it differs from the value
+const REGION_GROUPS = [
+  {
+    label: "North America",
+    regions: [
+      { value: "us", label: "United States" },
+      { value: "ca", label: "Canada" },
+      { value: "mx", label: "Mexico" },
+    ],
+  },
+  {
+    label: "Western & Southern Europe",
+    regions: [
+      { value: "uk", label: "United Kingdom", flag: "gb" },
+      { value: "ie", label: "Ireland" },
+      { value: "fr", label: "France" },
+      { value: "es", label: "Spain" },
+      { value: "it", label: "Italy" },
+    ],
+  },
+  {
+    label: "Central & Northern Europe",
+    regions: [
+      { value: "de", label: "Germany" },
+      { value: "nl", label: "Netherlands" },
+      { value: "ch", label: "Switzerland" },
+      { value: "se", label: "Sweden" },
+    ],
+  },
+  {
+    label: "Asia & Oceania",
+    regions: [
+      { value: "in", label: "India" },
+      { value: "cn", label: "China" },
+      { value: "jp", label: "Japan" },
+      { value: "kr", label: "South Korea" },
+      { value: "sg", label: "Singapore" },
+      { value: "au", label: "Australia" },
+      { value: "nz", label: "New Zealand" },
+    ],
+  },
+  {
+    label: "Middle East",
+    regions: [
+      { value: "ae", label: "United Arab Emirates" },
+      { value: "sa", label: "Saudi Arabia" },
+      { value: "qa", label: "Qatar" },
+    ],
+  },
+];
+
+const findRegion = (value) =>
+  REGION_GROUPS.flatMap((g) => g.regions).find((r) => r.value === value);
+
+const Flag = ({ code, className = "" }) => (
+  <span className={`shrink-0 rounded-full overflow-hidden bg-slate-100 ring-1 ring-slate-200 ${className}`}>
+    <img
+      src={`https://flagcdn.com/w40/${code}.png`}
+      srcSet={`https://flagcdn.com/w80/${code}.png 2x`}
+      alt=""
+      loading="lazy"
+      className="h-full w-full object-cover"
+    />
+  </span>
+);
+
 const Navbar = () => {
   const { openModal } = useCounselling();
   const { user, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openSection, setOpenSection] = useState(null);
   const [selectedRegion, setSelectedRegion] = useState("");
+  const [regionOpen, setRegionOpen] = useState(false);
+  const regionRef = React.useRef(null);
   // megaMenu keeps the last opened menu so its content stays during fade-out
   const [megaMenu, setMegaMenu] = useState("destinations");
   const [megaOpen, setMegaOpen] = useState(false);
@@ -146,6 +215,7 @@ const Navbar = () => {
   const openMega = (name) => {
     setMegaMenu(name);
     setMegaOpen(true);
+    setRegionOpen(false);
   };
   const closeMega = () => setMegaOpen(false);
 
@@ -185,9 +255,26 @@ const Navbar = () => {
     }
   }, [user]);
 
-  const handleRegionChange = (e) => {
-    setSelectedRegion(e.target.value);
+  React.useEffect(() => {
+    if (!regionOpen) return;
+    const onPointer = (e) => {
+      if (regionRef.current && !regionRef.current.contains(e.target)) setRegionOpen(false);
+    };
+    const onKey = (e) => e.key === "Escape" && setRegionOpen(false);
+    document.addEventListener("mousedown", onPointer);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onPointer);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [regionOpen]);
+
+  const handleRegionSelect = (value) => {
+    setSelectedRegion(value);
+    setRegionOpen(false);
   };
+
+  const activeRegion = findRegion(selectedRegion);
 
   const toggleSection = (name) =>
     setOpenSection((prev) => (prev === name ? null : name));
@@ -227,7 +314,7 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-6 text-[15px] font-medium text-slate-600">
+        <div className="hidden md:flex items-center gap-5 text-[15px] font-medium text-slate-600">
           {renderMegaTrigger("destinations")}
           {renderMegaTrigger("courses")}
 
@@ -273,45 +360,91 @@ const Navbar = () => {
 
           <div className="h-6 w-px bg-slate-300 "></div>
 
-          <div onMouseEnter={closeMega} className="flex items-center gap-1 cursor-pointer hover:bg-slate-100 p-2 rounded-md transition-colors">
-            <HiOutlineGlobeAlt className="h-4 w-4 text-slate-500" />
-            <select 
-              value={selectedRegion}
-              onChange={handleRegionChange}
-              className="bg-transparent border-none outline-none cursor-pointer text-slate-600 font-medium"
+          {/* Not `relative`: the panel anchors to the nav so it spans full width */}
+          <div ref={regionRef} onMouseEnter={closeMega}>
+            <button
+              type="button"
+              onClick={() => setRegionOpen((v) => !v)}
+              aria-haspopup="listbox"
+              aria-expanded={regionOpen}
+              className={`flex items-center gap-2 rounded-full border px-3 py-1.5 transition-colors ${
+                regionOpen
+                  ? "border-[#FF4E45]/40 bg-[#FF4E45]/5 text-[#FF4E45]"
+                  : "border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+              }`}
             >
-              <option value="" disabled hidden>Select Region</option>
-              <optgroup label="North America">
-                <option value="us">United States</option>
-                <option value="ca">Canada</option>
-                <option value="mx">Mexico</option>
-              </optgroup>
-              <optgroup label="Europe">
-                <option value="uk">United Kingdom</option>
-                <option value="de">Germany</option>
-                <option value="fr">France</option>
-                <option value="it">Italy</option>
-                <option value="es">Spain</option>
-                <option value="ie">Ireland</option>
-                <option value="nl">Netherlands</option>
-                <option value="se">Sweden</option>
-                <option value="ch">Switzerland</option>
-              </optgroup>
-              <optgroup label="Asia & Oceania">
-                <option value="in">India</option>
-                <option value="cn">China</option>
-                <option value="jp">Japan</option>
-                <option value="kr">South Korea</option>
-                <option value="sg">Singapore</option>
-                <option value="au">Australia</option>
-                <option value="nz">New Zealand</option>
-              </optgroup>
-              <optgroup label="Middle East">
-                <option value="ae">United Arab Emirates</option>
-                <option value="sa">Saudi Arabia</option>
-                <option value="qa">Qatar</option>
-              </optgroup>
-            </select>
+              {activeRegion ? (
+                <Flag code={activeRegion.flag || activeRegion.value} className="h-5 w-5" />
+              ) : (
+                <HiOutlineGlobeAlt className="h-5 w-5 text-slate-500" />
+              )}
+              <span className="max-w-[8.5rem] truncate">
+                {activeRegion ? activeRegion.label : "Select Region"}
+              </span>
+              <HiChevronDown
+                className={`h-4 w-4 transition-transform duration-300 ${regionOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+
+            <div
+              role="listbox"
+              aria-label="Select region"
+              className={`absolute inset-x-0 top-full bg-white border-t border-slate-100 shadow-[0_24px_48px_-16px_rgba(31,40,83,0.18)] z-50 [transition:translate_300ms_ease,opacity_200ms_ease,visibility_300ms] ${
+                regionOpen
+                  ? "opacity-100 visible translate-y-0"
+                  : "opacity-0 invisible -translate-y-2 pointer-events-none"
+              }`}
+            >
+              <div className="max-w-[1300px] mx-auto px-4 sm:px-6 py-6 grid grid-cols-5 gap-x-6 gap-y-8 max-h-[75vh] overflow-y-auto">
+                {REGION_GROUPS.map((group) => (
+                  <div key={group.label}>
+                    <p className="px-3 mb-3 text-xs font-semibold text-[#FF4E45]">{group.label}</p>
+                    <div className="space-y-0.5">
+                      {group.regions.map((region) => {
+                        const isSelected = region.value === selectedRegion;
+                        return (
+                          <button
+                            key={region.value}
+                            type="button"
+                            role="option"
+                            aria-selected={isSelected}
+                            onClick={() => handleRegionSelect(region.value)}
+                            className={`group/item w-full flex items-center gap-3 rounded-xl px-3 py-1.5 text-left text-sm transition-colors ${
+                              isSelected
+                                ? "bg-indigo-50 text-[#1F2853] font-semibold"
+                                : "text-slate-600 hover:bg-indigo-50/70 hover:text-[#1F2853]"
+                            }`}
+                          >
+                            <Flag
+                              code={region.flag || region.value}
+                              className="h-8 w-8 group-hover/item:ring-2 group-hover/item:ring-[#FF4E45]/40 transition-shadow"
+                            />
+                            <span className="flex-1 truncate">{region.label}</span>
+                            {isSelected && <HiCheck className="h-4 w-4 shrink-0 text-[#FF4E45]" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-slate-50 border-t border-slate-100">
+                <div className="max-w-[1300px] mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between text-sm">
+                  <p className="text-slate-500">
+                    <span className="font-semibold text-[#1F2853]">Where are you studying from?</span>{" "}
+                    We'll tailor courses and advice to your region.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setRegionOpen(false)}
+                    className="font-semibold text-slate-500 hover:text-[#FF4E45] transition-colors"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="h-6 w-px bg-slate-300 "></div>

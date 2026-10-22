@@ -51,7 +51,7 @@ const Hero = ({ openModal }) => (
       {/* Photo collage: every tile is the same size, staggered across two rows
           so the band reads as a mosaic rather than an even filmstrip. Hidden on
           phones, where it only pushes the search card further down. */}
-      <ul className="mt-14 hidden grid-cols-2 sm:grid gap-3 sm:mt-16 sm:gap-4 lg:grid-cols-12 lg:grid-rows-[11rem_11rem] lg:gap-x-5 lg:gap-y-6">
+      <ul className="mt-14 hidden grid-cols-2 sm:grid gap-3 sm:mt-16 sm:gap-4 lg:grid-cols-12 lg:grid-rows-[12rem_12rem] lg:gap-x-6 lg:gap-y-5">
         {HERO_COLLAGE.map((photo, index) => (
           <li
             key={photo.src}
