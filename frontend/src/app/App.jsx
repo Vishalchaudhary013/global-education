@@ -33,7 +33,7 @@ function App() {
   const hideChrome = isAdminRoute || isAuthRoute;
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div className="min-h-screen flex flex-col ">
       <ScrollToTop />
       {!hideChrome && <Navbar />}
       <main className="flex-grow">

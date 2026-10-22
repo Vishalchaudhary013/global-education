@@ -1,103 +1,155 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { HiChevronRight, HiMapPin } from "react-icons/hi2";
+import { HiArrowLeft, HiArrowRight } from "react-icons/hi2";
+import Reveal from "@/shared/components/Reveal";
+import Section from "./ui/Section";
+import SectionHeading from "./ui/SectionHeading";
+import { DESTINATIONS } from "../data/homeContent";
+
+/**
+ * Destination carousel.
+ *
+ * Built on native scroll snapping rather than a transformed track: the strip
+ * stays swipeable on touch, keyboard-scrollable, and correct at any card width
+ * without measuring anything. The arrows scroll by one card's width, and they
+ * disable themselves at each end so they never look live when they are not.
+ *
+ * Taglines and university counts come from `destinationGuides`, the same data
+ * the destination detail pages render, so the figures cannot drift from the
+ * pages these cards link to.
+ */
+const useCarousel = () => {
+  const trackRef = useRef(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+
+  const sync = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const max = track.scrollWidth - track.clientWidth;
+    setAtStart(track.scrollLeft <= 4);
+    setAtEnd(track.scrollLeft >= max - 4);
+  };
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    sync();
+    track.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    return () => {
+      track.removeEventListener("scroll", sync);
+      window.removeEventListener("resize", sync);
+    };
+  }, []);
+
+  const scrollByCard = (direction) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.firstElementChild;
+    const step = card ? card.getBoundingClientRect().width + 20 : 320;
+    track.scrollBy({ left: step * direction, behavior: "smooth" });
+  };
+
+  return { trackRef, atStart, atEnd, scrollByCard };
+};
+
+const DestinationCard = ({ destination, index }) => (
+  <li className="w-[17rem] shrink-0 snap-start sm:w-[20rem] lg:w-[23rem]">
+    <Link
+      to={`/destinations/${destination.slug}`}
+      className="group flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+    >
+      <div className="flex flex-1 flex-col p-6">
+        <span className="mb-4 inline-flex w-fit items-center rounded-full border border-slate-200 px-3.5 py-1 text-xs font-bold tracking-wider text-slate-400">
+          {String(index + 1).padStart(3, "0")}
+        </span>
+
+        <h3 className="text-2xl font-extrabold tracking-tight text-primary transition-colors duration-300 group-hover:text-secondary">
+          {destination.name}
+        </h3>
+
+        {destination.tagline && (
+          <p className="mt-3 flex-1 text-[15px] leading-relaxed text-slate-600">
+            {destination.tagline}
+          </p>
+        )}
+
+        <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-secondary">
+          Read More
+          <HiArrowRight
+            className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5"
+            aria-hidden="true"
+          />
+        </span>
+      </div>
+
+      {/* The photo sits at a slight angle and is clipped by the card, which
+          is what gives the row its editorial feel rather than a plain thumb. */}
+      <div className="relative h-36 overflow-hidden sm:h-40">
+        <img
+          src={destination.image}
+          alt={`Studying in ${destination.name}`}
+          width="800"
+          height="500"
+          loading="lazy"
+          decoding="async"
+          className="absolute -right-6 bottom-[-1.5rem] h-44 w-[85%] rotate-[-7deg] rounded-[1.1rem] object-cover transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:rotate-[-4deg] group-hover:scale-[1.04] sm:h-48"
+        />
+      </div>
+    </Link>
+  </li>
+);
+
+const arrowClass =
+  "inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-primary transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-slate-200 disabled:hover:bg-white disabled:hover:text-primary";
 
 const Destinations = () => {
-  const dests = [
-    {
-      name: "Australia",
-      slug: "australia",
-      img: "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=2730&auto=format&fit=crop",
-    },
-    {
-      name: "UK",
-      slug: "uk",
-      img: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=2670&auto=format&fit=crop",
-    },
-    {
-      name: "Canada",
-      slug: "canada",
-      img: "https://images.unsplash.com/photo-1503614472-8c93d56e92ce?q=80&w=2611&auto=format&fit=crop",
-    },
-    {
-      name: "USA",
-      slug: "usa",
-      img: "https://images.unsplash.com/photo-1550850839-8dc894ed385a?q=80&w=2675&auto=format&fit=crop",
-    },
-    {
-      name: "Germany",
-      slug: "germany",
-      img: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=2670&auto=format&fit=crop",
-    },
-    {
-      name: "India",
-      slug: "india",
-      img: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=2671&auto=format&fit=crop",
-    },
-    {
-      name: "Dubai",
-      slug: "dubai",
-      img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=2670&auto=format&fit=crop",
-    },
-    {
-      name: "New Zealand",
-      slug: "newzealand",
-      img: "https://images.unsplash.com/photo-1507699622108-4be3abd695ad?q=80&w=2671&auto=format&fit=crop",
-    },
-    {
-      name: "Singapore",
-      slug: "singapore",
-      img: "https://images.unsplash.com/photo-1508964942454-1a56651d54ac?q=80&w=2670&auto=format&fit=crop",
-    },
-  ];
+  const { trackRef, atStart, atEnd, scrollByCard } = useCarousel();
 
   return (
-    <div className="py-20 bg-slate-50">
-      <div className="max-w-[1400px] mx-auto px-6">
-        <div className="flex justify-between items-end mb-12">
-          <div>
-            <h2 className="text-4xl font-extrabold text-[#1F2853] mb-4 tracking-tight">
-              Popular Study Destinations
-            </h2>
-            <p className="text-slate-500 text-lg max-w-2xl">
-              Discover top-ranked universities in the world's best education
-              hubs.
-            </p>
-          </div>
-          <Link
-            to="/destinations"
-            className="hidden sm:flex items-center gap-2 text-[#FF4E45] font-semibold hover:text-[#FF4E45]"
-          >
-            View All <HiChevronRight className="h-5 w-5" />
-          </Link>
-        </div>
+    <Section tone="light" id="destinations">
+      <SectionHeading
+        eyebrow="Top Destinations"
+        title="Discover Your Ideal Study Destination"
+      />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {dests.map((dest, i) => (
-            <Link
-              to={`/destinations/${dest.slug}`}
-              key={i}
-              className={`relative rounded-2xl overflow-hidden group cursor-pointer ${i === 0 ? "col-span-2 md:col-span-2 row-span-2 h-[400px]" : "h-[192px]"}`}
-            >
-              <img
-                src={dest.img}
-                alt={dest.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-[#1F2853]/40"></div>
-              <div className="absolute bottom-6 left-6">
-                <h3 className="text-white font-bold text-2xl mb-1">
-                  {dest.name}
-                </h3>
-                <p className="text-[#FF4E45]/80 text-sm font-medium flex items-center gap-1 opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                  <HiMapPin className="h-4 w-4" /> Explore Top Unis
-                </p>
-              </div>
-            </Link>
+      <Reveal y={30} className="mt-12 lg:mt-16">
+        <ul
+          ref={trackRef}
+          className="hide-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto pb-2"
+        >
+          {DESTINATIONS.map((destination, index) => (
+            <DestinationCard
+              key={destination.slug}
+              destination={destination}
+              index={index}
+            />
           ))}
+        </ul>
+
+        <div className="mt-10 flex items-center justify-center gap-4">
+          <button
+            type="button"
+            onClick={() => scrollByCard(-1)}
+            disabled={atStart}
+            aria-label="Previous destinations"
+            className={arrowClass}
+          >
+            <HiArrowLeft className="h-4 w-4" aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollByCard(1)}
+            disabled={atEnd}
+            aria-label="Next destinations"
+            className={arrowClass}
+          >
+            <HiArrowRight className="h-4 w-4" aria-hidden="true" />
+          </button>
         </div>
-      </div>
-    </div>
+      </Reveal>
+    </Section>
   );
 };
 

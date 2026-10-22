@@ -1,61 +1,86 @@
 import React from "react";
-import { HiChevronRight, HiCheckCircle } from "react-icons/hi2";
+import { HiArrowRight } from "react-icons/hi2";
+import { Container } from "./ui/Section";
+import { HERO_COLLAGE } from "../data/homeContent";
 
-const heroImage = "https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2";
+/**
+ * Centred hero: headline, supporting line, one call to action, then a collage
+ * of student photos sitting at staggered vertical offsets beneath it.
+ *
+ * The entrance plays on mount rather than on scroll, since the hero is above
+ * the fold and an observer would only fire after the user had already seen it.
+ * `hero-rise` and `hero-zoom` live in index.css and read their stagger from
+ * `--enter-delay`; both are inert under `prefers-reduced-motion`.
+ */
+const enter = (delay) => ({ "--enter-delay": `${delay}ms` });
 
 const Hero = ({ openModal }) => (
-  <div className="relative flex items-center min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)] py-10 overflow-hidden bg-[#1F2853]">
-    <div className="absolute inset-0 z-0">
-      <img
-        src={heroImage}
-        alt="University Campus"
-        className="absolute inset-0 w-full h-full object-cover opacity-50"
-      />
-      <div className="absolute inset-0 bg-white/40 "></div>
-    </div>
+  <section className="relative overflow-hidden bg-[#F4FAFF] pb-16 pt-14 sm:pt-20 lg:pb-24 lg:pt-24">
+    {/* Faint diagonal wash, the quiet texture the band needs to not read flat. */}
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute -right-40 -top-20 h-[36rem] w-[36rem] rounded-full bg-white/50 blur-3xl"
+    />
 
-    <div className="w-full max-w-[1400px] mx-auto px-6 relative z-10">
-      <div className="max-w-3xl">
-        <span className="inline-block py-1 px-3 rounded-full bg-[#FF4E45]/10 text-[#FF4E45] border border-[#FF4E45]/30 text-sm font-semibold mb-6 tracking-wide">
-          DISCOVER YOUR POTENTIAL
-        </span>
-        <h1 className="text-3xl sm:text-5xl lg:text-7xl font-extrabold text-[#1F2853] mb-8 leading-tight tracking-tight">
-          Study Abroad with{" "}
-          <span className="text-[#FF4E45]">
-            Global Education
-          </span>{" "}
-          and Career
+    <Container className="relative">
+      <div className="mx-auto max-w-4xl text-center">
+        <h1
+          style={enter(60)}
+          className="hero-rise text-balance text-4xl font-extrabold leading-[1.08] tracking-tight text-primary sm:text-5xl lg:text-[4rem]"
+        >
+          Unlock Your Global Future Through World-Class Education.
         </h1>
-        <p className="text-xl text-[#1F2853]/80 mb-10 leading-relaxed max-w-2xl font-medium">
-          Explore top universities, scholarships, and career opportunities
-          around the world. Your journey to global success starts here.
+
+        <p
+          style={enter(180)}
+          className="hero-rise mx-auto mt-6 max-w-xl text-base leading-6 text-slate-600 sm:text-lg"
+        >
+          Global Education helps you explore top study destinations, offering
+          diverse programmes, scholarships and unforgettable student
+          experiences.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4">
+
+        <div style={enter(280)} className="hero-rise mt-9">
           <button
+            type="button"
             onClick={openModal}
-            className="bg-[#FF4E45] hover:bg-[#E03A30] text-white px-8 py-4 rounded-full font-bold hover:-translate-y-1 transition-all flex items-center justify-center gap-2"
+            className="group inline-flex items-center gap-3 rounded-full bg-secondary py-3 pl-7 pr-3 text-base font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-secondary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
-            Book Free Counselling <HiChevronRight className="h-5 w-5" />
+            Book Free Counselling
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white transition-transform duration-300 group-hover:translate-x-0.5">
+              <HiArrowRight className="h-4 w-4" aria-hidden="true" />
+            </span>
           </button>
         </div>
-
-        <div className="mt-12 flex flex-wrap items-center gap-4 sm:gap-8 text-sm font-bold text-[#1F2853]">
-          <div className="flex items-center gap-2">
-            <HiCheckCircle className="h-5 w-5 text-[#FF4E45]" /> 100% Free
-            Guidance
-          </div>
-          <div className="flex items-center gap-2">
-            <HiCheckCircle className="h-5 w-5 text-[#FF4E45]" /> 500+ Top
-            Universities
-          </div>
-          <div className="flex items-center gap-2">
-            <HiCheckCircle className="h-5 w-5 text-[#FF4E45]" /> Fast Visa
-            Processing
-          </div>
-        </div>
       </div>
-    </div>
-  </div>
+
+      {/* Photo collage: every tile is the same size, staggered across two rows
+          so the band reads as a mosaic rather than an even filmstrip. Each
+          tile carries its own delay so it assembles left to right instead of
+          landing all at once. */}
+      <ul className="mt-14 grid grid-cols-2 gap-3 sm:mt-16 sm:gap-4 lg:grid-cols-12 lg:grid-rows-[11rem_11rem] lg:gap-x-5 lg:gap-y-6">
+        {HERO_COLLAGE.map((photo, index) => (
+          <li
+            key={photo.src}
+            style={enter(380 + index * 90)}
+            className={`hero-zoom h-40 sm:h-44 lg:col-span-3 lg:h-44 ${photo.cell}`}
+          >
+            <div className="h-full overflow-hidden rounded-[1.25rem]">
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                width="600"
+                height="700"
+                loading={index < 3 ? "eager" : "lazy"}
+                decoding="async"
+                className="h-full w-full object-cover transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] hover:scale-[1.05]"
+              />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </Container>
+  </section>
 );
 
 export default Hero;

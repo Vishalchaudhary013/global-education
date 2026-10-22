@@ -1,19 +1,43 @@
 import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import EventCard from '../components/EventCard';
 import { HiCalendarDays, HiMagnifyingGlass, HiFunnel, HiOutlineGlobeAlt } from "react-icons/hi2";
 import { useEvents } from '../hooks/useEvents';
 import { seoConfig, staticPageMetadata, useSeo } from "@/shared/seo";
 
+const EMPTY_FILTER = { mode: '', search: '', city: '', month: '', destination: '' };
+
 const Events = () => {
   useSeo(staticPageMetadata("/events", seoConfig));
 
-  const [filter, setFilter] = useState({ mode: '', search: '' });
+  const [searchParams] = useSearchParams();
+  // The homepage finder links here with ?city=, ?month= and ?destination=.
+  const [filter, setFilter] = useState(() => ({
+    ...EMPTY_FILTER,
+    search: searchParams.get('name') || '',
+    city: searchParams.get('city') || '',
+    month: searchParams.get('month') || '',
+    destination: searchParams.get('destination') || '',
+  }));
   const { events: eventsData, loading } = useEvents();
 
   const filtered = eventsData.filter(ev => {
+    // Venue and location together are the only place a city or country is
+    // recorded on an event, alongside the optional `countries` list.
+    const place = [ev.location, ev.venue].filter(Boolean).join(' ').toLowerCase();
+    const countries = (ev.countries || []).map(c => String(c).toLowerCase());
+
     const matchMode = !filter.mode || ev.mode === filter.mode;
     const matchSearch = !filter.search || ev.name.toLowerCase().includes(filter.search.toLowerCase());
-    return matchMode && matchSearch;
+    const matchCity = !filter.city || place.includes(filter.city.toLowerCase());
+    const matchDestination =
+      !filter.destination ||
+      place.includes(filter.destination.toLowerCase()) ||
+      countries.includes(filter.destination.toLowerCase());
+    const eventMonth = ev.date ? new Date(ev.date).getMonth() + 1 : null;
+    const matchMonth = !filter.month || String(eventMonth) === filter.month;
+
+    return matchMode && matchSearch && matchCity && matchDestination && matchMonth;
   });
 
   return (
@@ -80,7 +104,7 @@ const Events = () => {
               <h3 className="text-xl font-bold text-[#1F2853] mb-2">No Events Found</h3>
               <p className="text-slate-500">We couldn't find any events matching your criteria.</p>
               <button 
-                onClick={() => setFilter({ mode: '', search: '' })}
+                onClick={() => setFilter(EMPTY_FILTER)}
                 className="mt-6 text-[#FF4E45] font-bold hover:underline"
               >
                 Clear all filters

@@ -385,7 +385,7 @@ const Navbar = () => {
 
           <button
             onClick={openModal}
-            className="bg-[#FF4E45] hover:bg-[#E03A30] text-white px-5 py-2.5 rounded-full font-semibold hover:-translate-y-0.5 transition-all"
+            className="bg-[#FF4E45] text-white px-5 py-2.5 rounded-full font-semibold hover:-translate-y-0.5 transition-all"
           >
             Book Free Counselling
           </button>

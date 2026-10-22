@@ -12,7 +12,8 @@ const Universities = () => {
   const [searchParams] = useSearchParams();
   // Destination pages link here with ?destination=<country> to pre-filter.
   const [filter, setFilter] = useState(searchParams.get("destination") || "");
-  const [searchQuery, setSearchQuery] = useState("");
+  // The homepage finder links here with ?name=<term>, so seed the box from it.
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("name") || "");
 
   const filtered = universitiesData.filter((u) => {
     const matchesDest =

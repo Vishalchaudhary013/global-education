@@ -100,7 +100,7 @@ const PasswordCell = ({ adminId, cached, onLoaded }) => {
   return (
     <div className="flex items-center gap-2">
       {shown && cached ? (
-        <span className="font-mono text-slate-700">{cached}</span>
+        <span className="font-sans text-slate-700">{cached}</span>
       ) : (
         <span className="tracking-[0.2em] text-slate-400 select-none">••••••••</span>
       )}

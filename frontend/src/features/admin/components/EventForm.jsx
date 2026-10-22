@@ -124,7 +124,7 @@ const EventForm = ({ form, setForm, universities, isEditing, onSubmit, onCancel 
               placeholder={"University of Oxford | UK | Participant\nHarvard University | USA | Participant"}
               value={form.universities}
               onChange={(e) => setField("universities", e.target.value)}
-              className="font-mono"
+              className="font-sans"
             />
           </Field>
         </FieldGrid>

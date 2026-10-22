@@ -25,26 +25,22 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-50: #eef2ff;
-  --color-primary-100: #e0e7ff;
-  --color-primary-200: #c7d2fe;
-  --color-primary-300: #a5b4fc;
-  --color-primary-400: #818cf8;
-  --color-primary-500: #6366f1;
-  --color-primary-600: #4f46e5;
-  --color-primary-700: #4338ca;
-  --color-primary-800: #3730a3;
-  --color-primary-900: #312e81;
-  --color-primary: #4f46e5;
-  --color-secondary: #0ea5e9;
-  --font-sans: "Google Sans";
-  --font-serif: "Google Sans";
-  --font-mono: "Google Sans";
+  /* The only two brand colours. Everything else is a neutral (white / black /
+     slate) or an opacity step of one of these two, so the palette stays closed:
+     `bg-primary`, `text-secondary`, `bg-primary/5`, `hover:bg-secondary/90`. */
+  --color-primary: #1F2853;
+  --color-secondary: #FF4E45;
+
+  /* The only typeface. Loaded by the @font-face rules above; no other family is
+     declared, so `font-sans` is the one font class the UI uses. */
+  --font-sans: 'Google Sans', sans-serif;
+
+  --ease-brand: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 /* Base Styles */
 body {
-  @apply font-sans antialiased text-slate-800 bg-slate-50;
+  @apply font-sans antialiased text-slate-800 ;
 }
 
 /* Custom Utilities */
@@ -62,16 +58,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9; /* slate-100 */ 
+  background: rgb(31 40 83 / 0.06); /* primary, faint */
 }
- 
+
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1; /* slate-300 */ 
+  background: rgb(31 40 83 / 0.25); /* primary */
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8; /* slate-400 */ 
+  background: rgb(31 40 83 / 0.45); /* primary */
 }
 
 /* Utility classes for hiding scrollbar but allowing scrolling */
@@ -111,6 +107,157 @@ body {
 
 /* Smooth selection colors */
 ::selection {
-  background-color: #6366f1; /* indigo-500 */
+  background-color: #1F2853; /* primary */
   color: white;
+}
+
+/*
+  Scroll-reveal system.
+
+  One transition shared by every revealing element, driven by a `data-reveal`
+  attribute that `<Reveal>` flips to "in" when the element enters the viewport.
+  Offsets and delay come in as custom properties so a single rule covers fade,
+  rise, slide and scale without a class per variant, and so a stagger is just a
+  different `--reveal-delay` per child.
+
+  Doing it in CSS keeps the work on the compositor (opacity and transform only,
+  never layout) and needs no animation dependency.
+*/
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(var(--reveal-x, 0px), var(--reveal-y, 24px), 0)
+    scale(var(--reveal-scale, 1));
+  transition:
+    opacity 700ms var(--ease-brand) var(--reveal-delay, 0ms),
+    transform 700ms var(--ease-brand) var(--reveal-delay, 0ms);
+}
+
+[data-reveal="in"] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* Progressive blur-in used sparingly, on hero headlines only. */
+[data-reveal][data-reveal-blur] {
+  filter: blur(6px);
+  transition:
+    opacity 700ms var(--ease-brand) var(--reveal-delay, 0ms),
+    transform 700ms var(--ease-brand) var(--reveal-delay, 0ms),
+    filter 700ms var(--ease-brand) var(--reveal-delay, 0ms);
+}
+
+[data-reveal="in"][data-reveal-blur] {
+  filter: blur(0);
+}
+
+/*
+  Hero entrance. The hero is above the fold, so it plays on mount rather than
+  on intersection: by the time an observer fired it would already have been
+  seen. Delay is passed per element as `--enter-delay` to stagger the headline,
+  copy, buttons and image panels.
+*/
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes hero-zoom {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hero-rise {
+  opacity: 0;
+  animation: hero-rise 700ms var(--ease-brand) var(--enter-delay, 0ms) both;
+}
+
+.hero-zoom {
+  opacity: 0;
+  animation: hero-zoom 900ms var(--ease-brand) var(--enter-delay, 0ms) both;
+}
+
+/*
+  Logo marquee. The track holds two identical copies of the list and slides by
+  exactly half its width, so the loop point lands on an identical frame and the
+  seam is invisible. Duration is passed per instance as `--marquee-duration`.
+*/
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+}
+
+@keyframes drawer-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-drawer-in {
+  animation: drawer-in 260ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/*
+  Reduced motion: show everything in its final state immediately. Reveals are
+  opt-in decoration, so switching them off must never leave content hidden.
+*/
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal="in"] {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .animate-float,
+  .animate-pulse-soft,
+  .animate-drawer-in,
+  .animate-marquee,
+  .hero-rise,
+  .hero-zoom {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
 }

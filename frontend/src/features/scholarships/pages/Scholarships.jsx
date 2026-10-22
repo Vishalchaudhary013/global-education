@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import ScholarshipCard from "../components/ScholarshipCard";
 import { HiMagnifyingGlass, HiMapPin, HiAcademicCap } from "react-icons/hi2";
 import { useScholarships } from "../hooks/useScholarships";
@@ -8,8 +9,10 @@ const Scholarships = () => {
   useSeo(staticPageMetadata("/scholarships", seoConfig));
 
   const { scholarships: scholarshipsData } = useScholarships();
-  const [filter, setFilter] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams] = useSearchParams();
+  // The homepage finder links here with ?name= and ?destination=.
+  const [filter, setFilter] = useState(searchParams.get("destination") || "");
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("name") || "");
 
   const filtered = scholarshipsData.filter((s) => {
     const matchesDest =
