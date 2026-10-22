@@ -9,7 +9,7 @@ import logo from "@/assets/logo-trimmed.png";
  * only (`h-8`, `h-9`…); width follows from the 474×125 aspect ratio, which the
  * width/height attributes also give the browser to reserve space before load.
  */
-const Logo = ({ className = "h-7" }) => (
+const Logo = ({ className = "h-6" }) => (
   <img
     src={logo}
     alt="edeco"

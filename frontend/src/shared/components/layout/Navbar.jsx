@@ -199,10 +199,10 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white sticky top-0 z-50 w-full " onMouseLeave={closeMega}>
-      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center" onClick={closeAll} onMouseEnter={closeMega}>
-          <Logo className="h-7 sm:h-8" />
+          <Logo className="h-6 sm:h-7" />
         </Link>
 
         {/* Mobile: right side buttons */}
@@ -227,7 +227,7 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+        <div className="hidden md:flex items-center gap-6 text-[15px] font-medium text-slate-600">
           {renderMegaTrigger("destinations")}
           {renderMegaTrigger("courses")}
 
