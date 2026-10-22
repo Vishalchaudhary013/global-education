@@ -75,12 +75,9 @@ const DestinationCard = ({ destination, index }) => (
           </p>
         )}
 
-        <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-secondary">
+        <span className="mt-5 inline-flex w-fit items-center gap-2 text-sm font-bold text-secondary transition-transform duration-300 ease-out-cubic group-hover:translate-x-2">
           Read More
-          <HiArrowRight
-            className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5"
-            aria-hidden="true"
-          />
+          <HiArrowRight className="h-4 w-4" aria-hidden="true" />
         </span>
       </div>
 
@@ -114,7 +111,7 @@ const Destinations = () => {
         title="Discover Your Ideal Study Destination"
       />
 
-      <Reveal y={30} className="mt-12 lg:mt-16">
+      <Reveal className="mt-12 lg:mt-16">
         <ul
           ref={trackRef}
           className="hide-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto pb-2"

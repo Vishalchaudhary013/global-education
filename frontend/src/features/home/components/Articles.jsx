@@ -2,7 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { HiArrowRight } from "react-icons/hi2";
 import Reveal from "@/shared/components/Reveal";
+import RevealImage from "@/shared/components/RevealImage";
 import { Container } from "./ui/Section";
+import ViewAllLink from "./ui/ViewAllLink";
 
 /**
  * Latest articles from `/api/articles`, via `useHomeData`.
@@ -22,14 +24,14 @@ const formatDate = (value) => {
   });
 };
 
-const ArticleCard = ({ article, index }) => {
+const ArticleCard = ({ article }) => {
   const date = formatDate(article.date || article.createdAt);
 
   return (
-    <Reveal delay={index * 90} y={28} className="h-full">
+    <Reveal className="h-full">
       <Link
         to={`/articles/${article._id}`}
-        className="group flex h-full flex-col rounded-[1.5rem] border border-slate-200 bg-white p-4 transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary sm:p-5"
+        className="group flex h-full flex-col rounded-[1.5rem] border border-slate-200 bg-white p-4 transition-colors duration-500 ease-out-cubic hover:border-primary/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary sm:p-5"
       >
         <div className="flex justify-between mb-4">
           <div className="flex justify-between mb-4 gap-3">
@@ -54,7 +56,7 @@ const ArticleCard = ({ article, index }) => {
 
 
         </div>
-        <div className="overflow-hidden rounded-[1.1rem] bg-slate-100">
+        <RevealImage className="overflow-hidden rounded-[1.1rem] bg-slate-100">
           {article.img && (
             <img
               src={article.img}
@@ -64,7 +66,7 @@ const ArticleCard = ({ article, index }) => {
               className="h-48 w-full object-cover transition-transform duration-[700ms] ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.06] sm:h-56"
             />
           )}
-        </div>
+        </RevealImage>
 
         <div className="flex flex-1 flex-col px-1 pt-5">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500">
@@ -82,12 +84,9 @@ const ArticleCard = ({ article, index }) => {
             {article.title}
           </h3>
 
-          <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-secondary">
+          <span className="mt-5 inline-flex w-fit items-center gap-2 text-sm font-bold text-secondary transition-transform duration-300 ease-out-cubic group-hover:translate-x-2">
             Read More
-            <HiArrowRight
-              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5"
-              aria-hidden="true"
-            />
+            <HiArrowRight className="h-4 w-4" aria-hidden="true" />
           </span>
         </div>
       </Link>
@@ -107,7 +106,7 @@ const Articles = ({ articles = [] }) => {
 
       <Container className="relative">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <Reveal y={20} className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <p className="mb-5 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-secondary">
               <span
                 aria-hidden="true"
@@ -120,21 +119,20 @@ const Articles = ({ articles = [] }) => {
             </h2>
           </Reveal>
 
-          <Reveal delay={120} y={20} className="shrink-0">
-            <Link
-              to="/articles"
-              className="group inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-primary transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
-            >
-              All Articles
-              <HiArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
+          {/* On phones the link moves below the swipe row instead. */}
+          <Reveal className="hidden shrink-0 sm:block">
+            <ViewAllLink to="/articles">View All Articles</ViewAllLink>
           </Reveal>
         </div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
-          {list.map((article, index) => (
-            <ArticleCard key={article._id} article={article} index={index} />
+        <div className="mobile-track mt-12 grid gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
+          {list.map((article) => (
+            <ArticleCard key={article._id} article={article} />
           ))}
+        </div>
+
+        <div className="mt-8 flex justify-center sm:hidden">
+          <ViewAllLink to="/articles">View All Articles</ViewAllLink>
         </div>
       </Container>
     </section>

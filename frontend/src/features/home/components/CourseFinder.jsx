@@ -28,7 +28,8 @@ const MODES = [
   { id: "events", label: "Events" },
 ];
 
-const labelClass = "mb-2.5 block text-[16px] font-bold text-white ml-2.5";
+const labelClass =
+  "mb-2.5 ml-2.5 block text-sm font-bold text-white sm:text-[16px]";
 const shellClass =
   "group relative flex h-14 items-center gap-3 rounded-full border border-slate-200 bg-white px-5 transition-colors duration-200 hover:border-slate-300 focus-within:border-secondary";
 const controlClass =
@@ -116,12 +117,16 @@ const CourseFinder = ({ navigate }) => {
   return (
     <div className="relative bg-[#F4FAFF] pb-16 sm:pb-20 lg:pb-24">
       <Container>
-        <Reveal y={26}>
-          {/* Tab strip, overlapping the card's top edge. */}
+        <Reveal>
+          {/* Tab strip, overlapping the card's top edge. A ring in the page
+              background colour cuts a notch into the card around it, so the
+              strip reads as its own control rather than part of the card. On
+              phones the four tabs cannot share one row, so they wrap into a
+              2×2 grid. */}
           <div
             role="tablist"
             aria-label="What would you like to search?"
-            className="relative z-10 mx-auto flex w-fit max-w-full gap-1 overflow-x-auto rounded-full bg-[#243059] p-1.5"
+            className="relative z-10 mx-auto grid w-[calc(100%-1.5rem)] grid-cols-2 gap-1 rounded-[1.4rem] bg-[#243059] p-1.5 ring-[2px] ring-[#F4FAFF] sm:flex sm:w-fit sm:max-w-full sm:rounded-full"
           >
             {MODES.map(({ id: modeId, label }) => {
               const active = mode === modeId;
@@ -132,10 +137,10 @@ const CourseFinder = ({ navigate }) => {
                   role="tab"
                   aria-selected={active}
                   onClick={() => setMode(modeId)}
-                  className={`whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary ${
+                  className={`whitespace-nowrap rounded-full px-3 py-2.5 text-sm sm:px-5 font-semibold transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary ${
                     active
                       ? "bg-secondary/10 text-secondary"
-                      : "text-white "
+                      : "text-white hover:text-secondary"
                   }`}
                 >
                   {label}
@@ -146,9 +151,9 @@ const CourseFinder = ({ navigate }) => {
 
           <form
             onSubmit={handleSubmit}
-            className="-mt-7 rounded-[1.75rem] bg-[#243059] px-6 pb-8 pt-14 sm:px-10 lg:px-12"
+            className="-mt-7 rounded-[1.75rem] bg-[#243059] px-4 pb-6 pt-12 sm:px-10 sm:pb-8 sm:pt-14 lg:px-12"
           >
-            <div className={`grid items-end gap-5 ${columns}`}>
+            <div className={`grid items-end gap-4 sm:gap-5 ${columns}`}>
               {mode === "courses" && (
                 <>
                   <Field label="Select Subject*" htmlFor={`${id}-subject`}>
@@ -258,7 +263,7 @@ const CourseFinder = ({ navigate }) => {
 
               <button
                 type="submit"
-                className="h-14 rounded-full bg-[#FF4E45] px-10 text-[17px] font-bold text-white transition-all cursor-pointer "
+                className="mt-1 h-14 cursor-pointer rounded-full bg-[#FF4E45] px-10 text-[17px] font-bold text-white transition-all sm:mt-0"
               >
                 Search
               </button>

@@ -131,7 +131,7 @@ const Articles = () => {
 
       {/* Category Filter */}
       <div className="sticky top-0 z-20 bg-white border-b border-slate-200">
-        <div className="max-w-[1400px] mx-auto px-6 py-3 flex gap-2 overflow-x-auto scrollbar-hide">
+        <div className="max-w-[1300px] mx-auto px-6 py-3 flex gap-2 overflow-x-auto scrollbar-hide">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -149,7 +149,7 @@ const Articles = () => {
       </div>
 
       {/* Articles Grid */}
-      <div className="max-w-[1400px] mx-auto px-6 py-14">
+      <div className="max-w-[1300px] mx-auto px-6 py-14">
         {loading ? (
           <div className="flex justify-center items-center py-24">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>

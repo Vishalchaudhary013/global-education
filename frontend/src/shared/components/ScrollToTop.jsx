@@ -1,22 +1,40 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
 
+// Take scroll position over from the browser, so a reload or a back/forward
+// navigation also opens at the top instead of at the remembered offset.
+if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+  window.history.scrollRestoration = "manual";
+}
+
 /**
- * Resets the scroll position whenever the route changes.
+ * Starts every navigation at the top of the page.
  *
- * The browser keeps the previous scroll offset on client-side navigation, so
- * without this a visitor who scrolls halfway down a list and opens a detail
- * page lands in the middle of it. Renders nothing; mount it inside the router.
+ * Keyed on `location.key`, which is new for every navigation, so it also fires
+ * when only the query string changes (`/courses?level=ug` → `?level=pg`) or a
+ * link to the current page is clicked — cases a `pathname` check misses.
+ *
+ * Runs in a layout effect, before the browser paints, so the new page never
+ * flashes at the previous scroll offset. A URL with a `#hash` scrolls to that
+ * element instead. Renders nothing; mount it inside the router.
  */
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { key, hash } = useLocation();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+  useLayoutEffect(() => {
+    if (hash) {
+      const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+      if (target) {
+        target.scrollIntoView();
+        return;
+      }
+    }
+
+    // "instant" overrides any CSS smooth scrolling, so the jump is not animated.
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [key, hash]);
 
   return null;
 };
 
 export default ScrollToTop;
-

@@ -26,7 +26,7 @@ const Services = () => {
         </p>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="max-w-[1300px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {services.map((service, idx) => (
           <div key={idx} className="bg-white rounded-2xl p-8 border border-slate-200 hover:-translate-y-2 transition-all duration-300 group">
             <div className="w-16 h-16 bg-indigo-50 text-[#FF4E45] rounded-2xl flex items-center justify-center mb-6 group-hover:bg-[#FF4E45] group-hover:text-white transition-colors duration-300">

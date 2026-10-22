@@ -10,6 +10,7 @@ import {
   HiOutlineBanknotes,
 } from "react-icons/hi2";
 import Reveal from "@/shared/components/Reveal";
+import { RollIcon, RollText } from "@/shared/components/Roll";
 import Section from "./ui/Section";
 import { SERVICES } from "../data/homeContent";
 
@@ -46,10 +47,10 @@ const ServiceCard = ({ service, index, className = "", stretch = true }) => {
   const fill = stretch ? "h-full" : "";
 
   return (
-    <Reveal delay={index * 70} y={28} className={`${fill} ${className}`}>
+    <Reveal className={`${fill} ${className}`}>
       <Link
         to={service.to}
-        className={`group flex ${fill} flex-col rounded-[1.5rem] border border-slate-200 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary sm:p-7`}
+        className={`group flex ${fill} flex-col rounded-[1.5rem] border border-slate-200 bg-white p-6 transition-colors duration-500 ease-in-out hover:border-primary/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary sm:p-7`}
       >
         <span
           className={`mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-105 ${
@@ -67,12 +68,9 @@ const ServiceCard = ({ service, index, className = "", stretch = true }) => {
           {service.description}
         </p>
 
-        <span className="mt-6 inline-flex items-center gap-2 text-[16px] font-bold text-secondary">
+        <span className="mt-6 inline-flex items-center gap-2 text-[16px] font-bold text-secondary transition-transform duration-300 ease-out-cubic group-hover:translate-x-2">
           Read More
-          <HiArrowRight
-            className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5"
-            aria-hidden="true"
-          />
+          <HiArrowRight className="h-4 w-4" aria-hidden="true" />
         </span>
       </Link>
     </Reveal>
@@ -95,7 +93,7 @@ const HomeServices = ({ openModal }) => {
   const [a, b, c, d, e] = SERVICES;
 
   const heading = (
-    <Reveal y={24} className="text-center lg:self-start lg:px-2">
+    <Reveal className="text-center lg:self-start lg:px-2">
       <p className="mb-5 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-secondary">
         <span aria-hidden="true" className="inline-block h-2.5 w-2.5 bg-secondary" />
         Services
@@ -108,11 +106,11 @@ const HomeServices = ({ openModal }) => {
       <button
         type="button"
         onClick={openModal}
-        className="group mt-8 inline-flex items-center gap-3 rounded-full bg-secondary py-3 pl-7 pr-3 text-sm font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-secondary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="group mt-8 inline-flex items-center gap-3 rounded-full bg-secondary py-3 pl-7 pr-3 text-sm font-bold text-white transition-colors duration-300 hover:bg-secondary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       >
-        Book a Consultation
-        <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white transition-transform duration-300 group-hover:translate-x-0.5">
-          <HiArrowRight className="h-4 w-4" aria-hidden="true" />
+        <RollText>Book a Consultation</RollText>
+        <span className="relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-primary text-white">
+          <RollIcon icon={HiArrowRight} />
         </span>
       </button>
     </Reveal>
@@ -120,10 +118,10 @@ const HomeServices = ({ openModal }) => {
 
   return (
     <Section tone="white" id="services">
-      {/* Mobile and tablet: heading, then an even grid. */}
+      {/* Phones: heading, then a swipe row. Tablet: heading, then an even grid. */}
       <div className="lg:hidden">
         {heading}
-        <div className="mt-10 grid gap-6 sm:grid-cols-2">
+        <div className="mobile-track mt-10 grid gap-6 sm:grid-cols-2">
           {SERVICES.map((service, index) => (
             <ServiceCard key={service.id} service={service} index={index} />
           ))}

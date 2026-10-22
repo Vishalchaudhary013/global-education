@@ -28,7 +28,7 @@ const Destinations = () => {
       </div>
 
       {/* Grid */}
-      <div className="max-w-[1400px] mx-auto px-6 mt-16">
+      <div className="max-w-[1300px] mx-auto px-6 mt-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {destinations.map((dest) => (
             <div key={dest.id} className="bg-white rounded-2xl overflow-hidden border border-slate-100 hover:-translate-y-2 transition-all duration-300 group">

@@ -26,9 +26,9 @@ const Avatar = ({ name }) => (
   />
 );
 
-const TestimonialCard = ({ item, index }) => (
-  <Reveal delay={index * 80} y={26} className="h-full">
-    <figure className="relative flex h-full flex-col justify-between overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 sm:p-7">
+const TestimonialCard = ({ item }) => (
+  <Reveal className="h-full">
+    <figure className="relative flex h-full flex-col justify-between overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white p-6 transition-colors duration-500 ease-out-cubic hover:border-primary/20 sm:p-7">
       <span
         aria-hidden="true"
         className="pointer-events-none absolute bottom-3 right-5 font-sans text-[6rem] leading-none text-primary/5"
@@ -58,7 +58,7 @@ const Reviews = ({ openModal }) => (
   <Section tone="light" id="testimonials">
     <div className="grid gap-6 lg:grid-cols-2">
       {/* Heading occupies the first cell of the grid. */}
-      <Reveal y={22} className="flex flex-col justify-center lg:pr-8">
+      <Reveal className="flex flex-col justify-center lg:pr-8">
         <p className="mb-5 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-secondary">
           <span
             aria-hidden="true"
@@ -88,9 +88,13 @@ const Reviews = ({ openModal }) => (
         </button> */}
       </Reveal>
 
-      {TESTIMONIALS.map((item, index) => (
-        <TestimonialCard key={item.studentName} item={item} index={index} />
-      ))}
+      {/* A swipe row on phones; from `sm` up `contents` drops the wrapper so
+          the cards sit in the parent grid beside the heading. */}
+      <div className="mobile-track sm:contents">
+        {TESTIMONIALS.map((item) => (
+          <TestimonialCard key={item.studentName} item={item} />
+        ))}
+      </div>
     </div>
   </Section>
 );

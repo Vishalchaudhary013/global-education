@@ -5,6 +5,16 @@ import SectionHeading from "./ui/SectionHeading";
 import { STEPS } from "../data/homeContent";
 
 /**
+ * Entrance offset per step, following the reference: the first and last steps
+ * are already in place, and the ones between alternate between dropping in
+ * from above and rising from below, so the row assembles like a zip.
+ */
+const stepOffset = (index, total) => {
+  if (index === 0 || index === total - 1) return 0;
+  return index % 2 ? -100 : 100;
+};
+
+/**
  * The five-step process, laid out as a horizontal timeline.
  *
  * A single rule runs behind the row of markers on large screens, with each
@@ -17,10 +27,12 @@ const HowItWorks = () => (
     <SectionHeading eyebrow="Working Process" title="How it Works" />
 
     <div className="relative mt-14 lg:mt-20">
-      {/* Timeline rule: horizontal on desktop, vertical on mobile. */}
+      {/* Timeline rule: horizontal on desktop, vertical on mobile. On mobile
+          the rule and every dot are centred on the same `left-3` axis via
+          `-translate-x-1/2`, so the dots sit exactly on the line. */}
       <div
         aria-hidden="true"
-        className="absolute left-[0.6rem] top-2 h-full w-px bg-slate-200 lg:left-0 lg:top-0 lg:h-px lg:w-full"
+        className="absolute bottom-0 left-3 top-6 w-px -translate-x-1/2 bg-slate-200 lg:bottom-auto lg:left-0 lg:top-0 lg:h-px lg:w-full lg:translate-x-0"
       />
 
       <ol className="relative grid gap-8 lg:grid-cols-5 lg:gap-5">
@@ -28,14 +40,14 @@ const HowItWorks = () => (
           <Reveal
             as="li"
             key={step.number}
-            delay={index * 110}
-            y={26}
+            y={stepOffset(index, STEPS.length)}
             className="relative pl-9 lg:pl-0 lg:pt-2"
           >
-            {/* Marker: a dot on the rule, a short stem, then the numbered disc. */}
+            {/* Marker: a dot on the rule, a short stem, then the numbered disc.
+                On mobile the dot lines up with the "Step" label beside it. */}
             <span
               aria-hidden="true"
-              className="absolute left-[0.2rem] top-2 h-2 w-2 rounded-full bg-primary lg:left-1/2 lg:top-[-0.3rem] lg:-translate-x-1/2"
+              className="absolute left-3 top-6 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-primary ring-4 ring-white lg:left-1/2 lg:top-[-0.3rem] lg:h-2 lg:w-2 lg:ring-0"
             />
             <span
               aria-hidden="true"

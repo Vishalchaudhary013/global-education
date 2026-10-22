@@ -99,12 +99,12 @@ const EventDetail = () => {
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
       {/* Hero Header */}
-      <div className="bg-[#1F2853] pt-24 pb-16 px-6 relative overflow-hidden">
+      <div className="bg-[#1F2853] pt-24 pb-16 relative overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 right-0 w-96 h-96 bg-[#FF4E45] rounded-full blur-[120px]"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-rose-500 rounded-full blur-[100px]"></div>
         </div>
-        <div className="max-w-5xl mx-auto relative z-10">
+        <div className="max-w-[1300px] mx-auto px-6 relative z-10">
           <Link to="/events" className="inline-flex items-center gap-2 text-slate-400 hover:text-white font-medium mb-8 transition-colors">
             <HiArrowLeft className="h-4 w-4" /> Back to Events
           </Link>
@@ -126,7 +126,7 @@ const EventDetail = () => {
               alt={event.name}
               className="w-20 h-20 rounded-2xl object-cover border-2 border-white/20 shrink-0"
             />
-            <div>
+            <div className="max-w-3xl">
               <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-3 leading-tight">{event.name}</h1>
               <p className="text-lg text-slate-300 max-w-3xl">{event.description}</p>
             </div>
@@ -157,7 +157,7 @@ const EventDetail = () => {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="max-w-[1300px] mx-auto px-6 mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-8">
 

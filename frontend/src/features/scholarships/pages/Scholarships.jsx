@@ -27,7 +27,7 @@ const Scholarships = () => {
   return (
     <div className="min-h-screen bg-slate-50  pb-24">
       {/* Header */}
-      <div className="bg-[#FF4E45] py-20 px-6 relative overflow-hidden">
+      <div className="bg-[#FF4E45] py-20 relative overflow-hidden">
         <div
           className="absolute inset-0 z-0 opacity-10"
           style={{
@@ -36,7 +36,7 @@ const Scholarships = () => {
             backgroundSize: "24px 24px",
           }}
         ></div>
-        <div className="max-w-[1400px] mx-auto relative z-10 text-center">
+        <div className="max-w-[1300px] mx-auto px-6 relative z-10 text-center">
           <HiAcademicCap className="h-16 w-16 text-amber-400 mx-auto mb-6" />
           <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6">
             International Scholarships
@@ -48,7 +48,7 @@ const Scholarships = () => {
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 mt-12">
+      <div className="max-w-[1300px] mx-auto px-6 mt-12">
         {/* Filters */}
         <div className="bg-white rounded-2xl p-6 border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6 mb-12">
           <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 hide-scrollbar">

@@ -30,8 +30,8 @@ const ExamDetail = () => {
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
       {/* Header */}
-      <div className="bg-[#1F2853] pt-24 pb-16 px-6">
-        <div className="max-w-4xl mx-auto">
+      <div className="bg-[#1F2853] pt-24 pb-16">
+        <div className="max-w-[1300px] mx-auto px-6">
           <Link to="/exams" className="inline-flex items-center gap-2 text-indigo-300 hover:text-white font-medium mb-8 transition-colors">
             <HiArrowLeft className="h-4 w-4" /> Back to Exams
           </Link>
@@ -47,7 +47,7 @@ const ExamDetail = () => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="max-w-[1300px] mx-auto px-6 mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
         
         {/* Main Content */}
         <div className="md:col-span-2 space-y-10">

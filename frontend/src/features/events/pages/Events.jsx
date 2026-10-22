@@ -53,7 +53,7 @@ const Events = () => {
         </p>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6">
+      <div className="max-w-[1300px] mx-auto px-6">
         {/* Filters */}
         <div className="bg-white border border-slate-200 rounded-2xl p-4 mb-8 flex flex-col sm:flex-row gap-4 items-center">
           <div className="relative flex-1 w-full">

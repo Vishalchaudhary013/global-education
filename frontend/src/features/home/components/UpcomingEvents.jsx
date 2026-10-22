@@ -2,7 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { HiArrowRight, HiOutlineMapPin } from "react-icons/hi2";
 import Reveal from "@/shared/components/Reveal";
+import RevealImage from "@/shared/components/RevealImage";
 import Section from "./ui/Section";
+import ViewAllLink from "./ui/ViewAllLink";
 import { EVENT_IMAGES, EVENT_MODE_LABELS } from "../data/homeContent";
 
 /**
@@ -40,12 +42,12 @@ const EventCard = ({ event, index }) => {
       : [event.venue, event.location].filter(Boolean).join(", ");
 
   return (
-    <Reveal delay={index * 90} y={28}>
+    <Reveal className="h-full">
       <Link
         to={`/events/${event._id}`}
-        className="group block rounded-[1.5rem] border border-slate-200 bg-white p-4 transition-all duration-300  sm:p-5"
+        className="group block h-full rounded-[1.5rem] border border-slate-200 bg-white p-4 transition-colors duration-500 ease-out-cubic sm:p-5"
       >
-        <div className="relative overflow-hidden rounded-xl bg-primary/5">
+        <RevealImage className="relative overflow-hidden rounded-xl bg-primary/5">
           <img
             src={photo}
             alt=""
@@ -59,7 +61,7 @@ const EventCard = ({ event, index }) => {
               {when}
             </span>
           )}
-        </div>
+        </RevealImage>
 
         <div className="pt-4 ">
           {event.mode && (
@@ -82,12 +84,9 @@ const EventCard = ({ event, index }) => {
             </p>
           )}
 
-          <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-secondary">
+          <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-secondary transition-transform duration-300 ease-out-cubic group-hover:translate-x-2">
             View Details
-            <HiArrowRight
-              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5"
-              aria-hidden="true"
-            />
+            <HiArrowRight className="h-4 w-4" aria-hidden="true" />
           </span>
         </div>
       </Link>
@@ -100,9 +99,11 @@ const UpcomingEvents = ({ events = [] }) => {
   if (!upcoming.length) return null;
 
   return (
-    <Section tone="light" id="events">
+    // `overflow-x-clip` hides the side-entering columns before they arrive
+    // without creating a scroll container, which would break the sticky heading.
+    <Section tone="light" id="events" className="overflow-x-clip">
       <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-        <Reveal y={22} className="lg:sticky lg:top-24 lg:self-start">
+        <Reveal x={-100} y={0} className="lg:sticky lg:top-24 lg:self-start">
           <p className="mb-5 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-secondary">
             <span
               aria-hidden="true"
@@ -120,19 +121,24 @@ const UpcomingEvents = ({ events = [] }) => {
             admissions teams and get a decision on the spot.
           </p>
 
-          <Link
-            to="/events"
-            className="group mt-8 inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-3 text-sm font-semibold text-primary transition-colors duration-300  hover:bg-secondary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
-          >
-            All Events
-            <HiArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
+          {/* On phones the link moves below the swipe row instead. */}
+          <div className="mt-8 hidden sm:block">
+            <ViewAllLink to="/events">View All Events</ViewAllLink>
+          </div>
         </Reveal>
 
-        <div className="space-y-6">
-          {upcoming.map((event, index) => (
-            <EventCard key={event._id} event={event} index={index} />
-          ))}
+        {/* A swipe row on phones, a stacked list from `sm` up. `min-w-0` stops
+            the row's full scroll width from stretching the grid column. */}
+        <div className="min-w-0">
+          <Reveal x={100} y={0} className="mobile-track sm:space-y-6">
+            {upcoming.map((event, index) => (
+              <EventCard key={event._id} event={event} index={index} />
+            ))}
+          </Reveal>
+
+          <div className="mt-8 flex justify-center sm:hidden">
+            <ViewAllLink to="/events">View All Events</ViewAllLink>
+          </div>
         </div>
       </div>
     </Section>

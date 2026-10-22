@@ -1,6 +1,6 @@
 import React from "react";
 import { HiPlay } from "react-icons/hi2";
-import Reveal from "@/shared/components/Reveal";
+import RevealImage from "@/shared/components/RevealImage";
 import { Container } from "./ui/Section";
 import { VIDEO_BANNER } from "../data/homeContent";
 
@@ -15,8 +15,7 @@ import { VIDEO_BANNER } from "../data/homeContent";
 const VideoBanner = ({ openModal }) => (
   <section className="bg-white pb-16 sm:pb-20 lg:pb-24">
     <Container>
-      <Reveal y={30}>
-        <div className="group relative overflow-hidden rounded-[2rem] bg-primary">
+      <RevealImage className="group relative overflow-hidden rounded-[2rem] bg-primary">
           <img
             src={VIDEO_BANNER.image}
             alt=""
@@ -44,8 +43,7 @@ const VideoBanner = ({ openModal }) => (
               {VIDEO_BANNER.caption}
             </p>
           </div>
-        </div>
-      </Reveal>
+      </RevealImage>
     </Container>
   </section>
 );

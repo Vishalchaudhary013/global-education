@@ -23,7 +23,7 @@ const FaqItem = ({ faq, isOpen, onToggle, idBase, index }) => {
   const panelId = `${idBase}-panel-${index}`;
 
   return (
-    <Reveal delay={index * 60} y={20}>
+    <Reveal>
       <div
         className={`overflow-hidden rounded-2xl border bg-white transition-colors duration-300 ${
           isOpen ? "border-primary/15" : "border-slate-200 hover:border-slate-300"

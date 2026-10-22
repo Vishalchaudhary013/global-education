@@ -29,7 +29,7 @@ const Universities = () => {
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
       {/* Header */}
-      <div className="bg-[#1F2853] py-24 px-6 relative overflow-hidden">
+      <div className="bg-[#1F2853] py-24 relative overflow-hidden">
         <div
           className="absolute inset-0 z-0 opacity-10"
           style={{
@@ -38,7 +38,7 @@ const Universities = () => {
             backgroundSize: "24px 24px",
           }}
         ></div>
-        <div className="max-w-[1400px] mx-auto relative z-10 text-center">
+        <div className="max-w-[1300px] mx-auto px-6 relative z-10 text-center">
           <div className="inline-flex items-center justify-center p-3 bg-[#FF4E45]/20 rounded-2xl mb-6 backdrop-blur-sm border border-indigo-500/30">
             <HiBuildingOffice2 className="h-10 w-10 text-indigo-400" />
           </div>
@@ -52,7 +52,7 @@ const Universities = () => {
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 -mt-12 relative z-20">
+      <div className="max-w-[1300px] mx-auto px-6 -mt-12 relative z-20">
         {/* Filters & Search */}
         <div className="bg-white rounded-3xl p-4 md:p-6 border border-slate-200 flex flex-col lg:flex-row items-center justify-between gap-6 mb-12">
           <div className="flex gap-2 w-full lg:w-auto overflow-x-auto pb-2 lg:pb-0 hide-scrollbar no-scrollbar">

@@ -88,7 +88,7 @@ const UniversityDetail = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
         </div>
 
-        <div className="max-w-[1400px] mx-auto pt-15 h-full relative z-10 flex flex-col  pb-16">
+        <div className="max-w-[1300px] mx-auto px-6 pt-15 h-full relative z-10 flex flex-col  pb-16">
           <Link 
             to="/universities" 
             className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors font-bold mb-10 group"
@@ -140,7 +140,7 @@ const UniversityDetail = () => {
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-12 mt-12">
+      <div className="max-w-[1300px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-12 mt-12">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-12">
           {/* Key Stats Bar */}

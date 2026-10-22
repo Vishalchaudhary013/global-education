@@ -9,19 +9,24 @@ import { useInView } from "@/shared/hooks/useInView";
  * custom properties. That keeps every reveal on the same easing and duration,
  * and makes a stagger a matter of handing each child a larger `delay`.
  *
- *   <Reveal y={32}>…</Reveal>                     rise
- *   <Reveal x={-40} y={0}>…</Reveal>              slide in from the left
+ * Defaults follow the reference site: a 100px rise over 1000ms easeOutQuart,
+ * triggered the moment the element's edge enters the viewport, with no
+ * stagger — items in the same row arrive together because they enter together.
+ *
+ *   <Reveal>…</Reveal>                            rise
+ *   <Reveal x={-100} y={0}>…</Reveal>             slide in from the left
+ *   <Reveal y={-100}>…</Reveal>                   drop in from above
  *   <Reveal scale={0.96} y={0}>…</Reveal>         settle
- *   {items.map((item, i) => <Reveal delay={i * 80} …>)}   stagger
  */
 const Reveal = ({
   as = "div",
-  y = 24,
+  y = 100,
   x = 0,
   scale = 1,
   delay = 0,
   blur = false,
-  threshold = 0.15,
+  threshold = 0,
+  rootMargin = "0px",
   className = "",
   style,
   children,
@@ -30,7 +35,7 @@ const Reveal = ({
   // Assigned here rather than destructured as `as: Tag`, so the capitalised
   // component name is a variable the lint config's ignore pattern covers.
   const Tag = as;
-  const [ref, inView] = useInView({ threshold });
+  const [ref, inView] = useInView({ threshold, rootMargin });
 
   return (
     <Tag

@@ -1,6 +1,8 @@
 import React from "react";
 import { HiArrowRight } from "react-icons/hi2";
 import Reveal from "@/shared/components/Reveal";
+import { RollIcon, RollText } from "@/shared/components/Roll";
+import { Container } from "./ui/Section";
 import { CTA_FACES } from "../data/homeContent";
 
 /**
@@ -32,10 +34,11 @@ const FACES = [
 ];
 
 const FinalCta = ({ openModal }) => (
-  <section className="bg-white px-5 pb-10 sm:px-8 sm:pb-18 lg:px-12">
-    {/* Inset panel: it stops short of the viewport edges so the section sits
-        on the same side gutters as the rest of the page. */}
-    <div className="relative mx-auto w-full max-w-[1400px] overflow-hidden rounded-[2rem] bg-primary">
+  <section className="bg-white pb-10 sm:pb-18">
+    {/* Inset panel inside the shared Container, so its edges line up with the
+        navbar and every other section. */}
+    <Container>
+    <div className="relative overflow-hidden rounded-[2rem] bg-primary">
       {/* The portrait field, scattered across the top of the panel. */}
       <div
         aria-hidden="true"
@@ -60,10 +63,7 @@ const FinalCta = ({ openModal }) => (
       {/* The panel supplies its own inner gutter, so no Container here: nesting
         one would double the side padding. */}
       <div className="relative px-6 sm:px-12">
-        <Reveal
-          y={28}
-          className="pb-20 pt-24 text-center sm:pb-24 sm:pt-[26rem] lg:pt-[32rem]"
-        >
+        <Reveal className="pb-20 pt-24 text-center sm:pb-24 sm:pt-[26rem] lg:pt-[32rem]">
           <h2 className="text-balance text-xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-3xl lg:text-4xl">
             Are You Prepared to Soar and Chase Your Dreams?
           </h2>
@@ -71,16 +71,17 @@ const FinalCta = ({ openModal }) => (
           <button
             type="button"
             onClick={openModal}
-            className="group mt-9 inline-flex items-center gap-3 rounded-full bg-secondary py-3 pl-7 pr-3 text-base font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-secondary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="group mt-9 inline-flex items-center gap-3 rounded-full bg-secondary py-3 pl-7 pr-3 text-base font-bold text-white transition-colors duration-300 hover:bg-secondary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            Book a Consultation
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-white transition-transform duration-300 group-hover:translate-x-0.5">
-              <HiArrowRight className="h-4 w-4" aria-hidden="true" />
+            <RollText>Book a Consultation</RollText>
+            <span className="relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-primary text-white">
+              <RollIcon icon={HiArrowRight} />
             </span>
           </button>
         </Reveal>
       </div>
     </div>
+    </Container>
   </section>
 );
 

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  HiAcademicCap,
   HiMapPin,
   HiPhone,
   HiEnvelope,
@@ -16,6 +15,8 @@ import {
   FaInstagram,
   FaYoutube,
 } from "react-icons/fa6";
+import Reveal from "@/shared/components/Reveal";
+import Logo from "@/shared/components/Logo";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -35,18 +36,13 @@ const Footer = () => {
       
 
       {/* Main Footer */}
-      <div className="max-w-[1400px] mx-auto px-6 pt-16 pb-10">
+      <div className="max-w-[1300px] mx-auto px-6 pt-16 pb-10">
         {/* Row 1: Brand + Contact + Newsletter */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 pb-12 border-b border-slate-800">
+        <Reveal className="grid grid-cols-1 md:grid-cols-3 gap-10 pb-12 border-b border-slate-800">
           {/* Brand */}
           <div className="space-y-5">
-            <Link to="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-[#FF4E45] rounded-xl flex items-center justify-center">
-                <HiAcademicCap className="h-6 w-6 text-white" />
-              </div>
-              <span className="text-xl font-extrabold text-white tracking-tight">
-                Global<span className="text-[#FF4E45]">Edu</span>
-              </span>
+            <Link to="/" className="flex w-fit items-center">
+              <Logo className="h-9" />
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed">
               Your trusted partner for studying abroad. We connect ambitious
@@ -140,10 +136,10 @@ const Footer = () => {
               </form>
             )}
           </div>
-        </div>
+        </Reveal>
 
         {/* Row 2: 5 Link Columns */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 pt-12">
+        <Reveal className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 pt-12">
           {/* Study Abroad */}
           <div>
             <h4 className="text-white font-bold mb-5 uppercase tracking-wider text-sm">
@@ -290,12 +286,12 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-        </div>
+        </Reveal>
       </div>
 
       {/* Bottom Bar */}
       <div className="border-t border-slate-800">
-        <div className="max-w-[1400px] mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="max-w-[1300px] mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>
             &copy; {new Date().getFullYear()} Global Education and Career. All
             rights reserved.

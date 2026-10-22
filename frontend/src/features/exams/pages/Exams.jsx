@@ -25,7 +25,7 @@ const Exams = () => {
         </p>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="max-w-[1300px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {exams.map(exam => (
           <div key={exam.id} className="bg-white rounded-2xl p-8 border border-slate-100 transition-all duration-300 group flex flex-col h-full">
             <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${exam.style} flex items-center justify-center text-white font-bold text-xl mb-6`}>

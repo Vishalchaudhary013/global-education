@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { HiArrowLongRight } from "react-icons/hi2";
 import Reveal from "@/shared/components/Reveal";
+import { RollText } from "@/shared/components/Roll";
 
 /**
  * The eyebrow / heading / lead-in group every section opens with.
@@ -34,7 +35,7 @@ const SectionHeading = ({
           : "lg:flex-row lg:items-end lg:justify-between"
       } ${className}`}
     >
-      <Reveal className={centered ? "mx-auto max-w-2xl" : "max-w-2xl"} y={20}>
+      <Reveal className={centered ? "mx-auto max-w-2xl" : "max-w-2xl"}>
         {eyebrow && (
           <p
             className={`mb-5 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-secondary ${
@@ -69,7 +70,7 @@ const SectionHeading = ({
       </Reveal>
 
       {link && (
-        <Reveal delay={120} y={20} className={centered ? "" : "shrink-0"}>
+        <Reveal className={centered ? "" : "shrink-0"}>
           <Link
             to={link}
             className={`group inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-semibold transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary ${
@@ -78,7 +79,7 @@ const SectionHeading = ({
                 : "border-slate-200 text-primary hover:border-primary hover:bg-primary hover:text-white"
             }`}
           >
-            {linkLabel}
+            <RollText>{linkLabel}</RollText>
             <HiArrowLongRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </Reveal>

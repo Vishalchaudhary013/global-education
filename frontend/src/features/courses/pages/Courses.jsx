@@ -93,7 +93,7 @@ const Courses = () => {
         </p>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="max-w-[1300px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Sidebar Filters */}
         <div className="bg-white rounded-2xl p-6 border border-slate-200 h-fit lg:sticky lg:top-24">
           <div className="flex items-center gap-2 mb-6 text-[#1F2853] border-b border-slate-100 pb-4">

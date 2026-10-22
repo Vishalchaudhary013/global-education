@@ -170,7 +170,7 @@ const DestinationDetail = () => {
 
       {/* Breadcrumb */}
       <div className="bg-white border-b border-slate-200">
-        <div className="max-w-[1400px] mx-auto px-6 py-3 flex items-center gap-2 text-sm text-slate-500">
+        <div className="max-w-[1300px] mx-auto px-6 py-3 flex items-center gap-2 text-sm text-slate-500">
           <Link to="/" className="hover:text-[#FF4E45]" aria-label="Home">
             <HiHome className="h-4 w-4" />
           </Link>
@@ -183,7 +183,7 @@ const DestinationDetail = () => {
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 pt-8 grid grid-cols-1 lg:grid-cols-3 gap-10">
+      <div className="max-w-[1300px] mx-auto px-6 pt-8 grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* Main column */}
         <div className="lg:col-span-2 space-y-12">
           {/* Country header + stats */}

@@ -65,13 +65,13 @@ const CourseDetail = () => {
   return (
     <div className="min-h-screen bg-slate-50 pb-24">
       {/* Hero Banner */}
-      <div className="bg-[#1F2853] pt-15 pb-20 px-6 relative overflow-hidden">
+      <div className="bg-[#1F2853] pt-15 pb-20 relative overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-20">
           <div className="absolute top-0 right-0 w-96 h-96 bg-[#FF4E45]/40 blur-3xl rounded-full"></div>
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-cyan-400/30 blur-3xl rounded-full"></div>
         </div>
 
-        <div className="max-w-5xl mx-auto relative z-10">
+        <div className="max-w-[1300px] mx-auto px-6 relative z-10">
           <Link
             to="/courses"
             className="inline-flex items-center gap-1 text-slate-400 hover:text-white mb-8 transition-colors text-sm font-medium"
@@ -80,7 +80,7 @@ const CourseDetail = () => {
           </Link>
 
           <div className="flex flex-col md:flex-row gap-8 items-start justify-between">
-            <div>
+            <div className="max-w-3xl">
               <span className="inline-block px-4 py-1.5 bg-[#FF4E45]/20 text-indigo-300 font-bold rounded-full text-sm mb-4 border border-primary/30">
                 {course.type === "UG"
                   ? "Undergraduate Program"
@@ -114,7 +114,7 @@ const CourseDetail = () => {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="max-w-[1300px] mx-auto px-6 mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-8">
           {/* Overview */}
