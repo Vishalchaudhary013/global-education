@@ -8,10 +8,10 @@ const UniversityCard = ({ university }) => {
       {/* Hero Image / Banner */}
       <div className="h-40 bg-slate-700 relative  shrink-0">
         <img 
-          src={university.heroImage || "https://images.unsplash.com/photo-1541339907198-e08759dfc3ef?q=80&w=2670&auto=format&fit=crop"} 
+          src={university.heroImage || "https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?q=80&w=1200&auto=format&fit=crop"} 
           alt="" 
           onError={(e) => {
-            e.target.src = "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2670&auto=format&fit=crop";
+            e.target.src = "https://images.unsplash.com/photo-1592280771190-3e2e4d571952?q=80&w=2670&auto=format&fit=crop";
             e.target.onerror = null;
           }}
           className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700"

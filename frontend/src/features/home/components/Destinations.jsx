@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { HiArrowLeft, HiArrowRight } from "react-icons/hi2";
 import Reveal from "@/shared/components/Reveal";
+import { useCarousel } from "@/shared/hooks/useCarousel";
 import Section from "./ui/Section";
 import SectionHeading from "./ui/SectionHeading";
 import { DESTINATIONS } from "../data/homeContent";
@@ -18,41 +19,6 @@ import { DESTINATIONS } from "../data/homeContent";
  * the destination detail pages render, so the figures cannot drift from the
  * pages these cards link to.
  */
-const useCarousel = () => {
-  const trackRef = useRef(null);
-  const [atStart, setAtStart] = useState(true);
-  const [atEnd, setAtEnd] = useState(false);
-
-  const sync = () => {
-    const track = trackRef.current;
-    if (!track) return;
-    const max = track.scrollWidth - track.clientWidth;
-    setAtStart(track.scrollLeft <= 4);
-    setAtEnd(track.scrollLeft >= max - 4);
-  };
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    sync();
-    track.addEventListener("scroll", sync, { passive: true });
-    window.addEventListener("resize", sync);
-    return () => {
-      track.removeEventListener("scroll", sync);
-      window.removeEventListener("resize", sync);
-    };
-  }, []);
-
-  const scrollByCard = (direction) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const card = track.firstElementChild;
-    const step = card ? card.getBoundingClientRect().width + 20 : 320;
-    track.scrollBy({ left: step * direction, behavior: "smooth" });
-  };
-
-  return { trackRef, atStart, atEnd, scrollByCard };
-};
 
 const DestinationCard = ({ destination, index }) => (
   <li className="w-[17rem] shrink-0 snap-start sm:w-[20rem] lg:w-[23rem]">

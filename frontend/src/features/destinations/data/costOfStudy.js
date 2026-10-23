@@ -1,0 +1,242 @@
+/**
+ * Indicative yearly tuition by program level and average monthly living costs,
+ * keyed by destination id. Figures are planning ranges for international
+ * students, not quotes; review them periodically as fees change every year.
+ *
+ * `livingLevel` (0 = cheapest, 100 = most expensive) drives the cost-of-living
+ * gauge, beside `livingSummary`.
+ *
+ * A `costOfStudy` object stored on `destination.guide` overrides these.
+ */
+export const costOfStudy = {
+  uk: {
+    livingLevel: 65,
+    livingSummary:
+      "Living costs depend heavily on the city. London is one of Europe's priciest places to live, while Glasgow, Sheffield and Belfast are far easier on the budget, and part-time work helps cover everyday expenses.",
+    tuition: [
+      { label: "Foundation / Diploma", value: "GBP 10,000 - 18,000" },
+      { label: "Undergraduate (Bachelor's)", value: "GBP 11,000 - 38,000" },
+      { label: "Postgraduate (Master's)", value: "GBP 12,000 - 35,000" },
+      { label: "MBA", value: "GBP 25,000 - 90,000" },
+      { label: "PhD / Doctoral", value: "GBP 15,000 - 30,000" },
+    ],
+    living: [
+      { label: "London", value: "GBP 1,300 - 2,000 / month" },
+      { label: "Manchester", value: "GBP 900 - 1,300 / month" },
+      { label: "Edinburgh", value: "GBP 950 - 1,400 / month" },
+      { label: "Birmingham", value: "GBP 850 - 1,250 / month" },
+      { label: "Glasgow", value: "GBP 850 - 1,200 / month" },
+      { label: "Leeds", value: "GBP 850 - 1,200 / month" },
+      // { label: "Oxford", value: "GBP 1,100 - 1,600 / month" },
+      // { label: "Cambridge", value: "GBP 1,100 - 1,600 / month" },
+      // { label: "Bristol", value: "GBP 950 - 1,400 / month" },
+      // { label: "Liverpool", value: "GBP 800 - 1,150 / month" },
+      // { label: "Sheffield", value: "GBP 800 - 1,150 / month" },
+      // { label: "Nottingham", value: "GBP 800 - 1,150 / month" },
+      // { label: "Cardiff", value: "GBP 850 - 1,200 / month" },
+      // { label: "Belfast", value: "GBP 750 - 1,050 / month" },
+    ],
+    note: "Most master's degrees last one year, which keeps the total cost lower than in many other destinations.",
+  },
+  canada: {
+    livingLevel: 60,
+    livingSummary:
+      "Toronto and Vancouver are the most expensive cities, while Halifax, Edmonton and Quebec City are more affordable. Part-time work rights and provincial minimum wages help students cover everyday costs.",
+    tuition: [
+      { label: "Foundation / Diploma", value: "CAD 10,000 - 20,000" },
+      { label: "Undergraduate (Bachelor's)", value: "CAD 20,000 - 40,000" },
+      { label: "Postgraduate (Master's)", value: "CAD 18,000 - 35,000" },
+      { label: "MBA", value: "CAD 30,000 - 80,000" },
+      { label: "PhD / Doctoral", value: "CAD 8,000 - 20,000 (many funded)" },
+    ],
+    living: [
+      { label: "Toronto", value: "CAD 1,800 - 2,800 / month" },
+      { label: "Vancouver", value: "CAD 1,900 - 2,900 / month" },
+      { label: "Montreal", value: "CAD 1,300 - 2,000 / month" },
+      { label: "Ottawa", value: "CAD 1,400 - 2,100 / month" },
+      { label: "Calgary", value: "CAD 1,500 - 2,200 / month" },
+      { label: "Halifax", value: "CAD 1,300 - 1,900 / month" },
+      { label: "Edmonton", value: "CAD 1,300 - 1,900 / month" },
+      { label: "Victoria", value: "CAD 1,600 - 2,300 / month" },
+      { label: "Waterloo", value: "CAD 1,500 - 2,100 / month" },
+      { label: "Hamilton", value: "CAD 1,400 - 2,000 / month" },
+      { label: "Winnipeg", value: "CAD 1,200 - 1,800 / month" },
+      { label: "Quebec City", value: "CAD 1,100 - 1,700 / month" },
+      { label: "Saskatoon", value: "CAD 1,100 - 1,700 / month" },
+    ],
+    note: "Many PhD programs include tuition waivers and stipends.",
+  },
+  australia: {
+    livingLevel: 70,
+    livingSummary:
+      "Sydney and Melbourne have the highest rents, while Adelaide, Hobart and regional cities cost noticeably less. Generous part-time work rights and high minimum wages help offset living expenses.",
+    tuition: [
+      { label: "Foundation / Diploma", value: "AUD 15,000 - 25,000" },
+      { label: "Undergraduate (Bachelor's)", value: "AUD 25,000 - 50,000" },
+      { label: "Postgraduate (Master's)", value: "AUD 28,000 - 55,000" },
+      { label: "MBA", value: "AUD 40,000 - 90,000" },
+      { label: "PhD / Doctoral", value: "AUD 25,000 - 45,000 (many funded)" },
+    ],
+    living: [
+      { label: "Sydney", value: "AUD 2,200 - 3,200 / month" },
+      { label: "Melbourne", value: "AUD 2,000 - 2,900 / month" },
+      { label: "Brisbane", value: "AUD 1,800 - 2,600 / month" },
+      { label: "Perth", value: "AUD 1,700 - 2,500 / month" },
+      { label: "Adelaide", value: "AUD 1,600 - 2,300 / month" },
+      { label: "Canberra", value: "AUD 1,800 - 2,600 / month" },
+      { label: "Gold Coast", value: "AUD 1,800 - 2,600 / month" },
+      { label: "Darwin", value: "AUD 1,700 - 2,500 / month" },
+      { label: "Newcastle", value: "AUD 1,600 - 2,300 / month" },
+      { label: "Wollongong", value: "AUD 1,600 - 2,300 / month" },
+      { label: "Hobart", value: "AUD 1,500 - 2,200 / month" },
+      { label: "Geelong", value: "AUD 1,500 - 2,200 / month" },
+    ],
+    note: "Research degree students can apply for scholarships that cover tuition and living costs.",
+  },
+  usa: {
+    livingLevel: 80,
+    livingSummary:
+      "Costs vary widely: New York, Boston and San Francisco are among the most expensive cities in the world, while college towns in the Midwest and South are far more affordable. Campus housing and meal plans make budgeting easier.",
+    tuition: [
+      { label: "Community College (Associate)", value: "USD 8,000 - 20,000" },
+      { label: "Undergraduate (Bachelor's)", value: "USD 25,000 - 60,000" },
+      { label: "Postgraduate (Master's)", value: "USD 20,000 - 55,000" },
+      { label: "MBA", value: "USD 50,000 - 80,000" },
+      { label: "PhD / Doctoral", value: "USD 15,000 - 40,000 (many funded)" },
+    ],
+    living: [
+      { label: "New York", value: "USD 2,500 - 3,800 / month" },
+      { label: "Boston", value: "USD 2,200 - 3,300 / month" },
+      { label: "San Francisco", value: "USD 2,600 - 3,800 / month" },
+      { label: "Los Angeles", value: "USD 2,300 - 3,400 / month" },
+      { label: "Chicago", value: "USD 1,800 - 2,700 / month" },
+      { label: "Seattle", value: "USD 2,200 - 3,200 / month" },
+      { label: "Washington, D.C.", value: "USD 2,300 - 3,300 / month" },
+      { label: "Philadelphia", value: "USD 1,800 - 2,700 / month" },
+      { label: "Austin", value: "USD 1,700 - 2,500 / month" },
+      { label: "Atlanta", value: "USD 1,600 - 2,400 / month" },
+      { label: "Dallas", value: "USD 1,500 - 2,300 / month" },
+      { label: "Houston", value: "USD 1,400 - 2,100 / month" },
+      { label: "Pittsburgh", value: "USD 1,400 - 2,000 / month" },
+    ],
+    note: "Public universities usually cost less than private ones, and many PhD students receive assistantships.",
+  },
+  germany: {
+    livingLevel: 45,
+    livingSummary:
+      "Germany is one of Western Europe's most affordable study destinations, with little or no tuition at public universities, a discounted semester ticket for public transport, and moderate living costs outside Munich and Frankfurt.",
+    tuition: [
+      { label: "Public university (Bachelor's)", value: "EUR 0 - 3,000" },
+      { label: "Public university (Master's)", value: "EUR 0 - 3,000" },
+      { label: "Private university (Bachelor's)", value: "EUR 10,000 - 20,000" },
+      { label: "MBA", value: "EUR 15,000 - 40,000" },
+      { label: "PhD / Doctoral", value: "EUR 0 - 3,000" },
+    ],
+    living: [
+      { label: "Munich", value: "EUR 1,200 - 1,600 / month" },
+      { label: "Frankfurt", value: "EUR 1,100 - 1,500 / month" },
+      { label: "Hamburg", value: "EUR 1,100 - 1,500 / month" },
+      { label: "Berlin", value: "EUR 1,000 - 1,400 / month" },
+      { label: "Cologne", value: "EUR 1,000 - 1,350 / month" },
+      { label: "Stuttgart", value: "EUR 1,100 - 1,450 / month" },
+      { label: "Düsseldorf", value: "EUR 1,050 - 1,400 / month" },
+      { label: "Heidelberg", value: "EUR 1,000 - 1,350 / month" },
+      { label: "Freiburg", value: "EUR 950 - 1,300 / month" },
+      { label: "Aachen", value: "EUR 900 - 1,200 / month" },
+      { label: "Dresden", value: "EUR 850 - 1,100 / month" },
+      { label: "Leipzig", value: "EUR 850 - 1,100 / month" },
+    ],
+    note: "Most public universities charge only a semester contribution; some states charge non-EU students tuition.",
+  },
+  dubai: {
+    livingLevel: 70,
+    livingSummary:
+      "Rent is the biggest expense in Dubai, while groceries, transport and eating out can be kept reasonable. Shared apartments and student housing keep costs down, and Sharjah and Ajman are cheaper options nearby.",
+    tuition: [
+      { label: "Foundation / Diploma", value: "AED 30,000 - 50,000" },
+      { label: "Undergraduate (Bachelor's)", value: "AED 40,000 - 100,000" },
+      { label: "Postgraduate (Master's)", value: "AED 50,000 - 120,000" },
+      { label: "MBA", value: "AED 80,000 - 200,000" },
+      { label: "PhD / Doctoral", value: "AED 50,000 - 90,000" },
+    ],
+    living: [
+      { label: "Dubai", value: "AED 3,500 - 6,000 / month" },
+      { label: "Abu Dhabi", value: "AED 3,200 - 5,500 / month" },
+      { label: "Sharjah", value: "AED 2,500 - 4,000 / month" },
+      { label: "Al Ain", value: "AED 2,300 - 3,600 / month" },
+      { label: "Ajman", value: "AED 2,200 - 3,500 / month" },
+      { label: "Ras Al Khaimah", value: "AED 2,200 - 3,400 / month" },
+    ],
+    note: "Branch campuses often charge less than the same degree at the home campus.",
+  },
+  india: {
+    livingLevel: 15,
+    livingSummary:
+      "India is one of the most affordable study destinations in the world. Hostel accommodation, inexpensive public transport and low food costs keep monthly expenses low, even in big cities like Mumbai and Bangalore.",
+    tuition: [
+      { label: "Diploma", value: "INR 50,000 - 2,00,000" },
+      { label: "Undergraduate (Bachelor's)", value: "INR 1,00,000 - 5,00,000" },
+      { label: "Postgraduate (Master's)", value: "INR 1,50,000 - 6,00,000" },
+      { label: "MBA", value: "INR 5,00,000 - 15,00,000" },
+      { label: "PhD / Doctoral", value: "INR 20,000 - 1,50,000" },
+    ],
+    living: [
+      { label: "Mumbai", value: "INR 20,000 - 40,000 / month" },
+      { label: "Bangalore", value: "INR 18,000 - 35,000 / month" },
+      { label: "Delhi", value: "INR 15,000 - 30,000 / month" },
+      { label: "Pune", value: "INR 15,000 - 28,000 / month" },
+      { label: "Hyderabad", value: "INR 14,000 - 26,000 / month" },
+      { label: "Chennai", value: "INR 14,000 - 26,000 / month" },
+      { label: "Noida", value: "INR 14,000 - 26,000 / month" },
+      { label: "Chandigarh", value: "INR 13,000 - 25,000 / month" },
+      { label: "Ahmedabad", value: "INR 13,000 - 24,000 / month" },
+      { label: "Kolkata", value: "INR 12,000 - 24,000 / month" },
+      { label: "Jaipur", value: "INR 11,000 - 22,000 / month" },
+    ],
+    note: "Some institutions charge international students a separate fee in USD.",
+  },
+  newzealand: {
+    livingLevel: 60,
+    livingSummary:
+      "Auckland is the most expensive city, while Dunedin, Palmerston North and Christchurch are more affordable. Students can work part-time during term and full-time in breaks to help cover costs.",
+    tuition: [
+      { label: "Foundation / Diploma", value: "NZD 18,000 - 28,000" },
+      { label: "Undergraduate (Bachelor's)", value: "NZD 25,000 - 45,000" },
+      { label: "Postgraduate (Master's)", value: "NZD 28,000 - 50,000" },
+      { label: "MBA", value: "NZD 40,000 - 75,000" },
+      { label: "PhD / Doctoral", value: "NZD 7,000 - 10,000" },
+    ],
+    living: [
+      { label: "Auckland", value: "NZD 1,800 - 2,600 / month" },
+      { label: "Wellington", value: "NZD 1,700 - 2,400 / month" },
+      { label: "Christchurch", value: "NZD 1,500 - 2,100 / month" },
+      { label: "Hamilton", value: "NZD 1,400 - 2,000 / month" },
+      { label: "Dunedin", value: "NZD 1,300 - 1,900 / month" },
+      { label: "Queenstown", value: "NZD 1,800 - 2,700 / month" },
+      { label: "Tauranga", value: "NZD 1,500 - 2,100 / month" },
+      { label: "Nelson", value: "NZD 1,400 - 2,000 / month" },
+      { label: "Palmerston North", value: "NZD 1,300 - 1,800 / month" },
+    ],
+    note: "International PhD students generally pay the same tuition as domestic students.",
+  },
+  singapore: {
+    livingLevel: 75,
+    livingSummary:
+      "Housing is the largest cost in Singapore, but excellent public transport and affordable hawker food keep everyday spending in check. University hostels are the most budget-friendly option.",
+    tuition: [
+      { label: "Diploma (private institutions)", value: "SGD 10,000 - 25,000" },
+      { label: "Undergraduate (Bachelor's)", value: "SGD 20,000 - 60,000" },
+      { label: "Postgraduate (Master's)", value: "SGD 25,000 - 65,000" },
+      { label: "MBA", value: "SGD 50,000 - 90,000" },
+      { label: "PhD / Doctoral", value: "SGD 15,000 - 35,000 (many funded)" },
+    ],
+    living: [
+      { label: "University hostel", value: "SGD 1,400 - 2,000 / month" },
+      { label: "Shared HDB flat", value: "SGD 1,500 - 2,300 / month" },
+      { label: "Shared private condo", value: "SGD 2,000 - 3,000 / month" },
+      { label: "Homestay", value: "SGD 1,800 - 2,800 / month" },
+      { label: "Private studio", value: "SGD 2,800 - 4,000 / month" },
+    ],
+    note: "Students at public universities can apply for a government Tuition Grant in exchange for a work bond.",
+  },
+};
