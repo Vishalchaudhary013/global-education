@@ -78,7 +78,7 @@ const CourseCard = ({ course, image, countryCode }) => {
  * underneath. `courses` arrives already filtered to the destination.
  */
 const DestinationCourses = ({ destination, guide, courses, onFindFit }) => {
-  const { trackRef, atStart, atEnd, scrollByCard } = useCarousel();
+  const { trackRef, atStart, atEnd, canScroll, scrollByCard } = useCarousel();
   const name = destination.name;
   const items = courses.slice(0, MAX_COURSES);
 
@@ -132,26 +132,29 @@ const DestinationCourses = ({ destination, guide, courses, onFindFit }) => {
             </span>
           </button>
 
-          <div className="flex items-center gap-4">
-            <button
-              type="button"
-              onClick={() => scrollByCard(-1)}
-              disabled={atStart}
-              aria-label="Previous courses"
-              className={arrowClass}
-            >
-              <HiArrowLeft className="h-4 w-4" aria-hidden="true" />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollByCard(1)}
-              disabled={atEnd}
-              aria-label="Next courses"
-              className={arrowClass}
-            >
-              <HiArrowRight className="h-4 w-4" aria-hidden="true" />
-            </button>
-          </div>
+          {/* Arrows only while some cards are out of view. */}
+          {canScroll && (
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                onClick={() => scrollByCard(-1)}
+                disabled={atStart}
+                aria-label="Previous courses"
+                className={arrowClass}
+              >
+                <HiArrowLeft className="h-4 w-4" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollByCard(1)}
+                disabled={atEnd}
+                aria-label="Next courses"
+                className={arrowClass}
+              >
+                <HiArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          )}
         </div>
       </Reveal>
     </Section>

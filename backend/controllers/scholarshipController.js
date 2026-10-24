@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Scholarship from '../models/Scholarship.js';
 
 export const getScholarships = async (req, res) => {
@@ -5,6 +6,12 @@ export const getScholarships = async (req, res) => {
     let query = {};
     if (req.query.admin === 'true' && req.user && req.user.role === 'admin') {
       query.createdBy = req.user.id;
+    }
+    // `?university=<id>` narrows to one university's scholarships (its detail
+    // page). An invalid id would throw a CastError, so it matches nothing instead.
+    if (req.query.university) {
+      if (!mongoose.isValidObjectId(req.query.university)) return res.json([]);
+      query.university = req.query.university;
     }
     const scholarships = await Scholarship.find(query).populate('university');
     res.json(scholarships);

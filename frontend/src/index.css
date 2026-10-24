@@ -261,7 +261,6 @@ body {
 .animate-drawer-in {
   animation: drawer-in 260ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
-
 /*
   Reduced motion: show everything in its final state immediately. Reveals are
   opt-in decoration, so switching them off must never leave content hidden.
@@ -292,7 +291,6 @@ body {
     opacity: 1 !important;
     transform: none !important;
   }
-
   *,
   *::before,
   *::after {

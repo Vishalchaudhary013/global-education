@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Course from '../models/Course.js';
 
 export const getCourses = async (req, res) => {
@@ -6,6 +7,14 @@ export const getCourses = async (req, res) => {
     if (req.query.admin === 'true' && req.user && req.user.role === 'admin') {
       query.createdBy = req.user.id;
     }
+    // `?university=<id>` narrows to one university's courses (its detail page).
+    // An invalid id would throw a CastError, so it matches nothing instead.
+    if (req.query.university) {
+      if (!mongoose.isValidObjectId(req.query.university)) return res.json([]);
+      query.university = req.query.university;
+    }
+    // `?type=UG|PG|...` narrows to one study level (a course page's "other universities").
+    if (req.query.type) query.type = String(req.query.type);
     const courses = await Course.find(query).populate('university');
     res.json(courses);
   } catch (error) {

@@ -68,7 +68,7 @@ const arrowClass =
   "inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-primary transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-slate-200 disabled:hover:bg-white disabled:hover:text-primary";
 
 const Destinations = () => {
-  const { trackRef, atStart, atEnd, scrollByCard } = useCarousel();
+  const { trackRef, atStart, atEnd, canScroll, scrollByCard } = useCarousel();
 
   return (
     <Section tone="light" id="destinations">
@@ -91,26 +91,29 @@ const Destinations = () => {
           ))}
         </ul>
 
-        <div className="mt-10 flex items-center justify-center gap-4">
-          <button
-            type="button"
-            onClick={() => scrollByCard(-1)}
-            disabled={atStart}
-            aria-label="Previous destinations"
-            className={arrowClass}
-          >
-            <HiArrowLeft className="h-4 w-4" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollByCard(1)}
-            disabled={atEnd}
-            aria-label="Next destinations"
-            className={arrowClass}
-          >
-            <HiArrowRight className="h-4 w-4" aria-hidden="true" />
-          </button>
-        </div>
+        {/* Arrows only while some cards are out of view. */}
+        {canScroll && (
+          <div className="mt-10 flex items-center justify-center gap-4">
+            <button
+              type="button"
+              onClick={() => scrollByCard(-1)}
+              disabled={atStart}
+              aria-label="Previous destinations"
+              className={arrowClass}
+            >
+              <HiArrowLeft className="h-4 w-4" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollByCard(1)}
+              disabled={atEnd}
+              aria-label="Next destinations"
+              className={arrowClass}
+            >
+              <HiArrowRight className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </div>
+        )}
       </Reveal>
     </Section>
   );

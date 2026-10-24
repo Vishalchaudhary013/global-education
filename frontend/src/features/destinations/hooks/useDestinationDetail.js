@@ -21,6 +21,19 @@ const DESTINATION_ALIASES = {
 export const normalizeDestination = (value) =>
   (value || "").toLowerCase().replace(/[^a-z0-9]/g, "");
 
+/**
+ * The destination id a free-text country name belongs to: "United Kingdom"
+ * and "UK" → "uk", "New Zealand" → "newzealand". Unknown names come back
+ * normalised.
+ */
+export const destinationIdFor = (value) => {
+  const key = normalizeDestination(value);
+  const aliased = Object.entries(DESTINATION_ALIASES).find(([, aliases]) =>
+    aliases.includes(key),
+  );
+  return aliased ? aliased[0] : key;
+};
+
 const matchesDestination = (article, name) => {
   if (!name) return false;
   const needle = name.toLowerCase();
